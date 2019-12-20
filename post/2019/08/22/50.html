@@ -96,7 +96,7 @@
 
 
   <meta name="description" content="最近在写一个项目时需要通过反射获取方法的参数名，在method.getParameters()拿到的是一些arg0 arg1 arg2 …之类的无意义参数。  查原因发现是在Java8之前，代码编译为class文件后，方法参数的类型是固定的，但参数名称却丢失了，这和动态语言严重依赖参数名称形成了鲜明对比。（java是静态语言，所以入参名称叫什么其实无所谓的）。">
-<meta name="keywords" content="反射,参数">
+<meta name="keywords" content="Reflect,Parameter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过反射获取方法参数名时遇到的小坑">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/08/22/50.html">
@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://img.guitu18.com/markdown/16374f0f2d6141575f3b47da1d4d6632jpg">
 <meta property="og:image" content="https://img.guitu18.com/markdown/d81dc9dfbbcc1ccebd5e738761839ac5jpg">
 <meta property="og:image" content="https://img.guitu18.com/markdown/c46fd9df40d0741d0849f89c5b0b012ajpg">
-<meta property="og:updated_time" content="2019-08-22T03:49:53.462Z">
+<meta property="og:updated_time" content="2019-12-20T10:56:17.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="通过反射获取方法参数名时遇到的小坑">
 <meta name="twitter:description" content="最近在写一个项目时需要通过反射获取方法的参数名，在method.getParameters()拿到的是一些arg0 arg1 arg2 …之类的无意义参数。  查原因发现是在Java8之前，代码编译为class文件后，方法参数的类型是固定的，但参数名称却丢失了，这和动态语言严重依赖参数名称形成了鲜明对比。（java是静态语言，所以入参名称叫什么其实无所谓的）。">
@@ -360,13 +360,23 @@
                 
               
 
-              <time title="创建时间：2019-08-22 11:41:40 / 修改时间：11:49:53" itemprop="dateCreated datePublished" datetime="2019-08-22T11:41:40+08:00">2019-08-22</time>
+              <time title="创建时间：2019-08-22 11:41:40" itemprop="dateCreated datePublished" datetime="2019-08-22T11:41:40+08:00">2019-08-22</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-20 18:56:17" itemprop="dateModified" datetime="2019-12-20T18:56:17+08:00">2019-12-20</time>
+              </span>
             
           
 
@@ -379,14 +389,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
 
                 
                 
@@ -572,9 +575,9 @@
         
         <div class="post-tags">
           
-            <a href="/tags/反射/" rel="tag"># 反射</a>
+            <a href="/tags/Reflect/" rel="tag"># Reflect</a>
           
-            <a href="/tags/参数/" rel="tag"># 参数</a>
+            <a href="/tags/Parameter/" rel="tag"># Parameter</a>
           
         </div>
       
@@ -714,13 +717,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -855,13 +852,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-count">47</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

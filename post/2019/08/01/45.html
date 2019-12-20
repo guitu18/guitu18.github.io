@@ -96,7 +96,7 @@
 
 
   <meta name="description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 本篇是Shiro系列第三篇，Shiro中的过滤器初始化流程和实现原理。Shiro基于URL的权限控制是通过Filter实现的，本篇从我们注">
-<meta name="keywords" content="实现原理,Shiro,权限控制,框架,过滤器">
+<meta name="keywords" content="Realize,Shiro,Authentication,Frame,Filter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shiro权限管理框架（三）：Shiro中权限过滤器的初始化流程和实现原理">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/08/01/45.html">
@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://img.guitu18.com/markdown/366cb549e791ca422da6f1ebf626750b.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/4df8f71f82aac6a5f62dcfdd76c1f586.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/aa19be493aed3a844f5f611d846f52c3.png">
-<meta property="og:updated_time" content="2019-08-08T02:48:38.130Z">
+<meta property="og:updated_time" content="2019-12-20T10:56:17.216Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shiro权限管理框架（三）：Shiro中权限过滤器的初始化流程和实现原理">
 <meta name="twitter:description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 本篇是Shiro系列第三篇，Shiro中的过滤器初始化流程和实现原理。Shiro基于URL的权限控制是通过Filter实现的，本篇从我们注">
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-08 10:48:38" itemprop="dateModified" datetime="2019-08-08T10:48:38+08:00">2019-08-08</time>
+                <time title="修改时间：2019-12-20 18:56:17" itemprop="dateModified" datetime="2019-12-20T18:56:17+08:00">2019-12-20</time>
               </span>
             
           
@@ -389,14 +389,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
 
                 
                 
@@ -630,15 +623,15 @@
         
         <div class="post-tags">
           
-            <a href="/tags/实现原理/" rel="tag"># 实现原理</a>
+            <a href="/tags/Realize/" rel="tag"># Realize</a>
           
             <a href="/tags/Shiro/" rel="tag"># Shiro</a>
           
-            <a href="/tags/权限控制/" rel="tag"># 权限控制</a>
+            <a href="/tags/Authentication/" rel="tag"># Authentication</a>
           
-            <a href="/tags/框架/" rel="tag"># 框架</a>
+            <a href="/tags/Frame/" rel="tag"># Frame</a>
           
-            <a href="/tags/过滤器/" rel="tag"># 过滤器</a>
+            <a href="/tags/Filter/" rel="tag"># Filter</a>
           
         </div>
       
@@ -787,13 +780,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -928,13 +915,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-count">47</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

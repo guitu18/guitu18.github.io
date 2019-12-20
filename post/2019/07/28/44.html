@@ -96,7 +96,7 @@
 
 
   <meta name="description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 本篇是Shiro系列第二篇，使用Shiro基于Redis实现分布式或集群环境下的Session共享。在讲Session共享之前先说一下为什">
-<meta name="keywords" content="Shiro,权限控制,框架,分布式,Session共享">
+<meta name="keywords" content="Shiro,Authentication,Frame,Distributed,SessionSharing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shiro权限管理框架（二）：Shiro结合Redis实现分布式或集群环境下的Session共享">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/07/28/44.html">
@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://img.guitu18.com/markdown/9d3d9ca3be463ad2b52b290c39d0605c.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/cc43dc254cce8d9573bb4bd82e124838.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/3baa76d3e130682e176042fdcf94f161.png">
-<meta property="og:updated_time" content="2019-08-22T03:48:31.204Z">
+<meta property="og:updated_time" content="2019-12-20T10:56:17.221Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shiro权限管理框架（二）：Shiro结合Redis实现分布式或集群环境下的Session共享">
 <meta name="twitter:description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 本篇是Shiro系列第二篇，使用Shiro基于Redis实现分布式或集群环境下的Session共享。在讲Session共享之前先说一下为什">
@@ -376,7 +376,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-22 11:48:31" itemprop="dateModified" datetime="2019-08-22T11:48:31+08:00">2019-08-22</time>
+                <time title="修改时间：2019-12-20 18:56:17" itemprop="dateModified" datetime="2019-12-20T18:56:17+08:00">2019-12-20</time>
               </span>
             
           
@@ -390,14 +390,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
 
                 
                 
@@ -610,13 +603,13 @@
           
             <a href="/tags/Shiro/" rel="tag"># Shiro</a>
           
-            <a href="/tags/权限控制/" rel="tag"># 权限控制</a>
+            <a href="/tags/Authentication/" rel="tag"># Authentication</a>
           
-            <a href="/tags/框架/" rel="tag"># 框架</a>
+            <a href="/tags/Frame/" rel="tag"># Frame</a>
           
-            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+            <a href="/tags/Distributed/" rel="tag"># Distributed</a>
           
-            <a href="/tags/Session共享/" rel="tag"># Session共享</a>
+            <a href="/tags/SessionSharing/" rel="tag"># SessionSharing</a>
           
         </div>
       
@@ -765,13 +758,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -906,13 +893,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-count">47</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
