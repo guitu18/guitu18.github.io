@@ -135,7 +135,7 @@
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?8e1b8ff1cc74aaef8f5dc4f7cbfc6068";
+      hm.src = "https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -313,12 +313,733 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/10/30/56.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2019/10/30/56.html" class="post-title-link" itemprop="url">记一次事务失效的问题排查记录</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-30 21:28:21" itemprop="dateCreated datePublished" datetime="2019-10-30T21:28:21+08:00">2019-10-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-29 16:09:07" itemprop="dateModified" datetime="2019-11-29T16:09:07+08:00">2019-11-29</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/事务/" itemprop="url" rel="index"><span itemprop="name">事务</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">10k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">10 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>昨天遇到一个非常奇怪的问题，在一个Service中使用<code>@Transactional</code>注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">    Member member = <span class="keyword">new</span> Member();</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">this</span>.save(member);</span><br><span class="line">    MemberMessage memberMessage = <span class="keyword">new</span> MemberMessage();</span><br><span class="line">    ... ...</span><br><span class="line">    memberMessageService.save(memberMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当memberMessage插入失败抛异常时，前面保存的member记录不会回滚。打断点发现，只要save(member)这行走完数据就直接插入，此时方法还没执行完，按道理事务应该还没提交，但是通过Navicat已经能够看到新增的记录了。怀疑是事务压根没开启，遂将<code>logging.level.root</code>日志等级改为DEBUG发现压根就没开启事务。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2019/10/30/56.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/09/16/60.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2019/09/16/60.html" class="post-title-link" itemprop="url">一次关于永恒的思考</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-16 17:46:13" itemprop="dateCreated datePublished" datetime="2019-09-16T17:46:13+08:00">2019-09-16</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-11 16:06:15" itemprop="dateModified" datetime="2019-10-11T16:06:15+08:00">2019-10-11</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/生活/" itemprop="url" rel="index"><span itemprop="name">生活</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/生活/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">3.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">3 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近突然想整理一下我近十年来保存的资料（大部分是照片），然后就开始百度长期保存数据的最优解决方案，接着就在知乎看到这么一个主题：<a href="https://www.zhihu.com/question/313837243" target="_blank" rel="noopener">如何长时间保存重要数据？</a></p>
+<p>先看到了最热门的一个回答，各种技术分析。完了我就想，最近是要多买个硬盘给我的资料做一下整理和备份了，防止发生意外数据丢失。<br>这个主题有很多知友参与解答，有通过各种专业知识进行分析的，也有抖机灵的，有一位知友引用《三体》的原文：</p>
+<blockquote>
+<p>现代的量子存储器，就是那种一粒米大小可以放下一个大型图书馆的东西，里面的信息最多只能保存两千年左右，两千年后因为内部的什么衰变就不能读取了。其实这还是说那些质量最好的存储器，根据研究，现有的普通量子存储器，有三分之二在五百年内就会坏。</p>
+<p> 要论信息保存的时间，咱们那个时候的存储器还好些，他们找了些公元世纪的U盘和硬盘，有些居然还能读出来。据实验，这些存储器如果质量好，可以把信息保存五千年左右；特别是我们那时的光盘，如果用特殊金属材料制造，能可靠地保存信息十万年。但这些都不如印刷品，质量好的印刷品，用特殊的合成纸张和油墨，二十万年后仍能阅读。但这就到头了，就是说，我们通常用来存储信息的手段，最多只能把信息可靠地保存二十万年。</p>
+<p> 史前古陶器上的图案，保存了一万年左右；欧洲岩洞里发现的壁画，大约有四万年的历史；人类的人猿祖先为制造工具在石头上砸出的刻痕，如果也算信息的话，最早在上新世中期出现，距今约二百五十万年。可你别说，还真的找到了一亿年前留下来的信息，当然不是人类留下的，是恐龙的脚印。</p>
+<p> “把字刻在石头上，可以保存一亿年。”</p>
+</blockquote>
+<p>没错，信息保存时间最长的方式居然是最原始的石刻。但这些当然跟我现在想做的资料备份无关，我的数据最多也就保存到我这辈子结束为止。哪怕我儿子想怀念我，他会继续保存我留下来的资料作纪念，那我孙子呢，甚至子子孙孙呢，他们甚至在现实中都没见过我，又哪里会对我视若珍宝的资料感兴趣。是啊，那些记得你的人，爱你的人，跟你一起生活过的人，随着他们一个个都离开，我们就真正的从这个世界消失了，永远。。。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2019/09/16/60.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/08/23/51.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2019/08/23/51.html" class="post-title-link" itemprop="url">MongoDB初体验：Spring中使用MongoTemplate查询数据</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-23 21:07:24" itemprop="dateCreated datePublished" datetime="2019-08-23T21:07:24+08:00">2019-08-23</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-28 11:29:56" itemprop="dateModified" datetime="2019-08-28T11:29:56+08:00">2019-08-28</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">2.8k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">3 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>项目加入MongoDB支持，今天第一次用到，学新东西要做笔记。</p>
+<blockquote>
+<p>MongoDB Version：3.4.6<br>spring-data-mongodb Version：1.10.23.RELEASE</p>
+</blockquote>
+<p>org.springframework.data.mongodb.core.query.Criteria</p>
+<table>
+<thead>
+<tr>
+<th>Criteria</th>
+<th>Mongodb</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Criteria and (String key)</td>
+<td>$and</td>
+<td>并且</td>
+<td>criteria.and(&quot;name&quot;)…</td>
+</tr>
+<tr>
+<td>Criteria andOperator (Criteria… criteria)</td>
+<td>$and</td>
+<td>并且</td>
+<td>criteria.andOperator(Criteria.where(&quot;name&quot;)…)…</td>
+</tr>
+<tr>
+<td>Criteria orOperator (Criteria… criteria)</td>
+<td>$or</td>
+<td>或者</td>
+<td>criteria.orOperator(Criteria.where(&quot;name&quot;)…)…</td>
+</tr>
+<tr>
+<td>Criteria is (Object o)</td>
+<td>$is</td>
+<td>等于</td>
+<td>criteria.and(&quot;name&quot;).is(&quot;tom&quot;)</td>
+</tr>
+<tr>
+<td>Criteria ne (Object o)</td>
+<td>$ne</td>
+<td>不等于</td>
+<td>criteria.and(&quot;name&quot;).ne(&quot;tom&quot;)</td>
+</tr>
+<tr>
+<td>Criteria lt (Object o)</td>
+<td>$lt</td>
+<td>小于</td>
+<td>criteria.and(&quot;age&quot;).lt(20)</td>
+</tr>
+<tr>
+<td>Criteria lte (Object o)</td>
+<td>$lte</td>
+<td>小等于</td>
+<td>criteria.and(&quot;age&quot;).lte(20)</td>
+</tr>
+<tr>
+<td>Criteria gt (Object o)</td>
+<td>$gt</td>
+<td>大于</td>
+<td>criteria.and(&quot;age&quot;).gt(20)</td>
+</tr>
+<tr>
+<td>Criteria gte (Object o)</td>
+<td>$gte</td>
+<td>大于等于</td>
+<td>criteria.and(&quot;age&quot;).gte(20)</td>
+</tr>
+<tr>
+<td>Criteria in (Object… o)</td>
+<td>$in</td>
+<td>包含</td>
+<td>criteria.and(&quot;name&quot;).in(&quot;tom&quot;,&quot;jerry&quot;…)</td>
+</tr>
+<tr>
+<td>Criteria nin (Object… o)</td>
+<td>$nin</td>
+<td>不包含</td>
+<td>criteria.and(&quot;name&quot;).nin(&quot;tom&quot;,&quot;jerry&quot;…)</td>
+</tr>
+<tr>
+<td>Criteria regex(Pattern pattern)</td>
+<td>$regex</td>
+<td>模糊查询</td>
+<td>criteria.and(&quot;name&quot;).regex(\Pattern.compile(&quot;^.*t.*$&quot;))</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2019/08/23/51.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/08/22/50.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -513,12 +1234,221 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/08/08/45.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2019/08/08/45.html" class="post-title-link" itemprop="url">Shiro权限管理框架（四）：深入分析Shiro中的Session管理</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-08 19:08:27" itemprop="dateCreated datePublished" datetime="2019-08-08T19:08:27+08:00">2019-08-08</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-17 19:09:29" itemprop="dateModified" datetime="2019-12-17T19:09:29+08:00">2019-12-17</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">8.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">7 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。</p>
+<p>本篇是Shiro系列第四篇，Shiro中的过滤器初始化流程和实现原理。Shiro基于URL的权限控制是通过Filter实现的，本篇从我们注入的<strong>ShiroFilterFactoryBean</strong>开始入手，翻看源码追寻Shiro中的过滤器的实现原理。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2019/08/08/45.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/08/01/45.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -727,7 +1657,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -936,7 +1866,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1140,12 +2070,222 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/07/20/42.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2019/07/20/42.html" class="post-title-link" itemprop="url">博客从SpringBoot搬迁至Hexo</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-20 15:51:30" itemprop="dateCreated datePublished" datetime="2019-07-20T15:51:30+08:00">2019-07-20</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-31 13:48:40" itemprop="dateModified" datetime="2019-10-31T13:48:40+08:00">2019-10-31</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/博客/" itemprop="url" rel="index"><span itemprop="name">博客</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/博客/日志/" itemprop="url" rel="index"><span itemprop="name">日志</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">1.2k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">1 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>博客搬迁，2019-7-20 打卡记录一下。这已经是第二次搬家了，每一次搬家都是一番折腾，费不少劲，不过每一次折腾都会学到一些新的东西，还是蛮开心的经历。第一次是从帝国CMS搬至自建的Java博客系统，这次再次搬迁至Hexo静态博客系统。</p>
+<p>这次从计划到迁移完成，断断续续也持续了好多天。从原来的动态系统换为静态页面，不少东西必须重新规划。因为所有页面都变成静态的，所以那些动态数据采集和展示就必须依赖第三方来实现。</p>
+<p>先是博客主题，看了一圈感觉玩Hexo的一半以上都是用NexT主题，我也就随大流了。不吹不黑NexT主题确实好看且功能强大。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2019/07/20/42.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/07/18/41.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1336,1088 +2476,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/07/16/40.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2019/07/16/40.html" class="post-title-link" itemprop="url">GitHub上一个很有意思的项目简直让我刷新三观</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-16 20:57:45" itemprop="dateCreated datePublished" datetime="2019-07-16T20:57:45+08:00">2019-07-16</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/生活/" itemprop="url" rel="index"><span itemprop="name">生活</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/生活/八卦灌水/" itemprop="url" rel="index"><span itemprop="name">八卦灌水</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">240</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">1 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天看到一个很有意思的项目，先上项目介绍，看起来是不是很有意思，面向蓝孩子的项目。</p>
-<p><img src="https://img.guitu18.com/markdown/52e1f46e3e8cd0f1298b59e1f2472af2.png" alt="img"></p>
-<p>然后好奇心作祟啊，点进去看看呗，然后天呐，我都看到了什么！这里就不贴图了，简直辣眼睛。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2019/07/16/40.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/04/28/33.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2019/04/28/33.html" class="post-title-link" itemprop="url">Spring中FactoryBean的作用和实现原理</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-28 16:37:24" itemprop="dateCreated datePublished" datetime="2019-04-28T16:37:24+08:00">2019-04-28</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">8.8k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">8 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>BeanFactory与FactoryBean，相信很多刚翻看Spring源码的同学跟我一样很好奇这俩货怎么长得这么像，分别都是干啥用的。BeanFactory是Spring中Bean工厂的顶层接口，也是我们常说的SpringIOC容器，它定下了IOC容器的一些规范和常用方法并管理着Spring中所有的Bean，今天我们不讲它，我们看一下后面那个FactoryBean。</p>
-<p>先说下FactoryBean和其作用再开始分析：<strong>首先它是一个Bean，但又不仅仅是一个Bean。它是一个能生产或修饰对象生成的工厂Bean，类似于设计模式中的工厂模式和装饰器模式。它能在需要的时候生产一个对象，且不仅仅限于它自身，它能返回任何Bean的实例。</strong></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2019/04/28/33.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/04/20/32.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2019/04/20/32.html" class="post-title-link" itemprop="url">RocketMQ 分布式消息中间件-Java端入门代码示例</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-20 20:32:15" itemprop="dateCreated datePublished" datetime="2019-04-20T20:32:15+08:00">2019-04-20</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">9.2k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">8 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="开发准备"><a href="#开发准备" class="headerlink" title="开发准备"></a>开发准备</h1><h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>新建Maven工程，引入依赖</p>
-<ul>
-<li><p>Maven地址：<a href="https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client" target="_blank" rel="noopener"><strong>https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client</strong></a> 请根据安装的版本引入对应的依赖</p>
-</li>
-<li><p>我这里安装的是当前最新版4.5.0，所以我对应的依赖是：</p>
-</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- https:<span class="comment">//mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client --&gt;</span></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.rocketmq&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;rocketmq-client&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.5.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这里我还引入了一个rocketmq-example，这里面的示例代码和官方文档是一直的，可以直接参考</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- https:<span class="comment">//mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-example --&gt;</span></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.rocketmq&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;rocketmq-example&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.5.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>前一步的RocketMQ服务搭建并运行无误就可以进入Java编码了</li>
-</ul>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
-<li><strong>这里重点说一下，防火墙请放行9876端口，如果可以请把防火墙彻底关掉。</strong></li>
-<li>贴上CentOS7中 firewalld 的基本使用命令：<ul>
-<li>启动：<code>systemctl start firewalld</code></li>
-<li>关闭：<code>systemctl stop firewalld</code></li>
-<li>查看状态：<code>systemctl status firewalld</code></li>
-<li>开机禁用  ：<code>systemctl disable firewalld</code></li>
-<li>开机启用  ：<code>systemctl enable firewalld</code></li>
-<li>放行9876端口：<code>firewall-cmd --zone=public --add-port=9876/tcp --permanent</code>（–permanent永久生效，没有此参数重启后失效）</li>
-<li>重新载入：<code>firewall-cmd --reload</code>（修改端口后需要重新载入）</li>
-<li>查看9876端口：<code>firewall-cmd --zone= public --query-port=9876/tcp</code></li>
-<li>删除9876端口：<code>firewall-cmd --zone= public --remove-port=9876/tcp --permanent</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><strong>本篇代码参照自官方文档及 rocketmq-example 中的示例代码</strong></li>
-<li>官方文档及快速上手示例地址：<a href="https://rocketmq.apache.org/docs/simple-example/" target="_blank" rel="noopener"><strong>https://rocketmq.apache.org/docs/simple-example/</strong></a></li>
-<li>Producer示例代码路径：<code>org.apache.rocketmq.example.quickstart.Producer</code> (需导入 <code>rocketmq-example</code> 依赖)</li>
-<li>Customer示例代码路径：<code>org.apache.rocketmq.example.quickstart.Customer</code> (需导入 <code>rocketmq-example</code> 依赖)</li>
-</ul>
-<hr>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2019/04/20/32.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/04/18/31.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2019/04/18/31.html" class="post-title-link" itemprop="url">RocketMQ分布式消息中间件-Centos7安装运行</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-18 22:32:50" itemprop="dateCreated datePublished" datetime="2019-04-18T22:32:50+08:00">2019-04-18</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">9.7k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">9 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>消息队列作为高并发系统的核心组件之一，能够帮助业务系统解构提升开发效率和系统稳定性。最近公司的项目也是用上了RocketMQ，所以这里记录一下RocketMQ环境安装部署过程。</p>
-<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>我们假设你已经设置好如下环境，没有的先自行安装环境，这里不做展开</p>
-<ul>
-<li>Centos7：我这里用的是阿里云服务器，Centos7，内核：3.10.0-693.2.2.el7.x86_64</li>
-<li>JDK1.8：JDK版本：JDK_1.8.0_201_64-Bit</li>
-<li>Maven：Apache Maven 3.6.0</li>
-<li>unzip：解压工具，用来解压安装包，没有该工具可直接使用 <code>yum install unzip -y</code> 安装</li>
-</ul>
-<hr>
-# 文档及代码
-
-<ul>
-<li>Apache 上开源官方地址：<a href="https://rocketmq.apache.org/" target="_blank" rel="noopener">https://rocketmq.apache.org/</a></li>
-<li>GitHub 托管地址：<a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener">https://github.com/apache/rocketmq</a></li>
-<li>阿里官方的介绍文档：<a href="http://jm.taobao.org/2017/01/12/rocketmq-quick-start-in-10-minutes/" target="_blank" rel="noopener">http://jm.taobao.org/2017/01/12/rocketmq-quick-start-in-10-minutes/</a></li>
-<li>Apache 官方提供的 “快速入门” 文档：<a href="https://rocketmq.apache.org/docs/quick-start/" target="_blank" rel="noopener">https://rocketmq.apache.org/docs/quick-start/</a></li>
-<li><strong>RocketMQ的运行方式非常简单，这里简单记录一下步骤，最主要的还是记录安装运行过程中踩过的坑</strong></li>
-<li><strong>该篇介绍两种运行方式，均参照官方文档操作，以当前最新4.5.0版本为例，所有操作均在 <code>/root</code> 目录进行</strong></li>
-</ul>
-<hr>
-# 安装方式一：二进制直接运行
-
-<ul>
-<li><p>二进制文件：<a href="http://mirrors.shu.edu.cn/apache/rocketmq/4.5.0/rocketmq-all-4.5.0-bin-release.zip" target="_blank" rel="noopener">http://mirrors.shu.edu.cn/apache/rocketmq/4.5.0/rocketmq-all-4.5.0-bin-release.zip</a></p>
-</li>
-<li><p>下载二进制文件：<code>wget http://mirrors.shu.edu.cn/apache/rocketmq/4.5.0/rocketmq-all-4.5.0-bin-release.zip</code></p>
-</li>
-<li><p>解压：<code>unzip rocketmq-all-4.5.0-bin-release.zip</code></p>
-</li>
-<li><p>进入解压后的二进制文件目录：<code>cd rocketmq-all-4.5.0-bin-release</code></p>
-</li>
-<li><p>看到以下目录结构：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x <span class="number">2</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> benchmark</span><br><span class="line">drwxr-xr-x <span class="number">3</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> bin</span><br><span class="line">drwxr-xr-x <span class="number">6</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> conf</span><br><span class="line">drwxr-xr-x <span class="number">2</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> lib</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">17336</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">52</span> LICENSE</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">1337</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">53</span> NOTICE</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">2521</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">53</span> README.md</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="启动NameServer服务"><a href="#启动NameServer服务" class="headerlink" title="启动NameServer服务"></a>启动NameServer服务</h2><ul>
-<li>后台启动Name Server服务：<code>nohup sh bin/mqnamesrv &amp;</code></li>
-<li>查看启动日志：<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code></li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2019/04/18/31.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/04/18/30.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2019/04/18/30.html" class="post-title-link" itemprop="url">RocketMQ分布式消息中间件 理论介绍[转载]</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-18 10:06:29" itemprop="dateCreated datePublished" datetime="2019-04-18T10:06:29+08:00">2019-04-18</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">5.1k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">5 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>本文转载自：蚩尤后裔 <a href="https://blog.csdn.net/wangmx1993328/article/details/81510782" target="_blank" rel="noopener">https://blog.csdn.net/wangmx1993328/article/details/81510782</a></p>
-</blockquote>
-<h2 id="RocketMQ-简介"><a href="#RocketMQ-简介" class="headerlink" title="RocketMQ 简介"></a>RocketMQ 简介</h2><ul>
-<li>RocketMQ 是阿里巴巴在 2012 年开源的第三代分布式消息中间件</li>
-<li>2018年9月，阿里巴巴将 RocketMQ 捐赠给 Apache 软件基金会作为开源项目</li>
-<li>历年双11，RocketMQ 都承载着阿里巴巴生产系统100%的消息流转，以2017年双11为例， RocketMQ 完成了1.2万亿消息精准低延迟投递，交易峰值高达17万笔/秒。</li>
-<li>目前有 100 多家公司和科研机构正在使用RocketMQ</li>
-<li>Apache 上开源官方地址：<a href="https://rocketmq.apache.org/" target="_blank" rel="noopener">https://rocketmq.apache.org/</a></li>
-<li>GitHub 托管地址：<a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener">https://github.com/apache/rocketmq</a></li>
-<li>阿里官方的介绍文档：<a href="http://jm.taobao.org/2017/01/12/rocketmq-quick-start-in-10-minutes/" target="_blank" rel="noopener">http://jm.taobao.org/2017/01/12/rocketmq-quick-start-in-10-minutes/</a></li>
-</ul>
-<p><img src="https://img.guitu18.com/markdown/dcca7540889ecf3febb88edb251abc49.png" alt="img"></p>
-<h2 id="RocketMQ-特性"><a href="#RocketMQ-特性" class="headerlink" title="RocketMQ 特性"></a>RocketMQ 特性</h2><ul>
-<li>RockatMQ 是一款分布式消息引擎</li>
-<li>低延迟、高并发：99.6%以上的响应延迟在1毫秒以内</li>
-<li>面向金融：满足跟踪和审计的高可用性</li>
-<li>工业级适用：可确保万亿量级的消息发送</li>
-<li>中立性：支持多种消息传递协议，如 JMS 和 OpenMessaging</li>
-<li>性能可靠：给予足够的磁盘空间，消息可以累积存放而没有性能损失。</li>
-<li>支持发布/订阅（Pub/Sub）和点对点（P2P）消息模型</li>
-<li>在一个队列中可靠的先进先出（FIFO）和严格的顺序传递</li>
-<li>支持拉（pull）和推（push）两种消息模式</li>
-<li>单一队列百万消息的堆积能力</li>
-<li>分布式高可用的部署架构，满足至少一次消息传递语义</li>
-<li>提供 docker 镜像用于隔离测试和云集群部署</li>
-<li>提供配置、指标和监控等功能丰富的 Dashboard</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2019/04/18/30.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2448,8 +2511,6 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="https://img.guitu18.com/avatar.jpg" alt="Guitu">
-            
               <p class="site-author-name" itemprop="name">Guitu</p>
               <div class="site-description motion-element" itemprop="description">用实力让情怀落地</div>
           </div>
@@ -2461,7 +2522,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2500,7 +2561,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2613,7 +2692,35 @@
                     
                       
                     
-                    <span class="site-state-item-count">43</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2674,6 +2781,10 @@
                     <a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a>
                   </li>
                 
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a>
+                  </li>
+                
               </ul>
             </div>
           
@@ -2718,7 +2829,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">178k</span>
+    <span title="站点总字数">204k</span>
   
 
   
@@ -2729,7 +2840,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">2:42</span>
+    <span title="站点阅读时长">3:06</span>
   
 </div>
 

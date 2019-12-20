@@ -1,6 +1,5 @@
 User-agent: *
 Allow:/*
-Disallow:/admin/*
 
 Sitemap: https://www.guitu18.com/sitemap.xml
 Sitemap: https://www.guitu18.com/baidusitemap.xml

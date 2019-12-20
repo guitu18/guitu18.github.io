@@ -96,7 +96,7 @@
 
 
   <meta name="description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 本篇是Shiro系列第三篇，Shiro中的过滤器初始化流程和实现原理。Shiro基于URL的权限控制是通过Filter实现的，本篇从我们注">
-<meta name="keywords" content="Shiro,权限控制,框架,实现原理,过滤器">
+<meta name="keywords" content="实现原理,Shiro,权限控制,框架,过滤器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shiro权限管理框架（三）：Shiro中权限过滤器的初始化流程和实现原理">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/08/01/45.html">
@@ -140,7 +140,7 @@
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?8e1b8ff1cc74aaef8f5dc4f7cbfc6068";
+      hm.src = "https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -322,7 +322,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -630,13 +630,13 @@
         
         <div class="post-tags">
           
+            <a href="/tags/实现原理/" rel="tag"># 实现原理</a>
+          
             <a href="/tags/Shiro/" rel="tag"># Shiro</a>
           
             <a href="/tags/权限控制/" rel="tag"># 权限控制</a>
           
             <a href="/tags/框架/" rel="tag"># 框架</a>
-          
-            <a href="/tags/实现原理/" rel="tag"># 实现原理</a>
           
             <a href="/tags/过滤器/" rel="tag"># 过滤器</a>
           
@@ -661,8 +661,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/2019/08/22/50.html" rel="prev" title="通过反射获取方法参数名时遇到的小坑">
-                通过反射获取方法参数名时遇到的小坑 <i class="fa fa-chevron-right"></i>
+              <a href="/post/2019/08/08/45.html" rel="prev" title="Shiro权限管理框架（四）：深入分析Shiro中的Session管理">
+                Shiro权限管理框架（四）：深入分析Shiro中的Session管理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -725,8 +725,6 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="https://img.guitu18.com/avatar.jpg" alt="Guitu">
-            
               <p class="site-author-name" itemprop="name">Guitu</p>
               <div class="site-description motion-element" itemprop="description">用实力让情怀落地</div>
           </div>
@@ -738,7 +736,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -777,7 +775,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -890,7 +906,35 @@
                     
                       
                     
-                    <span class="site-state-item-count">43</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -949,6 +993,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a>
                   </li>
                 
               </ul>
@@ -1012,7 +1060,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">178k</span>
+    <span title="站点总字数">204k</span>
   
 
   
@@ -1023,7 +1071,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">2:42</span>
+    <span title="站点阅读时长">3:06</span>
   
 </div>
 

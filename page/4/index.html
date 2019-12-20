@@ -135,7 +135,7 @@
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?8e1b8ff1cc74aaef8f5dc4f7cbfc6068";
+      hm.src = "https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -313,12 +313,1008 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/05/05/14.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2018/05/05/14.html" class="post-title-link" itemprop="url">Linux 源码安装 PHP</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-05-05 03:15:14" itemprop="dateCreated datePublished" datetime="2018-05-05T03:15:14+08:00">2018-05-05</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">1.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">1 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>点击查看 [ <a href="http://bbs.guitu18.com/thread-6-1-1.html" target="_blank" rel="noopener">Linux 快速搭建 Apache + PHP 环境</a> ]</p>
+<p>所有操作在默认的 /root 目录进行，且已经安装好 Apache 服务<br>安装步骤点击 [ <a href="http://bbs.guitu18.com/thread-7-1-1.html" target="_blank" rel="noopener">Linux 源码安装 Apache</a> ] 查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 安装依赖</span><br><span class="line">yum install -y libxml2 </span><br><span class="line">yum install -y libxml2-devel</span><br></pre></td></tr></table></figure>
+
+<p><strong>1、下载 PHP 源码包，这里使用的是 php-5.6.33.tar.gz</strong><br><img src="https://img.guitu18.com/markdown/56c65c648d10ca6aa734dac312264f16.gif" alt="img"> <a href="http://bbs.guitu18.com/forum.php?mod=attachment&aid=NjZ8N2E5MWZmM2N8MTUyNzI2MjExN3wwfDE1" target="_blank" rel="noopener">php-5.6.33.tar.gz</a> <em>(18.4 MB, 下载次数: 2)</em> </p>
+<p><strong>2、解压和配置安装</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf php-5.6.33.tar.gz </span><br><span class="line">cd php-5.6.33</span><br><span class="line"><span class="meta">#</span> 配置</span><br><span class="line"><span class="meta">#</span> 这里的 --with-apxs2=/usr/local/httpd/bin/apxs 配置的是 Apache 对 PHP 的支持</span><br><span class="line">./configure --prefix=/usr/local/php --with-apxs2=/usr/local/httpd/bin/apxs</span><br></pre></td></tr></table></figure>
+
+<p># 有如下显示 则配置成功<br><img src="https://img.guitu18.com/markdown/522f91d1e4f973102bd715649bb2af90.png" alt="img"> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 编译，make 时间略长，等候即可</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2018/05/05/14.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/04/24/13.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2018/04/24/13.html" class="post-title-link" itemprop="url">Iterable 和 Iterator 接口学习笔记</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-24 07:05:34" itemprop="dateCreated datePublished" datetime="2018-04-24T07:05:34+08:00">2018-04-24</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">1.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">1 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>Iterable 接口在API中是这样描述的：</strong><br><img src="https://img.guitu18.com/markdown/24990fa6c28149ce7acb24840e4d669d.png" alt="img"><br>它只有一个方法：</p>
+<p><img src="https://img.guitu18.com/markdown/fb5bd31b9652ad519610b84691e5916d.png" alt="img"></p>
+<p><strong>Iterable.iterator()</strong>方法返回了一个<strong>Iterator</strong>，我们一般称它迭代器；</p>
+<p>继续看 <strong>Iterator</strong><br>它有三个方法：hasNext()，next()，remove()；</p>
+<p><img src="https://img.guitu18.com/markdown/6219ed235221fdfffff711948ba2176a.png" alt="img"></p>
+<p>迭代器是一种设计模式，它的功能是遍历并选择集合序列中的对象：<br>1.next()：使用next()可以获得序列中的下一个元素（第一次迭代时，从第一个元素索引 0 开始）；<br>2.hasNext()：判断序列中是否还有下一个元素（比较当前迭代对象的索引和序列的 size 大小）；<br>3.remove()：将上一个迭代的元素移除并返回该元素；</p>
+<p><strong>Iterable</strong> 也被 <strong>Collection</strong>接口继承，实现 Iterable 接口的对象能够成为 Foreach 语句的执行对象，所以我们常用的集合类 Collection<t>、List<t>、Set<t>都能使用 Foreach 遍历；</t></t></t></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2018/04/24/13.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/04/19/12.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2018/04/19/12.html" class="post-title-link" itemprop="url">Linux系统MySQL源码安装学习记录</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-19 08:30:56" itemprop="dateCreated datePublished" datetime="2018-04-19T08:30:56+08:00">2018-04-19</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">3.2k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">3 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>1、安装依赖</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y libaio</span><br><span class="line">yum -y install autoconf</span><br></pre></td></tr></table></figure>
+
+<p><strong>2、下载和解压缩</strong><br>#下载MySQL安装包，这里使用的是MySQL 5.5.58<br><img src="https://img.guitu18.com/markdown/56c65c648d10ca6aa734dac312264f16.gif" alt="img"> <a href="http://bbs.guitu18.com/forum.php?mod=attachment&aid=NTJ8NGQ3MmM2NzV8MTUyNzI2MTc5N3wwfDEz" target="_blank" rel="noopener">mysql-5.5.58-linux-glibc2.12-x86_64.tar.gz</a> <em>(189.39 MB, 下载次数: 1)</em> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    tar -zxvf mysql-5.5.58-linux-glibc2.12-x86_64.tar.gz</span><br><span class="line">#将解压缩后的文件夹移动到/usr/local/并命名为mysql</span><br><span class="line">    mv mysql-5.5.58-linux-glibc2.12-x86_64 /usr/local/mysql</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.guitu18.com/markdown/ff9aab35587983f7ea7f205e5c6cd70d.png" alt="img"> </p>
+<p><strong>3、授权和安装</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>添加用户，将使用该用户执行MySQL进程</span><br><span class="line">    useradd -s /bin/false -M mysql</span><br><span class="line"><span class="meta">#</span>修改MySQL目录权限</span><br><span class="line">    chown -R mysql:mysql /usr/local/mysql</span><br><span class="line"><span class="meta">#</span>安装并指定用户和data文件夹位置</span><br><span class="line">    /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data/ --user=mysql</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2018/04/19/12.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/04/18/11.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2018/04/18/11.html" class="post-title-link" itemprop="url">解决Nginx+PHP上传文件大小被限制为2M的问题</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-18 09:55:54" itemprop="dateCreated datePublished" datetime="2018-04-18T09:55:54+08:00">2018-04-18</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">550</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">1 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前在一个帖子上传附件时，有一个8M左右的附件报错：</p>
+<p>附件上传完成！成功 0 个，失败 1 个:<br>httpd-2.4.29.tar.gz: 内部服务器错误</p>
+<p><img src="https://img.guitu18.com/markdown/ea7f6ca386f81b50f3178393ecab0b67.png" alt="img"> </p>
+<p>解决方法：需要修改 php.ini 的文件上传大小配置<br>#首先需要打开http文件上传开关，这个一般默认是打开的<br><code>file_uploads on</code><br>#文件上传的最大值（按实际需求修改）<br><code>upload_max_filesize 1024m</code></p>
+<p><img src="https://img.guitu18.com/markdown/406725985ee3cf5c9619583ca9676cd2.png" alt="img"> </p>
+<p>光这个还不够，还需要修改表单提交最大接收值<br><code>post_max_size 1024m</code></p>
+<p><img src="https://img.guitu18.com/markdown/6cd9cf8876cd5e57e640c5846f3a3af3.png" alt="img"> </p>
+<p>配置完这些，正常来说是可以了，但是如果你的服务器带宽不够或者上传的文件过大，还需要修改一下页面超时时间，否则文件还没上传成功页面已经超时了；<br>参数根据实际情况修改，900秒15分钟足够大了；<br><code>max_execution_time = 900</code><br><code>max_input_time = 900</code><br>#PHP进程最大占用内存，这个也需要修改<br><code>memory_limit = 1024M</code></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/2018/04/18/11.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/04/08/10.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/2018/04/08/10.html" class="post-title-link" itemprop="url">MySQL 授权时提示 Access denied for user ‘root’@’localhost’ to database …</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-08 01:29:14" itemprop="dateCreated datePublished" datetime="2018-04-08T01:29:14+08:00">2018-04-08</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">302</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">1 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天在公司数据库创建一个新数据库和用户，在对用户授权是出现 <code>Access denied for user ‘root’@’localhost’ to database ‘xxxxx’</code> 错误</p>
+<p><img src="https://img.guitu18.com/markdown/675d67bde3d3083ef368c7fbf26ce39e.png" alt="img"></p>
+<p>这个提示其实就是权限不足，使用grant命令需要有对应的权限，默认root用户是有这个权限的，检查发现我们公司数据库root用户居然没有这个权限；<br><img src="https://img.guitu18.com/markdown/6f587defd5cc5ac83652db6ca5b01c87.png" alt="img"><br>在这里把对用的权限打开一下即可；<br>在可视化工具直接修改保存，或者在终端执行命令：<br> <code>update mysql.user set Grant_priv = ‘Y’ where user = ‘root’;</code><br>然后再刷新权限即可<br><code>flush privileges;</code><br>贴图：<br><img src="https://img.guitu18.com/markdown/f95067fe41f34991e3a3df40abcb5bf8.png" alt="img"><br>问题解决</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/03/29/9.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -517,7 +1513,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -717,7 +1713,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -920,7 +1916,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1125,7 +2121,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guitu">
       <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1298,804 +2294,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/03/22/4.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2018/03/22/4.html" class="post-title-link" itemprop="url">Jenkins 自动化部署运行 Tomcat 显示 Tomcat started 但启动不成功</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-22 09:05:56" itemprop="dateCreated datePublished" datetime="2018-03-22T09:05:56+08:00">2018-03-22</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">346</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">1 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前些时候在Jenkins中运行shell脚本做自动化部署时，命令中Tomcat启动命令<code>start.sh</code>执行后显示 Tomcat started. 但实际Tomcat没有启动起来，后来找到原因把问题解决了，继续在这里做一下记录。<br><img src="https://img.guitu18.com/markdown/de856ba58f06b9c3c036f9ee18cb142a.png" alt="img"></p>
-<p>解决办法：在脚本执行之前添加环境变量：<code>export BUILD_ID=dontkill</code><br>后面<code>dontkill</code>的值可以随便设置。<br><img src="https://img.guitu18.com/markdown/ae61ca18f8fe7690b984c868bab45d0e.png" alt="img"><br>再次构建就不会再杀掉衍生进程了。</p>
-<p>原因：百度查了下，是因为Jenkins在之执行构建时会设置一些环境变量，而这些环境变量也会被构建所衍生出来的进程继承。</p>
-<p>在构建任务结束时，Jenkins会检查环境变量，如果查到有之前设置的环境变量的进程就会kill掉，我们可以在构建时改变<code>BUILD_ID</code>的值，从而让衍生进程在构建结束时不会被kill掉。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/03/21/3.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2018/03/21/3.html" class="post-title-link" itemprop="url">Nginx 静态资源访问 配置的参数说明</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-21 08:45:03" itemprop="dateCreated datePublished" datetime="2018-03-21T08:45:03+08:00">2018-03-21</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">1.1k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">1 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Nginx默认是不允许列出整个目录的。如需此功能，打开<code>nginx.conf</code>文件或你要启用目录浏览虚拟主机的配置文件，在<code>server</code>或<code>location</code> 段里添加上<code>autoindex on;</code>来启用目录流量，下面会分情况进行说明。</p>
-<p>另外Nginx的目录浏览有两个比较有用的参数，可以根据自己的需求添加：</p>
-<p><code>autoindex_exact_size off;</code><br>默认为<code>on</code>，显示出文件的确切大小，单位是<code>bytes</code>。<br>改为<code>off</code>后，显示出文件的大概大小，单位是<code>KB</code>或者<code>MB</code>或者<code>GB</code></p>
-<p><code>autoindex_localtime on;</code><br>默认为<code>off</code>，显示的文件时间为<code>GMT</code>时间。<br>改为<code>on</code>后，显示的文件时间为文件的服务器时间</p>
-<p><strong>1、整个虚拟主机开启目录浏览</strong><br>在<code>server</code>段添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">autoindex on;</span><br><span class="line">autoindex_localtime on; #之类的参数写这里</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2、单独目录开启目录浏览</strong><br><strong>2.1：直接二级目录开启目录浏览</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /down/ &#123;</span><br><span class="line">autoindex on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.2：虚拟目录开启目录浏览</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location /down/ &#123;</span><br><span class="line">alias /home/wwwroot/lnmp/test/;</span><br><span class="line">autoindex on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>详细参照:<a href="http://nginx.org/en/docs/http/ngx_http_autoindex_module.html" target="_blank" rel="noopener">http://nginx.org/en/docs/http/ngx_http_autoindex_module.html</a><br>需要注意<code>root</code>和<code>alias</code>的区别：<br><code>alias</code> 设置的目录是准确的，可以理解为<code>linux</code>的 <code>ln</code>命令创建软连接，<code>location</code>就是软连接的名字。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2018/03/21/3.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/03/20/2.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2018/03/20/2.html" class="post-title-link" itemprop="url">Discuz论坛版块和帖子都打不开，原因是链接带了端口号了</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-20 09:10:10" itemprop="dateCreated datePublished" datetime="2018-03-20T09:10:10+08:00">2018-03-20</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">1k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">1 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在捣鼓服务器，准备做弄个论坛玩玩，之前域名在备案，所以一切都是用IP发布和访问的。<br>今天域名备案审核通过了，然后就把域名解析分发到论坛上。</p>
-<p>解决了前置的各种修改IP为域名的问题后，发现论坛首页和后台都能正常访问，但是首页的版块，还有帖子链接都打不开了。<br>查找原因发现是所有的链接都自动带上端口号了，如下图（我<code>80</code>端口<code>Nginx</code>使用，<code>Apache</code>用的是<code>9999</code>端口）</p>
-<p><img src="https://img.guitu18.com/markdown/74253dd65a8408fe6a0f0d2ab6a5183e.png" alt="img"></p>
-<p>之后就百度找原因呗，一搜发现还是有一部分有出现过这样的问题，这里不得不说下<code>discuz</code>官方论坛版主等管理人员不活跃，好多提问帖都是网友解答或者楼主自行解决的。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/2018/03/20/2.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2018/03/20/1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guitu">
-      <meta itemprop="description" content="用实力让情怀落地">
-      <meta itemprop="image" content="https://img.guitu18.com/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夜月归途">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/2018/03/20/1.html" class="post-title-link" itemprop="url">在Jenkins上构建Maven项目时Failed to execute goal org.apache.maven.plugins</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-20 07:06:55" itemprop="dateCreated datePublished" datetime="2018-03-20T07:06:55+08:00">2018-03-20</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">1.5k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">1 分钟</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>公司在开发过程中经常需要把代码发布到内网服务器，所以用<code>Jenkins</code>做一键构建。然后在构建我们的一个<code>Maven</code>项目时遇到了一个错误：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:<span class="number">3.1</span>:compile (<span class="keyword">default</span>-compile) on project lano-cloud-zjxxw: Compilation failure -&gt; [Help <span class="number">1</span>]</span><br><span class="line">[ERROR] </span><br><span class="line">[ERROR] To see the full stack trace of the errors, re-run Maven with the -e <span class="keyword">switch</span>.</span><br><span class="line">[ERROR] Re-run Maven using the -X <span class="keyword">switch</span> to enable full debug logging.</span><br><span class="line">[ERROR] </span><br><span class="line">[ERROR] For more information about the errors and possible solutions, please read the following articles:</span><br><span class="line">[ERROR]</span><br><span class="line">[Help <span class="number">1</span>] http:<span class="comment">//cwiki.apache.org/confluence/display/MAVEN/MojoFailureException</span></span><br></pre></td></tr></table></figure>
-
-<p>不明白什么意思，就各种搜索，网上有一些这类的错误贴，研究了下最后把问题解决了，但是说的太笼统，我这里自己做一下记录，当做是学习笔记吧。</p>
-<p>这个错误的意思是Maven在构建时，查找<code>JDK</code>环境遇到了问题。我原来<code>pom.xml</code>中关于<code>maven-compiler-plugin</code>是这样配置的：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.1&lt;/version&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;source&gt;1.7&lt;/source&gt;</span><br><span class="line">        &lt;target&gt;1.7&lt;/target&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这里需要给出<code>JDK</code>的具体地址：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.1&lt;/version&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">        &lt;executable&gt;/usr/local/jdk8/bin/javac&lt;/executable&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-
-<p>保存之后，在服务器本地和<code>Jenkins</code>上，都能构建成功。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2126,8 +2329,6 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="https://img.guitu18.com/avatar.jpg" alt="Guitu">
-            
               <p class="site-author-name" itemprop="name">Guitu</p>
               <div class="site-description motion-element" itemprop="description">用实力让情怀落地</div>
           </div>
@@ -2139,7 +2340,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2178,7 +2379,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2291,7 +2510,35 @@
                     
                       
                     
-                    <span class="site-state-item-count">43</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2352,6 +2599,10 @@
                     <a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a>
                   </li>
                 
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a>
+                  </li>
+                
               </ul>
             </div>
           
@@ -2396,7 +2647,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">178k</span>
+    <span title="站点总字数">204k</span>
   
 
   
@@ -2407,7 +2658,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">2:42</span>
+    <span title="站点阅读时长">3:06</span>
   
 </div>
 
