@@ -1,1 +1,995 @@
-<!-- build time:Fri Dec 27 2019 09:41:31 GMT+0800 (China Standard Time) --><!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/css/main.css?v=7.2.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.2.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_32.ico?v=7.2.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_16.ico?v=7.2.0"><link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.2.0",sidebar:{position:"left",display:"post",offset:12,onmobile:!1},back2top:{enable:!0,sidebar:!0,scrollpercent:!0},copycode:{enable:!0,show_result:!0,style:null},fancybox:!1,fastclick:!1,lazyload:!1,tabs:!0,motion:{enable:!0,async:!0,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"}}</script><meta name="description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018年"><meta name="keywords" content="Java,个人博客,夜月归途,日志,Guitu"><meta property="og:type" content="website"><meta property="og:title" content="关于本博客"><meta property="og:url" content="https://www.guitu18.com/about/index.html"><meta property="og:site_name" content="夜月归途"><meta property="og:description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018年"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-12-20T10:55:29.644Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="关于本博客"><meta name="twitter:description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018年"><link rel="canonical" href="https://www.guitu18.com/about/"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>关于本博客 | 夜月归途</title><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">夜月归途</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">一个安静的小角落</p></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li></ul></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><div class="post-block page"><header class="post-header"><h1 class="post-title" itemprop="name headline">关于本博客</h1><div class="post-meta"></div></header><div class="post-body"><h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h1><p>90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。</p><p>2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018年3月5日注册的，当然为了方便域名也是阿里云万网的； 选域名的时候也纠结过好久，简短好记的域名早已没有了，最终选定guitu18.com这个域名也是有着自己的意义吧。</p><p>服务器和域名选定之后，在建站系统的选择上也是尝试了一段时间； 最开始尝试的是个人博客最为有名的WordPress，里面的插件是真的丰富，什么支持MarkDown语法，各种漂亮的主题，你想得到的基本在里面都找的到，所有插件一键安装极为方便； 但是WordPress也正是因为插件多功能齐全略显臃肿，网站打开的速度不够快，而且百度收录基本只有首页（也许是我不懂设置SEO的原因）。</p><p>后面就开始尝试其他的博客系统（当然现在有的WordPress博客并没有关闭），后面尝试的有Typecho，emlog，Zblog等，最终选定了现在使用的帝国CMS。 虽然没有主题可选，但是好在帝国的各种模板和标签特别的强大，如果手上有现成的模板套用上去，建站还是特别的方便。</p><p>博客搭建完毕，一切才是刚刚开始，我会一直坚持下去，无论是记录心情或者是学习记录，我会一直在这里。 欢迎添加我的微信：zhang_kuan，或者直接扫描网站底部右边的二维码添加我，交友、技术交流或是有什么意见和建议，欢迎前来骚扰。</p><p>————————– 时间线 ——————- 2019年 ————————–</p><p>博客系统现已全套更换为Java开发，页面模板没有变更还是原来的样子。换成Java是因为方便，我是做Java开发的，用Java我可以随便折腾。</p><p>————————– 时间线 ——————- 现在（2019年7月17日） ————————–</p><p>博客准备搬迁至Hexo，会有一个中间过程且感觉变动较大。</p><h2 id="About-my-blog"><a href="#About-my-blog" class="headerlink" title="About my blog"></a>About my blog</h2><p>域 名：guitu18.com 创建于2018年03月05日</p><p>服务器：阿里云服务器 <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=zmyp6jhl" target="_blank" rel="noopener"><strong>前往阿里云官网购买&gt;&gt;</strong></a></p><p>程 序：Hexo</p><p>备案号：浙ICP备18008136号-2</p></div></div></div></div><div class="comments" id="comments"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><p class="site-author-name" itemprop="name">Guitu</p><div class="site-description motion-element" itemprop="description">用实力让情怀落地</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">44</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">13</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">49</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-blogroll motion-element links-of-blogroll-inline"><div class="links-of-blogroll-title"><i class="fa fa-fw fa-link"></i> Links</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><a href="https://www.yangqq.com/" title="https://www.yangqq.com/" rel="noopener" target="_blank">杨青博客</a></li><li class="links-of-blogroll-item"><a href="http://www.python66.com/" title="http://www.python66.com/" rel="noopener" target="_blank">Python教程</a></li><li class="links-of-blogroll-item"><a href="http://www.jianhuax.com/" title="http://www.jianhuax.com/" rel="noopener" target="_blank">建华兄</a></li><li class="links-of-blogroll-item"><a href="https://haowenbo.com/" title="https://haowenbo.com/" rel="noopener" target="_blank">Easy Blog</a></li><li class="links-of-blogroll-item"><a href="https://zhantianlun.github.io/" title="https://zhantianlun.github.io/" rel="noopener" target="_blank">湛天伦</a></li><li class="links-of-blogroll-item"><a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰</a></li><li class="links-of-blogroll-item"><a href="http://www.zsythink.net" title="http://www.zsythink.net" rel="noopener" target="_blank">朱双印</a></li><li class="links-of-blogroll-item"><a href="https://blog.izgq.net" title="https://blog.izgq.net" rel="noopener" target="_blank">ZGQ's Blog</a></li><li class="links-of-blogroll-item"><a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a></li><li class="links-of-blogroll-item"><a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a></li></ul></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于我"><span class="nav-number">1.</span> <span class="nav-text">关于我</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#About-my-blog"><span class="nav-number">1.1.</span> <span class="nav-text">About my blog</span></a></li></ol></li></ol></div></div></div><div class="back-to-top motion-element"><i class="fa fa-arrow-up"></i> <span id="scrollpercent"><span>0</span>%</span></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2017 – <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-user"></i> </span><span class="author" itemprop="copyrightHolder">Guitu</span> <span class="post-meta-divider">|</span><span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span><script>function createTime(){var n=new Date("2018-03-05 08:58:41");now.setTime(now.getTime()+250),days=(now-n)/1e3/60/60/24,dnum=Math.floor(days),hours=(now-n)/1e3/60/60-24*dnum,hnum=Math.floor(hours),1==String(hnum).length&&(hnum="0"+hnum),minutes=(now-n)/1e3/60-1440*dnum-60*hnum,mnum=Math.floor(minutes),1==String(mnum).length&&(mnum="0"+mnum),seconds=(now-n)/1e3-86400*dnum-3600*hnum-60*mnum,snum=Math.round(seconds),1==String(snum).length&&(snum="0"+snum),document.getElementById("timeDate").innerHTML="本站已运行 "+dnum+" 天 ",document.getElementById("times").innerHTML=hnum+" 小时 "+mnum+" 分 "+snum+" 秒"}var now=new Date;setInterval("createTime()",250)</script><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">181k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-coffee"></i> </span><span class="post-meta-item-text">站点阅读时长 &asymp;</span> <span title="站点阅读时长">2:45</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div><span class="post-meta-divider">|</span> <span class="busuanzi-count"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span>访客数 <span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span> </span>人次 <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span>访问量 <span class="site-pv" title="总访问量"><span class="busuanzi-value" id="busuanzi_value_site_pv"></span> </span>次</span></div></footer></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/js/utils.js?v=7.2.0"></script><script src="/js/motion.js?v=7.2.0"></script><script src="/js/affix.js?v=7.2.0"></script><script src="/js/schemes/pisces.js?v=7.2.0"></script><script src="/js/scrollspy.js?v=7.2.0"></script><script src="/js/post-details.js?v=7.2.0"></script><script src="/js/next-boot.js?v=7.2.0"></script><script src="https://img.guitu18.com/Valine.min.js"></script><script>var GUEST=["nick","mail","link"],guest="nick,mail,link";guest=guest.split(",").filter(function(e){return GUEST.indexOf(e)>-1}),new Valine({el:"#comments",verify:!1,notify:!1,appId:"Dyx2ULeNQtm8P7lmjhjOEWiW-MdYXbMMI",appKey:"EvXMp4vOR9bPgmH6NP7IRIt7",placeholder:"看了那么久，说点什么呗",avatar:"identicon",meta:guest,pageSize:"10",visitor:!1,lang:"zh-cn"})</script></body></html><!-- rebuild by neat -->
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_32.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_16.ico?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+
+  <meta name="description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。 2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018">
+<meta name="keywords" content="Java,个人博客,夜月归途,日志,Guitu">
+<meta property="og:type" content="website">
+<meta property="og:title" content="关于本博客">
+<meta property="og:url" content="https://www.guitu18.com/about/index.html">
+<meta property="og:site_name" content="夜月归途">
+<meta property="og:description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。 2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-20T10:55:29.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于本博客">
+<meta name="twitter:description" content="关于我90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。 2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.guitu18.com/about/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>关于本博客 | 夜月归途</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">夜月归途</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">一个安静的小角落</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">关于本博客
+
+</h1>
+
+<div class="post-meta">
+  
+  
+
+
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h1><p>90后程序员一枚；入行较晚，现一直潜心研究Java后台技术和web服务器等技能， 一边积累工作经验，一边折腾一个属于自己的博客，记录学习过程中踩过的各种坑和解决的疑难杂症。</p>
+<p>2017年底开始萌发建立个人博客的念头，从一开始的选择空间商到后来注册域名以及选择建站环境和系统，持续了一段时间，因为工作的原因没有快速落实下来； 服务器最终选定的是阿里云，2018年1月9日开通ECS，域名是在2018年3月5日注册的，当然为了方便域名也是阿里云万网的； 选域名的时候也纠结过好久，简短好记的域名早已没有了，最终选定guitu18.com这个域名也是有着自己的意义吧。</p>
+<p>服务器和域名选定之后，在建站系统的选择上也是尝试了一段时间； 最开始尝试的是个人博客最为有名的WordPress，里面的插件是真的丰富，什么支持MarkDown语法，各种漂亮的主题，你想得到的基本在里面都找的到，所有插件一键安装极为方便； 但是WordPress也正是因为插件多功能齐全略显臃肿，网站打开的速度不够快，而且百度收录基本只有首页（也许是我不懂设置SEO的原因）。</p>
+<p>后面就开始尝试其他的博客系统（当然现在有的WordPress博客并没有关闭），后面尝试的有Typecho，emlog，Zblog等，最终选定了现在使用的帝国CMS。 虽然没有主题可选，但是好在帝国的各种模板和标签特别的强大，如果手上有现成的模板套用上去，建站还是特别的方便。</p>
+<p>博客搭建完毕，一切才是刚刚开始，我会一直坚持下去，无论是记录心情或者是学习记录，我会一直在这里。 欢迎添加我的微信：zhang_kuan，或者直接扫描网站底部右边的二维码添加我，交友、技术交流或是有什么意见和建议，欢迎前来骚扰。</p>
+<p>————————– 时间线 ——————- 2019年 ————————–</p>
+<p>博客系统现已全套更换为Java开发，页面模板没有变更还是原来的样子。换成Java是因为方便，我是做Java开发的，用Java我可以随便折腾。</p>
+<p>————————– 时间线 ——————- 现在（2019年7月17日） ————————–</p>
+<p>博客准备搬迁至Hexo，会有一个中间过程且感觉变动较大。</p>
+<h2 id="About-my-blog"><a href="#About-my-blog" class="headerlink" title="About my blog"></a>About my blog</h2><p>域 名：guitu18.com 创建于2018年03月05日</p>
+<p>服务器：阿里云服务器   <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=zmyp6jhl" target="_blank" rel="noopener"><strong>前往阿里云官网购买&gt;&gt;</strong></a></p>
+<p>程 序：Hexo</p>
+<p>备案号：浙ICP备18008136号-2</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+
+
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Guitu</p>
+              <div class="site-description motion-element" itemprop="description">用实力让情怀落地</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.yangqq.com/" title="https://www.yangqq.com/" rel="noopener" target="_blank">杨青博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.python66.com/" title="http://www.python66.com/" rel="noopener" target="_blank">Python教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jianhuax.com/" title="http://www.jianhuax.com/" rel="noopener" target="_blank">建华兄</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://haowenbo.com/" title="https://haowenbo.com/" rel="noopener" target="_blank">Easy Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhantianlun.github.io/" title="https://zhantianlun.github.io/" rel="noopener" target="_blank">湛天伦</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.zsythink.net" title="http://www.zsythink.net" rel="noopener" target="_blank">朱双印</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.izgq.net" title="https://blog.izgq.net" rel="noopener" target="_blank">ZGQ's Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于我"><span class="nav-number">1.</span> <span class="nav-text">关于我</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#About-my-blog"><span class="nav-number">1.1.</span> <span class="nav-text">About my blog</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guitu</span>
+
+  
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:45</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
+
+
+
+
+        
+<span class="post-meta-divider">|</span>
+<span class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+	访客数
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+	人次
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+	访问量
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+	次
+  
+</span>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="https://img.guitu18.com/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'Dyx2ULeNQtm8P7lmjhjOEWiW-MdYXbMMI',
+    appKey: 'EvXMp4vOR9bPgmH6NP7IRIt7',
+    placeholder: '看了那么久，说点什么呗',
+    avatar: 'identicon',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

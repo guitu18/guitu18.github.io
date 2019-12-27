@@ -1,1 +1,1288 @@
-<!-- build time:Fri Dec 27 2019 09:41:32 GMT+0800 (China Standard Time) --><!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/css/main.css?v=7.2.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.2.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_32.ico?v=7.2.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_16.ico?v=7.2.0"><link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.2.0",sidebar:{position:"left",display:"post",offset:12,onmobile:!1},back2top:{enable:!0,sidebar:!0,scrollpercent:!0},copycode:{enable:!0,show_result:!0,style:null},fancybox:!1,fastclick:!1,lazyload:!1,tabs:!0,motion:{enable:!0,async:!0,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"}}</script><meta name="description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：123456789@Transactional(rollbackFor = Exception.class)public void register(String u"><meta name="keywords" content="Spring,事务"><meta property="og:type" content="article"><meta property="og:title" content="记一次事务失效的问题排查记录"><meta property="og:url" content="https://www.guitu18.com/post/2019/10/30/56.html"><meta property="og:site_name" content="夜月归途"><meta property="og:description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：123456789@Transactional(rollbackFor = Exception.class)public void register(String u"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png"><meta property="og:image" content="https://img.guitu18.com/markdown/9051150fc7af96a050197691182f85d1.png"><meta property="og:image" content="https://img.guitu18.com/markdown/b8699f7c5b6c6365d6e15baad6bc7165.png"><meta property="og:image" content="https://img.guitu18.com/markdown/3ea6c5aed9e1f053b6234232deb6ae7c.png"><meta property="og:image" content="https://img.guitu18.com/markdown/214eceef208e368cc09dc042ecff1a72.png"><meta property="og:updated_time" content="2019-12-20T10:55:29.642Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="记一次事务失效的问题排查记录"><meta name="twitter:description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：123456789@Transactional(rollbackFor = Exception.class)public void register(String u"><meta name="twitter:image" content="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png"><link rel="canonical" href="https://www.guitu18.com/post/2019/10/30/56"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>记一次事务失效的问题排查记录 | 夜月归途</title><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">夜月归途</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">一个安静的小角落</p></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li></ul></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/10/30/56.html"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Guitu"><meta itemprop="description" content="用实力让情怀落地"><meta itemprop="image" content="/images/avatar.gif"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="夜月归途"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">记一次事务失效的问题排查记录</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-10-30 21:28:21" itemprop="dateCreated datePublished" datetime="2019-10-30T21:28:21+08:00">2019-10-30</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-12-20 18:55:29" itemprop="dateModified" datetime="2019-12-20T18:55:29+08:00">2019-12-20</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/事务/" itemprop="url" rel="index"><span itemprop="name">事务</span></a></span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><span class="post-meta-item-text">评论数：</span> <a href="/post/2019/10/30/56.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/post/2019/10/30/56.html" itemprop="commentCount"></span> </a></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-eye"></i> 阅读次数： <span class="busuanzi-value" id="busuanzi_value_page_pv"></span></span></span><br><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">本文字数：</span> <span title="本文字数">9.7k</span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span title="阅读时长">9 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><p>昨天遇到一个非常奇怪的问题，在一个Service中使用<code>@Transactional</code>注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">void</span> <span class="title">register</span>(<span class="title">String</span> <span class="title">username</span>, <span class="title">String</span> <span class="title">password</span>) </span>&#123;</span><br><span class="line">    Member member = <span class="keyword">new</span> Member();</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">this</span>.save(member);</span><br><span class="line">    MemberMessage memberMessage = <span class="keyword">new</span> MemberMessage();</span><br><span class="line">    ... ...</span><br><span class="line">    memberMessageService.save(memberMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>当memberMessage插入失败抛异常时，前面保存的member记录不会回滚。打断点发现，只要save(member)这行走完数据就直接插入，此时方法还没执行完，按道理事务应该还没提交，但是通过Navicat已经能够看到新增的记录了。怀疑是事务压根没开启，遂将<code>logging.level.root</code>日志等级改为DEBUG发现压根就没开启事务。</p><a id="more"></a><p>找不到原因，往上层追查，这个方法是在Controller通过<code>@Autowired</code>注入并调用的。之后我在这个Controller中注入其他Service添加测试方法<code>testSave()</code>，Controller伪代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> MemberService memberService;</span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ConfService confService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> JsonResult <span class="title">register</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">    confService.testSave();</span><br><span class="line">    <span class="comment">// memberService.register(username, password);</span></span><br><span class="line">    <span class="keyword">return</span> JsonResult.ok();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>测试发现事务是生效的，且如果发生异常是能够回滚的，事务正常提交日志如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">o.s.j.d.DataSourceTransactionManager     : Creating <span class="keyword">new</span> transaction with name [com.guitu18.service.base.ConfService$$EnhancerBySpringCGLIB$$<span class="number">82</span>a30421.testSave]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,-java.lang.Exception</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Acquired Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] <span class="keyword">for</span> JDBC transaction</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Switching JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] to manual commit</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Participating in existing transaction</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Participating in existing transaction</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Registering transaction synchronization <span class="keyword">for</span> SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">o.m.s.t.SpringManagedTransaction         : JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] will be managed by Spring</span><br><span class="line">c.g.mapper.base.ClanPlayerMapper.insert  : ==&gt;  Preparing: <span class="function">INSERT INTO <span class="title">conf</span> <span class="params">( name, value ... )</span> <span class="title">VALUES</span> <span class="params">( ?, ? )</span> </span></span><br><span class="line"><span class="function">c.g.mapper.base.ClanPlayerMapper.insert  : </span>==&gt; Parameters: <span class="number">123</span>(String), <span class="number">45</span>(String)</span><br><span class="line">c.g.mapper.base.ClanPlayerMapper.insert  : &lt;==    Updates: <span class="number">1</span></span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Initiating transaction commit</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Committing JDBC transaction on Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1]</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Releasing JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] after transaction</span><br><span class="line">o.s.jdbc.datasource.DataSourceUtils      : Returning JDBC Connection to DataSource</span><br></pre></td></tr></table></figure><p>这下子我就纳闷了，肯定是有什么我没留意到的地方有疏漏，继续找。先确认了数据库的表类型是InnoDB能够支持事务没错，接着检查Spring配置，所在包名，以及是否被Spring扫描等等原因，后面我直接将这两个Service挪到同一个包下继续测试，甚至修改了包结构，依然还是ConfService能正常开启事务，MemberService怎么也开启不了事务。</p><p>百度也查了，比如<code>@Transaction</code>注解不生效原因，我每条都确认了没问题。</p><ol><li>只对public修饰方法才起作用</li><li><code>@Transaction</code>默认检测异常为RuntimeException及其子类 如果有其他异常需要回滚事务的需要自己手动配置，例如：<code>@Transactional(rollbackFor = Exception.class)</code></li><li>确保异常没有被try-catch{}，catch以后也不会回滚</li><li>检查下自己的数据库是否支持事务，如mysql的mylsam</li><li>Springboot项目默认已经支持事务，不用配置；其他类型项目需要在xml中配置是否开启事务</li><li>如果在同一个类中，一个非<code>@Transaction</code>的方法调用有<code>@Transaction</code>的方法不会生效，因为代理问题</li></ol><hr><p>然后昨天为了这个问题折腾的太久，人弄疲了就先放着了。今天接着继续研究，一路打断点到<code>TransactionAspectSupport</code>类中，再到<code>ReflectiveMethodInvocation.proceed()</code>，<code>invokeJoinpoint()</code>等方法。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">invokeJoinpoint</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.publicMethod ? <span class="keyword">this</span>.methodProxy.invoke(<span class="keyword">this</span>.target, <span class="keyword">this</span>.arguments) : <span class="keyword">super</span>.invokeJoinpoint();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><p>我发现事务生效的情况下，都会一路走到上面这个方法上，这里判断如果是public方法，则通过代理对象调用实际业务，至此事务也开启并加入且生效了。然而那个事务始终不能开启的MemberService压根就不会走到这里来。</p><p>这时候我突然想到，该不会是MemberService这个类没有被代理吧，在Controller中打断点查看发现MemberService压根就不是代理对象，<code>@Autowired</code>注入的是原始对象的实例。</p><p><img src="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png" alt="img"></p><p>检查该Controller中注入的另一个ConfService，确实是代理对象没错了。</p><p><img src="https://img.guitu18.com/markdown/9051150fc7af96a050197691182f85d1.png" alt="img"></p><p>那么问题来了，为什么这个MemberService没有被代理。之前已经做过各种检查了，甚至将这两个类放到同一个包下，肯定不是Spring扫描产生的问题。问题出在哪里呢？继续找。</p><p>从MemberService被引用的地方入手，一路找Shiro的授权认证器AuthorizingRealm这里。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberAuthorizingRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MemberService memberService;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principalCollection)</span> </span>&#123;</span><br><span class="line">        ... ...</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken authenticationToken)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">	    Member member = memberService.getById(token.getUsername());</span><br><span class="line">        ... ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这里乍一看也没什么不对是吧，但是经代码过测试问题就出在这里。这里我如果不注入MemberService，那么在其他地方通过<code>@Autowired</code>注入的就是被代理的实例。What？为什么会这样？</p><hr><p>不知道原因，看来还是要向上追溯，那么这个AuthorizingRealm又是在哪里引用的呢，继续顺着线索往上找。这个类在ShiroConfig中以<code>@Bean</code>的方式注入到SecurityManager中了。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(<span class="string">"securityManager"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> SecurityManager <span class="title">securityManager</span><span class="params">(MemberAuthorizingRealm userRealm)</span> </span>&#123;</span><br><span class="line">    DefaultWebSecurityManager securityManager = <span class="keyword">new</span> DefaultWebSecurityManager();</span><br><span class="line">    securityManager.setRealm(userRealm);</span><br><span class="line">    securityManager.setRememberMeManager(<span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">return</span> securityManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>既然是跟配置有关系，那么我联想可能是跟初始化顺序有关系，配置相关的东西一般都是被优先加载的。找到这里我想到了Spring的生命周期，隐约感觉真相已经呼之欲出了，赶紧去Spring的Bean初始化流程瞧一瞧，答案肯定是在那里。</p><p>Spring的初始化流程很复杂，这里只截取重要的部分记录一下，有兴趣的请自行查看Spring初始化相关源码。首先我们找到代理被创建的地方AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization()</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">applyBeanPostProcessorsAfterInitialization</span><span class="params">(Object existingBean, String beanName)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    Object result = existingBean;</span><br><span class="line">    <span class="comment">// 这里通过getBeanPostProcessors()拿到所有的Bean后置处理器并执行</span></span><br><span class="line">    <span class="keyword">for</span> (BeanPostProcessor processor : getBeanPostProcessors()) &#123;</span><br><span class="line">        Object current = processor.postProcessAfterInitialization(result, beanName);</span><br><span class="line">        <span class="keyword">if</span> (current == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        result = current;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在这里会拿到并执行所有的Bean后置处理器，先找到那个可以开启事务的ConfService，加个断点看看他的beanPostProcessors中都有些什么。</p><p><img src="https://img.guitu18.com/markdown/b8699f7c5b6c6365d6e15baad6bc7165.png" alt="img"></p><p>框起来的这两个DefaultAdvisorAutoProxyCreator就是创建代理对象的处理器，至于为什么会有两个现在还不知道，先解决我眼前的问题先。这里执行完所有的BeanPostProcessor之后，得到的就是代理对象了。</p><p><img src="https://img.guitu18.com/markdown/3ea6c5aed9e1f053b6234232deb6ae7c.png" alt="img"></p><p>上面创建代理的代码在AbstractAutoProxyCreator中，分别是postProcessAfterInitialization()和wrapIfNecessary()，代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(@Nullable Object bean, String beanName)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Object cacheKey = <span class="keyword">this</span>.getCacheKey(bean.getClass(), beanName);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.earlyProxyReferences.contains(cacheKey)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.wrapIfNecessary(bean, beanName, cacheKey);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 代理就是在这个方法中创建的，当然创建之前做了各种if判断</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">wrapIfNecessary</span><span class="params">(Object bean, String beanName, Object cacheKey)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.hasLength(beanName) &amp;&amp; <span class="keyword">this</span>.targetSourcedBeans.contains(beanName)) &#123;</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Boolean.FALSE.equals(<span class="keyword">this</span>.advisedBeans.get(cacheKey))) &#123;</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="keyword">this</span>.isInfrastructureClass(bean.getClass()) &amp;&amp; !<span class="keyword">this</span>.shouldSkip(bean.getClass(), beanName)) &#123;</span><br><span class="line">        Object[] specificInterceptors = <span class="keyword">this</span>.getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, (TargetSource)<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (specificInterceptors != DO_NOT_PROXY) &#123;</span><br><span class="line">            <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.TRUE);</span><br><span class="line">            <span class="comment">// 创建代理对象</span></span><br><span class="line">            Object proxy = <span class="keyword">this</span>.createProxy(bean.getClass(), beanName, specificInterceptors, <span class="keyword">new</span> SingletonTargetSource(bean));</span><br><span class="line">            <span class="keyword">this</span>.proxyTypes.put(cacheKey, proxy.getClass());</span><br><span class="line">            <span class="keyword">return</span> proxy;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">            <span class="keyword">return</span> bean;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>再回头找到那个MemberService，他的beanPostProcessors列表中可没有那么多东西，可以看在他的processor列表中创建代理的处理器DefaultAdvisorAutoProxyCreator确实是没有的。</p><p><img src="https://img.guitu18.com/markdown/214eceef208e368cc09dc042ecff1a72.png" alt="img"></p><p>这个方法执行完之后，返回的就普通的对象了。我们都知道<strong>在Spring中，数据库事务都是通过AOP实现的，想要支持事务这个类必须被代理</strong>才行。至此本篇开头提到的MemberService中无法开启事务的真相找到了，因为Controller中注入的MemberService以<code>@Bean</code>的方式配置到Spring中，导致被提前初始化而未能创建代理，所以不能开启事务。</p><hr><p>捋一捋：</p><ol><li>首先我们在项目整合Shiro的时候通过ShiroConfig做了一些配置，其中一项包括Shiro的授权认证器MemberAuthorizingRealm。</li><li>在MemberAuthorizingRealm中我们通过<code>@Autowired</code>注入了本篇的主角MemberService。</li><li>Spring启动的时候，配置相关的都是优先初始化的，在初始化MemberAuthorizingRealm的时候发现需要注入一个MemberService对象，容器里肯定是没有的，那么就提前将其初始化了。此时如果在MemberService还有通过<code>@Autowired</code>注入的其他依赖，那么会一并初始化，依赖中要是还有依赖会继续递归初始化，这样下来会导致一系列的实例都是没有被代理的。</li><li>但是这时候Spring中创建代理的处理器是还没有的，导致MemberService的BeanPostProcessor中没有AbstractAutoProxyCreator这个对象，后面整个BeanPostProcessor列表执行的时候没有为其创建代理。</li><li>Spring中的数据库事务都是需要代理支持的，所以MemberService中不能开启事务。</li></ol><hr><p><strong>解决方案</strong>：既然MemberAuthorizingRealm中不能通过<code>@Autowired</code>注入MemberService，那我们变通一下，不用第一时间注入，等需要用到的时候再向Spring索取就好了。</p><p>这里第一个想到的肯定就是ApplicationContext了，这好办，写一个ApplicationContext工具类：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationContextUtils</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ApplicationContext applicationContext;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        ApplicationContextUtils.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getBean</span><span class="params">(String beanName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> applicationContext.getBean(beanName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getBean</span><span class="params">(Class&lt;T&gt; type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> applicationContext.getBean(type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过实现ApplicationContextAware接口拿到ApplicationContext，后面就可以随心所以了，MemberAuthorizingRealm中需要用到MemberService的时候我们可以这么写：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MemberService memberService = ApplicationContextUtils.getBean(MemberService<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure><p>在其他类似的地方，如果何需要支持事务或者用到代理对象的地方，都可以通过这种方式获取。另外顺带提一下，如果需要用到对象原始的实例（非代理对象），我们可以通过在Bean名称前面加一个<code>&amp;</code>获取，还是以MemberService举栗：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MemberService memberService = ApplicationContextUtils.getBean(<span class="string">"&amp;memberService"</span>);</span><br></pre></td></tr></table></figure><p>这样拿到的就是常规实例对象了，相关知识点：FactoryBean，之前写过一篇，请参考：</p><p><a href="https://www.guitu18.com/post/2019/04/28/33.html">Spring中FactoryBean的作用和实现原理 https://www.guitu18.com/post/2019/04/28/33.html</a></p><p>本次排查记录总结：</p><ol><li>在<code>@Configuration</code>注解的配置类中，通过<code>@Bean</code>注册的对象是没有被创建代理的，如果你的业务需要使用到代理，请不要使用这种方式。</li><li>即便没有直接通过<code>@Bean</code>直接注入，在被<code>@Bean</code>注册的对象直接依赖（<code>@Autowired</code>注入等）也会导致该对象提前初始化，没有被创建代理。</li><li>如果必须要在通过<code>@Bean</code>注册的对象中用到代理对象，可以从ApplicationContext中获取到。</li></ol></div><div><div id="reward-container"><div>明人不说暗话，如果你觉得可以的话，你懂的！</div><button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="/images/wechatpay.jpg" alt="Guitu 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="/images/alipay.jpg" alt="Guitu 支付宝"><p>支付宝</p></div></div></div></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>Guitu</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://www.guitu18.com/post/2019/10/30/56.html" title="记一次事务失效的问题排查记录">https://www.guitu18.com/post/2019/10/30/56.html</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/Spring/" rel="tag"># Spring</a> <a href="/tags/事务/" rel="tag"># 事务</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/2019/09/16/60.html" rel="next" title="一次关于永恒的思考"><i class="fa fa-chevron-left"></i> 一次关于永恒的思考</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article></div></div><div class="comments" id="comments"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><div class="site-overview-wrap sidebar-panel sidebar-panel-active"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><p class="site-author-name" itemprop="name">Guitu</p><div class="site-description motion-element" itemprop="description">用实力让情怀落地</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">44</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">13</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">49</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-blogroll motion-element links-of-blogroll-inline"><div class="links-of-blogroll-title"><i class="fa fa-fw fa-link"></i> Links</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><a href="https://www.yangqq.com/" title="https://www.yangqq.com/" rel="noopener" target="_blank">杨青博客</a></li><li class="links-of-blogroll-item"><a href="http://www.python66.com/" title="http://www.python66.com/" rel="noopener" target="_blank">Python教程</a></li><li class="links-of-blogroll-item"><a href="http://www.jianhuax.com/" title="http://www.jianhuax.com/" rel="noopener" target="_blank">建华兄</a></li><li class="links-of-blogroll-item"><a href="https://haowenbo.com/" title="https://haowenbo.com/" rel="noopener" target="_blank">Easy Blog</a></li><li class="links-of-blogroll-item"><a href="https://zhantianlun.github.io/" title="https://zhantianlun.github.io/" rel="noopener" target="_blank">湛天伦</a></li><li class="links-of-blogroll-item"><a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰</a></li><li class="links-of-blogroll-item"><a href="http://www.zsythink.net" title="http://www.zsythink.net" rel="noopener" target="_blank">朱双印</a></li><li class="links-of-blogroll-item"><a href="https://blog.izgq.net" title="https://blog.izgq.net" rel="noopener" target="_blank">ZGQ's Blog</a></li><li class="links-of-blogroll-item"><a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a></li><li class="links-of-blogroll-item"><a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a></li></ul></div></div></div><div class="back-to-top motion-element"><i class="fa fa-arrow-up"></i> <span id="scrollpercent"><span>0</span>%</span></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2017 – <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-user"></i> </span><span class="author" itemprop="copyrightHolder">Guitu</span> <span class="post-meta-divider">|</span><span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span><script>function createTime(){var n=new Date("2018-03-05 08:58:41");now.setTime(now.getTime()+250),days=(now-n)/1e3/60/60/24,dnum=Math.floor(days),hours=(now-n)/1e3/60/60-24*dnum,hnum=Math.floor(hours),1==String(hnum).length&&(hnum="0"+hnum),minutes=(now-n)/1e3/60-1440*dnum-60*hnum,mnum=Math.floor(minutes),1==String(mnum).length&&(mnum="0"+mnum),seconds=(now-n)/1e3-86400*dnum-3600*hnum-60*mnum,snum=Math.round(seconds),1==String(snum).length&&(snum="0"+snum),document.getElementById("timeDate").innerHTML="本站已运行 "+dnum+" 天 ",document.getElementById("times").innerHTML=hnum+" 小时 "+mnum+" 分 "+snum+" 秒"}var now=new Date;setInterval("createTime()",250)</script><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">181k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-coffee"></i> </span><span class="post-meta-item-text">站点阅读时长 &asymp;</span> <span title="站点阅读时长">2:45</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div><span class="post-meta-divider">|</span> <span class="busuanzi-count"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span>访客数 <span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span> </span>人次 <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span>访问量 <span class="site-pv" title="总访问量"><span class="busuanzi-value" id="busuanzi_value_site_pv"></span> </span>次</span></div></footer></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/js/utils.js?v=7.2.0"></script><script src="/js/motion.js?v=7.2.0"></script><script src="/js/affix.js?v=7.2.0"></script><script src="/js/schemes/pisces.js?v=7.2.0"></script><script src="/js/scrollspy.js?v=7.2.0"></script><script src="/js/post-details.js?v=7.2.0"></script><script src="/js/next-boot.js?v=7.2.0"></script><script src="https://img.guitu18.com/Valine.min.js"></script><script>var GUEST=["nick","mail","link"],guest="nick,mail,link";guest=guest.split(",").filter(function(e){return GUEST.indexOf(e)>-1}),new Valine({el:"#comments",verify:!1,notify:!1,appId:"Dyx2ULeNQtm8P7lmjhjOEWiW-MdYXbMMI",appKey:"EvXMp4vOR9bPgmH6NP7IRIt7",placeholder:"看了那么久，说点什么呗",avatar:"identicon",meta:guest,pageSize:"10",visitor:!1,lang:"zh-cn"})</script></body></html><!-- rebuild by neat -->
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_32.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_16.ico?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+
+  <meta name="description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下： 123456789@Transactional(rollbackFor = Exception.class)public void register(String">
+<meta name="keywords" content="Spring,事务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次事务失效的问题排查记录">
+<meta property="og:url" content="https://www.guitu18.com/post/2019/10/30/56.html">
+<meta property="og:site_name" content="夜月归途">
+<meta property="og:description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下： 123456789@Transactional(rollbackFor = Exception.class)public void register(String">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png">
+<meta property="og:image" content="https://img.guitu18.com/markdown/9051150fc7af96a050197691182f85d1.png">
+<meta property="og:image" content="https://img.guitu18.com/markdown/b8699f7c5b6c6365d6e15baad6bc7165.png">
+<meta property="og:image" content="https://img.guitu18.com/markdown/3ea6c5aed9e1f053b6234232deb6ae7c.png">
+<meta property="og:image" content="https://img.guitu18.com/markdown/214eceef208e368cc09dc042ecff1a72.png">
+<meta property="og:updated_time" content="2019-12-20T10:55:29.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次事务失效的问题排查记录">
+<meta name="twitter:description" content="昨天遇到一个非常奇怪的问题，在一个Service中使用@Transactional注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下： 123456789@Transactional(rollbackFor = Exception.class)public void register(String">
+<meta name="twitter:image" content="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.guitu18.com/post/2019/10/30/56">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>记一次事务失效的问题排查记录 | 夜月归途</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?827f811db6b41b489d3e11e73a29f977";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">夜月归途</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">一个安静的小角落</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.guitu18.com/post/2019/10/30/56.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guitu">
+      <meta itemprop="description" content="用实力让情怀落地">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夜月归途">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次事务失效的问题排查记录
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-30 21:28:21" itemprop="dateCreated datePublished" datetime="2019-10-30T21:28:21+08:00">2019-10-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-20 18:55:29" itemprop="dateModified" datetime="2019-12-20T18:55:29+08:00">2019-12-20</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/事务/" itemprop="url" rel="index"><span itemprop="name">事务</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/post/2019/10/30/56.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/2019/10/30/56.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">9.7k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">9 分钟</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天遇到一个非常奇怪的问题，在一个Service中使用<code>@Transactional</code>注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">void</span> <span class="title">register</span>(<span class="title">String</span> <span class="title">username</span>, <span class="title">String</span> <span class="title">password</span>) </span>&#123;</span><br><span class="line">    Member member = <span class="keyword">new</span> Member();</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">this</span>.save(member);</span><br><span class="line">    MemberMessage memberMessage = <span class="keyword">new</span> MemberMessage();</span><br><span class="line">    ... ...</span><br><span class="line">    memberMessageService.save(memberMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当memberMessage插入失败抛异常时，前面保存的member记录不会回滚。打断点发现，只要save(member)这行走完数据就直接插入，此时方法还没执行完，按道理事务应该还没提交，但是通过Navicat已经能够看到新增的记录了。怀疑是事务压根没开启，遂将<code>logging.level.root</code>日志等级改为DEBUG发现压根就没开启事务。</p>
+<a id="more"></a>
+
+<p>找不到原因，往上层追查，这个方法是在Controller通过<code>@Autowired</code>注入并调用的。之后我在这个Controller中注入其他Service添加测试方法<code>testSave()</code>，Controller伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> MemberService memberService;</span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ConfService confService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/register"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> JsonResult <span class="title">register</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">    confService.testSave();</span><br><span class="line">    <span class="comment">// memberService.register(username, password);</span></span><br><span class="line">    <span class="keyword">return</span> JsonResult.ok();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试发现事务是生效的，且如果发生异常是能够回滚的，事务正常提交日志如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">o.s.j.d.DataSourceTransactionManager     : Creating <span class="keyword">new</span> transaction with name [com.guitu18.service.base.ConfService$$EnhancerBySpringCGLIB$$<span class="number">82</span>a30421.testSave]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,-java.lang.Exception</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Acquired Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] <span class="keyword">for</span> JDBC transaction</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Switching JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] to manual commit</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Participating in existing transaction</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Participating in existing transaction</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Registering transaction synchronization <span class="keyword">for</span> SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">o.m.s.t.SpringManagedTransaction         : JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] will be managed by Spring</span><br><span class="line">c.g.mapper.base.ClanPlayerMapper.insert  : ==&gt;  Preparing: <span class="function">INSERT INTO <span class="title">conf</span> <span class="params">( name, value ... )</span> <span class="title">VALUES</span> <span class="params">( ?, ? )</span> </span></span><br><span class="line"><span class="function">c.g.mapper.base.ClanPlayerMapper.insert  : </span>==&gt; Parameters: <span class="number">123</span>(String), <span class="number">45</span>(String)</span><br><span class="line">c.g.mapper.base.ClanPlayerMapper.insert  : &lt;==    Updates: <span class="number">1</span></span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">org.mybatis.spring.SqlSessionUtils       : Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">734</span>d6117]</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Initiating transaction commit</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Committing JDBC transaction on Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1]</span><br><span class="line">o.s.j.d.DataSourceTransactionManager     : Releasing JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">10</span>d912c1] after transaction</span><br><span class="line">o.s.jdbc.datasource.DataSourceUtils      : Returning JDBC Connection to DataSource</span><br></pre></td></tr></table></figure>
+
+<p>这下子我就纳闷了，肯定是有什么我没留意到的地方有疏漏，继续找。先确认了数据库的表类型是InnoDB能够支持事务没错，接着检查Spring配置，所在包名，以及是否被Spring扫描等等原因，后面我直接将这两个Service挪到同一个包下继续测试，甚至修改了包结构，依然还是ConfService能正常开启事务，MemberService怎么也开启不了事务。</p>
+<p>百度也查了，比如<code>@Transaction</code>注解不生效原因，我每条都确认了没问题。</p>
+<ol>
+<li>只对public修饰方法才起作用</li>
+<li><code>@Transaction</code>默认检测异常为RuntimeException及其子类 如果有其他异常需要回滚事务的需要自己手动配置，例如：<code>@Transactional(rollbackFor = Exception.class)</code></li>
+<li>确保异常没有被try-catch{}，catch以后也不会回滚</li>
+<li>检查下自己的数据库是否支持事务，如mysql的mylsam</li>
+<li>Springboot项目默认已经支持事务，不用配置；其他类型项目需要在xml中配置是否开启事务</li>
+<li>如果在同一个类中，一个非<code>@Transaction</code>的方法调用有<code>@Transaction</code>的方法不会生效，因为代理问题</li>
+</ol>
+<hr>
+<p>然后昨天为了这个问题折腾的太久，人弄疲了就先放着了。今天接着继续研究，一路打断点到<code>TransactionAspectSupport</code>类中，再到<code>ReflectiveMethodInvocation.proceed()</code>，<code>invokeJoinpoint()</code>等方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">invokeJoinpoint</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.publicMethod ? <span class="keyword">this</span>.methodProxy.invoke(<span class="keyword">this</span>.target, <span class="keyword">this</span>.arguments) : <span class="keyword">super</span>.invokeJoinpoint();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我发现事务生效的情况下，都会一路走到上面这个方法上，这里判断如果是public方法，则通过代理对象调用实际业务，至此事务也开启并加入且生效了。然而那个事务始终不能开启的MemberService压根就不会走到这里来。</p>
+<p>这时候我突然想到，该不会是MemberService这个类没有被代理吧，在Controller中打断点查看发现MemberService压根就不是代理对象，<code>@Autowired</code>注入的是原始对象的实例。</p>
+<p><img src="https://img.guitu18.com/markdown/53f00e8ee34acc7a6293d9f6371a3f0e.png" alt="img"></p>
+<p>检查该Controller中注入的另一个ConfService，确实是代理对象没错了。</p>
+<p><img src="https://img.guitu18.com/markdown/9051150fc7af96a050197691182f85d1.png" alt="img"></p>
+<p>那么问题来了，为什么这个MemberService没有被代理。之前已经做过各种检查了，甚至将这两个类放到同一个包下，肯定不是Spring扫描产生的问题。问题出在哪里呢？继续找。</p>
+<p>从MemberService被引用的地方入手，一路找Shiro的授权认证器AuthorizingRealm这里。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberAuthorizingRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MemberService memberService;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principalCollection)</span> </span>&#123;</span><br><span class="line">        ... ...</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken authenticationToken)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">	    Member member = memberService.getById(token.getUsername());</span><br><span class="line">        ... ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里乍一看也没什么不对是吧，但是经代码过测试问题就出在这里。这里我如果不注入MemberService，那么在其他地方通过<code>@Autowired</code>注入的就是被代理的实例。What？为什么会这样？</p>
+<hr>
+<p>不知道原因，看来还是要向上追溯，那么这个AuthorizingRealm又是在哪里引用的呢，继续顺着线索往上找。这个类在ShiroConfig中以<code>@Bean</code>的方式注入到SecurityManager中了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(<span class="string">"securityManager"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> SecurityManager <span class="title">securityManager</span><span class="params">(MemberAuthorizingRealm userRealm)</span> </span>&#123;</span><br><span class="line">    DefaultWebSecurityManager securityManager = <span class="keyword">new</span> DefaultWebSecurityManager();</span><br><span class="line">    securityManager.setRealm(userRealm);</span><br><span class="line">    securityManager.setRememberMeManager(<span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">return</span> securityManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然是跟配置有关系，那么我联想可能是跟初始化顺序有关系，配置相关的东西一般都是被优先加载的。找到这里我想到了Spring的生命周期，隐约感觉真相已经呼之欲出了，赶紧去Spring的Bean初始化流程瞧一瞧，答案肯定是在那里。</p>
+<p>Spring的初始化流程很复杂，这里只截取重要的部分记录一下，有兴趣的请自行查看Spring初始化相关源码。首先我们找到代理被创建的地方AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">applyBeanPostProcessorsAfterInitialization</span><span class="params">(Object existingBean, String beanName)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    Object result = existingBean;</span><br><span class="line">    <span class="comment">// 这里通过getBeanPostProcessors()拿到所有的Bean后置处理器并执行</span></span><br><span class="line">    <span class="keyword">for</span> (BeanPostProcessor processor : getBeanPostProcessors()) &#123;</span><br><span class="line">        Object current = processor.postProcessAfterInitialization(result, beanName);</span><br><span class="line">        <span class="keyword">if</span> (current == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        result = current;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里会拿到并执行所有的Bean后置处理器，先找到那个可以开启事务的ConfService，加个断点看看他的beanPostProcessors中都有些什么。</p>
+<p><img src="https://img.guitu18.com/markdown/b8699f7c5b6c6365d6e15baad6bc7165.png" alt="img"></p>
+<p>框起来的这两个DefaultAdvisorAutoProxyCreator就是创建代理对象的处理器，至于为什么会有两个现在还不知道，先解决我眼前的问题先。这里执行完所有的BeanPostProcessor之后，得到的就是代理对象了。</p>
+<p><img src="https://img.guitu18.com/markdown/3ea6c5aed9e1f053b6234232deb6ae7c.png" alt="img"></p>
+<p>上面创建代理的代码在AbstractAutoProxyCreator中，分别是postProcessAfterInitialization()和wrapIfNecessary()，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(@Nullable Object bean, String beanName)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Object cacheKey = <span class="keyword">this</span>.getCacheKey(bean.getClass(), beanName);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.earlyProxyReferences.contains(cacheKey)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.wrapIfNecessary(bean, beanName, cacheKey);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 代理就是在这个方法中创建的，当然创建之前做了各种if判断</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">wrapIfNecessary</span><span class="params">(Object bean, String beanName, Object cacheKey)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.hasLength(beanName) &amp;&amp; <span class="keyword">this</span>.targetSourcedBeans.contains(beanName)) &#123;</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Boolean.FALSE.equals(<span class="keyword">this</span>.advisedBeans.get(cacheKey))) &#123;</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="keyword">this</span>.isInfrastructureClass(bean.getClass()) &amp;&amp; !<span class="keyword">this</span>.shouldSkip(bean.getClass(), beanName)) &#123;</span><br><span class="line">        Object[] specificInterceptors = <span class="keyword">this</span>.getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, (TargetSource)<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (specificInterceptors != DO_NOT_PROXY) &#123;</span><br><span class="line">            <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.TRUE);</span><br><span class="line">            <span class="comment">// 创建代理对象</span></span><br><span class="line">            Object proxy = <span class="keyword">this</span>.createProxy(bean.getClass(), beanName, specificInterceptors, <span class="keyword">new</span> SingletonTargetSource(bean));</span><br><span class="line">            <span class="keyword">this</span>.proxyTypes.put(cacheKey, proxy.getClass());</span><br><span class="line">            <span class="keyword">return</span> proxy;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">            <span class="keyword">return</span> bean;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再回头找到那个MemberService，他的beanPostProcessors列表中可没有那么多东西，可以看在他的processor列表中创建代理的处理器DefaultAdvisorAutoProxyCreator确实是没有的。</p>
+<p><img src="https://img.guitu18.com/markdown/214eceef208e368cc09dc042ecff1a72.png" alt="img"></p>
+<p>这个方法执行完之后，返回的就普通的对象了。我们都知道<strong>在Spring中，数据库事务都是通过AOP实现的，想要支持事务这个类必须被代理</strong>才行。至此本篇开头提到的MemberService中无法开启事务的真相找到了，因为Controller中注入的MemberService以<code>@Bean</code>的方式配置到Spring中，导致被提前初始化而未能创建代理，所以不能开启事务。</p>
+<hr>
+<p>捋一捋：</p>
+<ol>
+<li>首先我们在项目整合Shiro的时候通过ShiroConfig做了一些配置，其中一项包括Shiro的授权认证器MemberAuthorizingRealm。</li>
+<li>在MemberAuthorizingRealm中我们通过<code>@Autowired</code>注入了本篇的主角MemberService。</li>
+<li>Spring启动的时候，配置相关的都是优先初始化的，在初始化MemberAuthorizingRealm的时候发现需要注入一个MemberService对象，容器里肯定是没有的，那么就提前将其初始化了。此时如果在MemberService还有通过<code>@Autowired</code>注入的其他依赖，那么会一并初始化，依赖中要是还有依赖会继续递归初始化，这样下来会导致一系列的实例都是没有被代理的。</li>
+<li>但是这时候Spring中创建代理的处理器是还没有的，导致MemberService的BeanPostProcessor中没有AbstractAutoProxyCreator这个对象，后面整个BeanPostProcessor列表执行的时候没有为其创建代理。</li>
+<li>Spring中的数据库事务都是需要代理支持的，所以MemberService中不能开启事务。</li>
+</ol>
+<hr>
+<p><strong>解决方案</strong>：既然MemberAuthorizingRealm中不能通过<code>@Autowired</code>注入MemberService，那我们变通一下，不用第一时间注入，等需要用到的时候再向Spring索取就好了。</p>
+<p>这里第一个想到的肯定就是ApplicationContext了，这好办，写一个ApplicationContext工具类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationContextUtils</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ApplicationContext applicationContext;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        ApplicationContextUtils.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getBean</span><span class="params">(String beanName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> applicationContext.getBean(beanName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getBean</span><span class="params">(Class&lt;T&gt; type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> applicationContext.getBean(type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过实现ApplicationContextAware接口拿到ApplicationContext，后面就可以随心所以了，MemberAuthorizingRealm中需要用到MemberService的时候我们可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MemberService memberService = ApplicationContextUtils.getBean(MemberService<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在其他类似的地方，如果何需要支持事务或者用到代理对象的地方，都可以通过这种方式获取。另外顺带提一下，如果需要用到对象原始的实例（非代理对象），我们可以通过在Bean名称前面加一个<code>&amp;</code>获取，还是以MemberService举栗：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MemberService memberService = ApplicationContextUtils.getBean(<span class="string">"&amp;memberService"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这样拿到的就是常规实例对象了，相关知识点：FactoryBean，之前写过一篇，请参考：</p>
+<p><a href="https://www.guitu18.com/post/2019/04/28/33.html">Spring中FactoryBean的作用和实现原理 https://www.guitu18.com/post/2019/04/28/33.html</a></p>
+<p>本次排查记录总结：</p>
+<ol>
+<li>在<code>@Configuration</code>注解的配置类中，通过<code>@Bean</code>注册的对象是没有被创建代理的，如果你的业务需要使用到代理，请不要使用这种方式。</li>
+<li>即便没有直接通过<code>@Bean</code>直接注入，在被<code>@Bean</code>注册的对象直接依赖（<code>@Autowired</code>注入等）也会导致该对象提前初始化，没有被创建代理。</li>
+<li>如果必须要在通过<code>@Bean</code>注册的对象中用到代理对象，可以从ApplicationContext中获取到。</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>明人不说暗话，如果你觉得可以的话，你懂的！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Guitu 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Guitu 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Guitu</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://www.guitu18.com/post/2019/10/30/56.html" title="记一次事务失效的问题排查记录">https://www.guitu18.com/post/2019/10/30/56.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/事务/" rel="tag"># 事务</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/2019/09/16/60.html" rel="next" title="一次关于永恒的思考">
+                <i class="fa fa-chevron-left"></i> 一次关于永恒的思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Guitu</p>
+              <div class="site-description motion-element" itemprop="description">用实力让情怀落地</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.yangqq.com/" title="https://www.yangqq.com/" rel="noopener" target="_blank">杨青博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.python66.com/" title="http://www.python66.com/" rel="noopener" target="_blank">Python教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jianhuax.com/" title="http://www.jianhuax.com/" rel="noopener" target="_blank">建华兄</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://haowenbo.com/" title="https://haowenbo.com/" rel="noopener" target="_blank">Easy Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhantianlun.github.io/" title="https://zhantianlun.github.io/" rel="noopener" target="_blank">湛天伦</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.zsythink.net" title="http://www.zsythink.net" rel="noopener" target="_blank">朱双印</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.izgq.net" title="https://blog.izgq.net" rel="noopener" target="_blank">ZGQ's Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://crossoverjie.top" title="https://crossoverjie.top" rel="noopener" target="_blank">Jie's Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xukun.wang/" title="https://www.xukun.wang/" rel="noopener" target="_blank">徐坤博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+        </div>
+      </div>
+
+      
+
+      
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guitu</span>
+
+  
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:45</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
+
+
+
+
+        
+<span class="post-meta-divider">|</span>
+<span class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+	访客数
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+	人次
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+	访问量
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+	次
+  
+</span>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="https://img.guitu18.com/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'Dyx2ULeNQtm8P7lmjhjOEWiW-MdYXbMMI',
+    appKey: 'EvXMp4vOR9bPgmH6NP7IRIt7',
+    placeholder: '看了那么久，说点什么呗',
+    avatar: 'identicon',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
