@@ -423,7 +423,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">10k</span>
+              <span title="本文字数">9.7k</span>
             </span>
           
 
@@ -435,7 +435,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">10 分钟</span>
+              <span title="阅读时长">9 分钟</span>
             </span>
           
 
@@ -456,7 +456,7 @@
       
         
           <p>昨天遇到一个非常奇怪的问题，在一个Service中使用<code>@Transactional</code>注解的一个方法无论如何都不能开启事务。项目用的是Springboot和Mybatis Plus，权限验证用的是Shiro。Service层的伪代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">    Member member = <span class="keyword">new</span> Member();</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">this</span>.save(member);</span><br><span class="line">    MemberMessage memberMessage = <span class="keyword">new</span> MemberMessage();</span><br><span class="line">    ... ...</span><br><span class="line">    memberMessageService.save(memberMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">void</span> <span class="title">register</span>(<span class="title">String</span> <span class="title">username</span>, <span class="title">String</span> <span class="title">password</span>) </span>&#123;</span><br><span class="line">    Member member = <span class="keyword">new</span> Member();</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">this</span>.save(member);</span><br><span class="line">    MemberMessage memberMessage = <span class="keyword">new</span> MemberMessage();</span><br><span class="line">    ... ...</span><br><span class="line">    memberMessageService.save(memberMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当memberMessage插入失败抛异常时，前面保存的member记录不会回滚。打断点发现，只要save(member)这行走完数据就直接插入，此时方法还没执行完，按道理事务应该还没提交，但是通过Navicat已经能够看到新增的记录了。怀疑是事务压根没开启，遂将<code>logging.level.root</code>日志等级改为DEBUG发现压根就没开启事务。</p>
           <!--noindex-->
@@ -843,7 +843,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.8k</span>
+              <span title="本文字数">2.6k</span>
             </span>
           
 
@@ -855,7 +855,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">3 分钟</span>
+              <span title="阅读时长">2 分钟</span>
             </span>
           
 
@@ -1130,7 +1130,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">1.1k</span>
+              <span title="本文字数">1k</span>
             </span>
           
 
@@ -1333,7 +1333,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8.1k</span>
+              <span title="本文字数">7.2k</span>
             </span>
           
 
@@ -1535,7 +1535,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">10k</span>
+              <span title="本文字数">9.1k</span>
             </span>
           
 
@@ -1547,7 +1547,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">9 分钟</span>
+              <span title="阅读时长">8 分钟</span>
             </span>
           
 
@@ -1737,7 +1737,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5.3k</span>
+              <span title="本文字数">5k</span>
             </span>
           
 
@@ -1939,7 +1939,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">7.3k</span>
+              <span title="本文字数">6.8k</span>
             </span>
           
 
@@ -1951,7 +1951,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">7 分钟</span>
+              <span title="阅读时长">6 分钟</span>
             </span>
           
 
@@ -2344,7 +2344,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">1.8k</span>
+              <span title="本文字数">1.6k</span>
             </span>
           
 
@@ -2356,7 +2356,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">2 分钟</span>
+              <span title="阅读时长">1 分钟</span>
             </span>
           
 
@@ -2764,14 +2764,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -2782,7 +2802,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

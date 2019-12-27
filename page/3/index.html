@@ -402,7 +402,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.9k</span>
+              <span title="本文字数">5.7k</span>
             </span>
           
 
@@ -414,7 +414,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">6 分钟</span>
+              <span title="阅读时长">5 分钟</span>
             </span>
           
 
@@ -633,12 +633,12 @@
         
           <p>公司有个落地页需要我们放在阿里云上，但是他们经常需要改动，我们每次都帮他们发布有些繁琐，索性弄一个FTP服务让他们自个上传去，按照百度的各种教程搭建了，虽然步骤简单但是过程中还是有不少小坑，看了好多个帖子才弄好了，国际惯例，记录学习过程；</p>
 <h2 id="一、安装："><a href="#一、安装：" class="headerlink" title="一、安装："></a>一、安装：</h2><p>直接使用yum方式安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install vsftpd</span><br><span class="line"></span><br><span class="line">相关操作：</span><br><span class="line"><span class="meta">#</span> 启动|停止|重启  </span><br><span class="line">service vsftpd start|stop|restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install vsftpd</span><br><span class="line"></span><br><span class="line">相关操作：</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动|停止|重启  </span></span><br><span class="line">service vsftpd start|stop|restart</span><br></pre></td></tr></table></figure>
 
 <p>添加用户：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">一般出于安全考虑，ftp用户是不允许登陆系统的，且只能访问自己主目录下的文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 先创建ftp根目录</span><br><span class="line">mkdir -p /home/ftp</span><br><span class="line"><span class="meta">#</span> 添加用户并指定目录和用户组，设置为不可登陆系统</span><br><span class="line">useradd -d /home/ftp/guitu -g ftp -s /sbin/nologin guitu</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> -d 命令是指定用户主目录</span><br><span class="line"><span class="meta">#</span> -g 是指定用户分组</span><br><span class="line"><span class="meta">#</span> -s /sbin/nologin 禁止用户登陆系统</span><br><span class="line"><span class="meta">#</span> guitu 新建ftp用户的用户名。</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 为用户 guitu 设置密码，按提示操作输入两次密码：</span><br><span class="line">passwd guitu</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">一般出于安全考虑，ftp用户是不允许登陆系统的，且只能访问自己主目录下的文件</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 先创建ftp根目录</span></span><br><span class="line">mkdir -p /home/ftp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加用户并指定目录和用户组，设置为不可登陆系统</span></span><br><span class="line">useradd -d /home/ftp/guitu -g ftp -s /sbin/nologin guitu</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> -d 命令是指定用户主目录</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -g 是指定用户分组</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -s /sbin/nologin 禁止用户登陆系统</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> guitu 新建ftp用户的用户名。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 为用户 guitu 设置密码，按提示操作输入两次密码：</span></span><br><span class="line">passwd guitu</span><br></pre></td></tr></table></figure>
 
-<h2 id="二、配置："><a href="#二、配置：" class="headerlink" title="二、配置："></a>二、配置：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 配置文件默认在 /etc/vsftpd/vsftpd.conf</span><br><span class="line"># 具体的配置项说明太多了，贴在最后，这里说一下在默认配置中需要修改的部分</span><br><span class="line"></span><br><span class="line"># 修改为NO，关闭匿名用户访问</span><br><span class="line">anonymous_enable=NO</span><br></pre></td></tr></table></figure>
+<h2 id="二、配置："><a href="#二、配置：" class="headerlink" title="二、配置："></a>二、配置：</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置文件默认在 /etc/vsftpd/vsftpd.conf</span></span><br><span class="line"><span class="comment"># 具体的配置项说明太多了，贴在最后，这里说一下在默认配置中需要修改的部分</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改为NO，关闭匿名用户访问</span></span><br><span class="line"><span class="attr">anonymous_enable</span>=<span class="string">NO</span></span><br></pre></td></tr></table></figure>
 
 <p>重启vsftpd服务，这时候使用ftp工具应该就能连接上了（比如FIleZilla），别忘记防火墙放行端口，ftp默认端口是21；<br>但是连上之后会发现<strong>刚添加的用户guitu能够跳到上一层目录，访问系统中其他的目录，guitu作为ftp用户组的成员，此时对于其他目录guitu是拥有着ftp用户组的权限的，这时候需要限制guitu只能访问其自身根目录</strong>；</p>
           <!--noindex-->
@@ -795,7 +795,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5.3k</span>
+              <span title="本文字数">5k</span>
             </span>
           
 
@@ -831,7 +831,7 @@
 <p>先要说一下的是，现在很多博客文档复制粘贴的太多了，我找的好多mailx的教程都是各种不能用，后面各种折腾终于配置成功后我决定要自己写一篇博文记录一下；</p>
 <h2 id="一、安装和配置mailx"><a href="#一、安装和配置mailx" class="headerlink" title="一、安装和配置mailx"></a>一、安装和配置mailx</h2><h4 id="首先需要安装mailx，yum安装方式非常简单"><a href="#首先需要安装mailx，yum安装方式非常简单" class="headerlink" title="首先需要安装mailx，yum安装方式非常简单"></a>首先需要安装mailx，yum安装方式非常简单</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mailx -y</span><br></pre></td></tr></table></figure>
 
-<h4 id="配置：配置文件默认是-etc-mail-rc"><a href="#配置：配置文件默认是-etc-mail-rc" class="headerlink" title="配置：配置文件默认是/etc/mail.rc"></a>配置：配置文件默认是/etc/mail.rc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mail.rc</span><br><span class="line"># 直接在文件末尾添加如下内容：</span><br><span class="line"></span><br><span class="line">    set ssl-verify=ignore</span><br><span class="line">    # 这里使用的是我服务器的默认位置，此处有个坑，下面会讲</span><br><span class="line">    set nss-config-dir=/etc/pki/nssdb</span><br><span class="line">    # 发送地址</span><br><span class="line">    set from=123456@qq.com</span><br><span class="line">    # 邮件服务商smtp服务地址</span><br><span class="line">    set smtp=smtps://smtp.qq.com:465</span><br><span class="line">    # 登陆邮箱，同上发送地址相同即可</span><br><span class="line">    set smtp-auth-user=123456@qq.com</span><br><span class="line">    # 邮箱登陆授权密码，不是登陆密码，SMTP服务通常都是授权码登陆，开通SMTP服务时会提供登陆授权码</span><br><span class="line">    # 具体怎么开通SMTP服务及获取授权码请自行百度，这里不作展开</span><br><span class="line">    set smtp-auth-password=abcabc</span><br><span class="line">    set smtp-auth=login</span><br></pre></td></tr></table></figure>
+<h4 id="配置：配置文件默认是-etc-mail-rc"><a href="#配置：配置文件默认是-etc-mail-rc" class="headerlink" title="配置：配置文件默认是/etc/mail.rc"></a>配置：配置文件默认是/etc/mail.rc</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">vim</span> <span class="string">/etc/mail.rc</span></span><br><span class="line"><span class="comment"># 直接在文件末尾添加如下内容：</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">set</span> <span class="string">ssl-verify=ignore</span></span><br><span class="line"><span class="comment">    # 这里使用的是我服务器的默认位置，此处有个坑，下面会讲</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">nss-config-dir=/etc/pki/nssdb</span></span><br><span class="line"><span class="comment">    # 发送地址</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">from=123456@qq.com</span></span><br><span class="line"><span class="comment">    # 邮件服务商smtp服务地址</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp=smtps://smtp.qq.com:465</span></span><br><span class="line"><span class="comment">    # 登陆邮箱，同上发送地址相同即可</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth-user=123456@qq.com</span></span><br><span class="line"><span class="comment">    # 邮箱登陆授权密码，不是登陆密码，SMTP服务通常都是授权码登陆，开通SMTP服务时会提供登陆授权码</span></span><br><span class="line"><span class="comment">    # 具体怎么开通SMTP服务及获取授权码请自行百度，这里不作展开</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth-password=abcabc</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth=login</span></span><br></pre></td></tr></table></figure>
 
 <p>正常来说，这么配置完成之后就可以使用mailx命令发送邮件了；</p>
 <h4 id="发送一封测试邮件："><a href="#发送一封测试邮件：" class="headerlink" title="发送一封测试邮件："></a>发送一封测试邮件：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mailx -vs "测试邮件" -a ./test.txt xianjian-mail@qq.com&lt;./test.txt</span><br><span class="line">命令参数说明：</span><br><span class="line">        -v 是显示发送过程</span><br><span class="line">        -s 是指定邮件主题</span><br><span class="line">        -a 是发送附件，后面是附件文件地址</span><br><span class="line">邮件地址后面的 &lt;./test.txt 是写入到邮件正文的文本文件地址，需要提前编辑好</span><br></pre></td></tr></table></figure>
@@ -989,7 +989,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.7k</span>
+              <span title="本文字数">4.6k</span>
             </span>
           
 
@@ -1187,7 +1187,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5k</span>
+              <span title="本文字数">4.6k</span>
             </span>
           
 
@@ -1199,7 +1199,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">5 分钟</span>
+              <span title="阅读时长">4 分钟</span>
             </span>
           
 
@@ -1391,7 +1391,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.3k</span>
+              <span title="本文字数">4k</span>
             </span>
           
 
@@ -1583,7 +1583,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8k</span>
+              <span title="本文字数">7.4k</span>
             </span>
           
 
@@ -1799,7 +1799,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.7k</span>
+              <span title="本文字数">4.5k</span>
             </span>
           
 
@@ -1999,7 +1999,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.6k</span>
+              <span title="本文字数">4k</span>
             </span>
           
 
@@ -2203,7 +2203,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8.9k</span>
+              <span title="本文字数">7.7k</span>
             </span>
           
 
@@ -2215,7 +2215,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">8 分钟</span>
+              <span title="阅读时长">7 分钟</span>
             </span>
           
 
@@ -2633,14 +2633,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -2651,7 +2671,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

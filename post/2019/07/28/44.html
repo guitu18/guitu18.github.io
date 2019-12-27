@@ -439,7 +439,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5.3k</span>
+              <span title="本文字数">5k</span>
             </span>
           
 
@@ -490,7 +490,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisSessionDao</span> <span class="keyword">extends</span> <span class="title">AbstractSessionDAO</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;session.redis.expireTime&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> expireTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Serializable <span class="title">doCreate</span><span class="params">(Session session)</span> </span>&#123;</span><br><span class="line">        Serializable sessionId = <span class="keyword">this</span>.generateSessionId(session);</span><br><span class="line">        <span class="keyword">this</span>.assignSessionId(session, sessionId);</span><br><span class="line">        redisTemplate.opsForValue().set(session.getId(), session, expireTime, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">return</span> sessionId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Session <span class="title">doReadSession</span><span class="params">(Serializable sessionId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sessionId == <span class="keyword">null</span> ? <span class="keyword">null</span> : (Session) redisTemplate.opsForValue().get(sessionId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Session session)</span> <span class="keyword">throws</span> UnknownSessionException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (session != <span class="keyword">null</span> &amp;&amp; session.getId() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            session.setTimeout(expireTime * <span class="number">1000</span>);</span><br><span class="line">            redisTemplate.opsForValue().set(session.getId(), session, expireTime, TimeUnit.SECONDS);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Session session)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (session != <span class="keyword">null</span> &amp;&amp; session.getId() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            redisTemplate.opsForValue().getOperations().delete(session.getId());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Collection&lt;Session&gt; <span class="title">getActiveSessions</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> redisTemplate.keys(<span class="string">"*"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>配置文件中添加上面用到的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">###redis连接配置</span><br><span class="line">spring.redis.host=localhost</span><br><span class="line">spring.redis.port=6379</span><br><span class="line">spring.redis.password=foobared</span><br><span class="line">### Session过期时间（秒）</span><br><span class="line">session.redis.expireTime=3600</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###redis连接配置</span></span><br><span class="line"><span class="meta">spring.redis.host</span>=<span class="string">localhost</span></span><br><span class="line"><span class="meta">spring.redis.port</span>=<span class="string">6379</span></span><br><span class="line"><span class="meta">spring.redis.password</span>=<span class="string">foobared</span></span><br><span class="line"><span class="comment">### Session过期时间（秒）</span></span><br><span class="line"><span class="meta">session.redis.expireTime</span>=<span class="string">3600</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="注入RedisSessionDao"><a href="#注入RedisSessionDao" class="headerlink" title="注入RedisSessionDao"></a>注入RedisSessionDao</h2><p>上面只是我们自己实现的管理Session的方式，现在需要将其注入SessionManager中，并设置过期时间等相关参数。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DefaultWebSessionManager <span class="title">defaultWebSessionManager</span><span class="params">(RedisSessionDao redisSessionDao)</span> </span>&#123;</span><br><span class="line">    DefaultWebSessionManager sessionManager = <span class="keyword">new</span> DefaultWebSessionManager();</span><br><span class="line">    sessionManager.setGlobalSessionTimeout(expireTime * <span class="number">1000</span>);</span><br><span class="line">    sessionManager.setDeleteInvalidSessions(<span class="keyword">true</span>);</span><br><span class="line">    sessionManager.setSessionDAO(redisSessionDao);</span><br><span class="line">    sessionManager.setSessionValidationSchedulerEnabled(<span class="keyword">true</span>);</span><br><span class="line">    sessionManager.setDeleteInvalidSessions(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改Cookie中的SessionId的key，默认为JSESSIONID，自定义名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    sessionManager.setSessionIdCookie(<span class="keyword">new</span> SimpleCookie(<span class="string">"JSESSIONID"</span>));</span><br><span class="line">    <span class="keyword">return</span> sessionManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1012,14 +1012,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -1030,7 +1050,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

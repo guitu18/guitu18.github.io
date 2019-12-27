@@ -430,7 +430,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">3.2k</span>
+              <span title="本文字数">2.8k</span>
             </span>
           
 
@@ -469,47 +469,47 @@
 
 <p><img src="https://img.guitu18.com/markdown/ff9aab35587983f7ea7f205e5c6cd70d.png" alt="img"> </p>
 <p><strong>3、授权和安装</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>添加用户，将使用该用户执行MySQL进程</span><br><span class="line">    useradd -s /bin/false -M mysql</span><br><span class="line"><span class="meta">#</span>修改MySQL目录权限</span><br><span class="line">    chown -R mysql:mysql /usr/local/mysql</span><br><span class="line"><span class="meta">#</span>安装并指定用户和data文件夹位置</span><br><span class="line">    /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data/ --user=mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">添加用户，将使用该用户执行MySQL进程</span></span><br><span class="line">    useradd -s /bin/false -M mysql</span><br><span class="line"><span class="meta">#</span><span class="bash">修改MySQL目录权限</span></span><br><span class="line">    chown -R mysql:mysql /usr/local/mysql</span><br><span class="line"><span class="meta">#</span><span class="bash">安装并指定用户和data文件夹位置</span></span><br><span class="line">    /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data/ --user=mysql</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
 
 <p>#看到如下界面说明成功，若出错请往下翻查看解决方法（依赖错误）<br><img src="https://img.guitu18.com/markdown/74701858bdebcce54ea218f4a83c1d94.png" alt="img"> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>更改所属用户和组，除了mysql目录下的data目录所属用户不变，其他所有文件的所属用户改回root</span><br><span class="line">    chown -R root /usr/local/mysql/</span><br><span class="line">    chown -R mysql /usr/local/mysql/data/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">更改所属用户和组，除了mysql目录下的data目录所属用户不变，其他所有文件的所属用户改回root</span></span><br><span class="line">    chown -R root /usr/local/mysql/</span><br><span class="line">    chown -R mysql /usr/local/mysql/data/</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://img.guitu18.com/markdown/300c80643039a58dbd2ef2c30290091f.png" alt="img"> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>拷贝配置文件，将mysql的配置文件拷贝为/etc/目录下的my.cnf，若提示已存在直接覆盖</span><br><span class="line">    cp /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf</span><br><span class="line"><span class="meta">#</span>拷贝启动程序，将mysql的启动程序拷贝到/etc/init.d/目录下</span><br><span class="line">    cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">拷贝配置文件，将mysql的配置文件拷贝为/etc/目录下的my.cnf，若提示已存在直接覆盖</span></span><br><span class="line">    cp /usr/local/mysql/support-files/my-medium.cnf /etc/my.cnf</span><br><span class="line"><span class="meta">#</span><span class="bash">拷贝启动程序，将mysql的启动程序拷贝到/etc/init.d/目录下</span></span><br><span class="line">    cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://img.guitu18.com/markdown/e857e972189b7259461091940704f972.png" alt="img"><br>#安装完成</p>
 <p><strong>4、启动和后期设置</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>启动服务</span><br><span class="line">    service mysqld start</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">启动服务</span></span><br><span class="line">    service mysqld start</span><br></pre></td></tr></table></figure>
 
 <p>#启动成功<br><img src="https://img.guitu18.com/markdown/bec9f4c829fe24ea6eddfa999f0fc542.png" alt="img"> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>测试连接</span><br><span class="line">    /usr/local/mysql/bin/mysql -uroot</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">测试连接</span></span><br><span class="line">    /usr/local/mysql/bin/mysql -uroot</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://img.guitu18.com/markdown/a3bbfbed9faa40d42f0995b85a8f1831.png" alt="img"> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>加入环境变量，编辑/etc/profile，这样可以在任何地方用mysql命令了</span><br><span class="line">    vim /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">加入环境变量，编辑/etc/profile，这样可以在任何地方用mysql命令了</span></span><br><span class="line">    vim /etc/profile</span><br></pre></td></tr></table></figure>
 
 <p>#在文件最一行加入以下内容<br>export PATH=$PATH:/usr/local/mysql/bin<br><img src="https://img.guitu18.com/markdown/d6c6cfda14fe4340c34de9f3976db9ad.png" alt="img"></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>保存之后执行source重新加载环境变量</span><br><span class="line">    source /etc/profile</span><br><span class="line"><span class="meta">#</span>首次修改密码</span><br><span class="line">    mysqladmin -u'root' password 'PassWord'</span><br><span class="line"><span class="meta">#</span>之后修改密码</span><br><span class="line">     mysqladmin -u'root' -p'PassWord' password 'NewPassWord'</span><br><span class="line">    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">保存之后执行<span class="built_in">source</span>重新加载环境变量</span></span><br><span class="line">    source /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">首次修改密码</span></span><br><span class="line">    mysqladmin -u'root' password 'PassWord'</span><br><span class="line"><span class="meta">#</span><span class="bash">之后修改密码</span></span><br><span class="line">     mysqladmin -u'root' -p'PassWord' password 'NewPassWord'</span><br><span class="line">    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');</span><br></pre></td></tr></table></figure>
 
 <p><strong>#设置数据库表名不区分大小写（这个常用配置不要忘记），编辑 my.conf</strong><br>    <code>vim /etc/my.cnf</code><br>    #加入以下内容<br>    <code>lower_case_table_names = 1</code><br>    重启MySQL生效<br><img src="https://img.guitu18.com/markdown/5c59ccb21de7a699cb989a46674fdcdd.png" alt="img"></p>
 <p><strong>5、常用命令</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>启动</span><br><span class="line">    service mysqld start</span><br><span class="line"><span class="meta">#</span>关闭</span><br><span class="line">    service mysqld stop</span><br><span class="line"><span class="meta">#</span>重新启动</span><br><span class="line">    service mysqld restart</span><br><span class="line"><span class="meta">#</span>查看运行状态</span><br><span class="line">    service mysqld status</span><br><span class="line"><span class="meta">#</span>允许远程用户登录访问（登入mysql后操作）</span><br><span class="line">    grant all on *.* to 'root'@'%' identified by '123' with grant option;</span><br><span class="line"><span class="meta">#</span>刷新权限（登入mysql后操作）</span><br><span class="line">    flush privileges;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line">    service mysqld start</span><br><span class="line"><span class="meta">#</span><span class="bash">关闭</span></span><br><span class="line">    service mysqld stop</span><br><span class="line"><span class="meta">#</span><span class="bash">重新启动</span></span><br><span class="line">    service mysqld restart</span><br><span class="line"><span class="meta">#</span><span class="bash">查看运行状态</span></span><br><span class="line">    service mysqld status</span><br><span class="line"><span class="meta">#</span><span class="bash">允许远程用户登录访问（登入mysql后操作）</span></span><br><span class="line">    grant all on *.* to 'root'@'%' identified by '123' with grant option;</span><br><span class="line"><span class="meta">#</span><span class="bash">刷新权限（登入mysql后操作）</span></span><br><span class="line">    flush privileges;</span><br></pre></td></tr></table></figure>
 
 <p><strong>6、安装时遇到错误：</strong><br>错误1：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> ./scripts/mysql_install_db –user=mysql –datadir=/usr/local/mysql/data/mysql</span><br><span class="line">FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:</span><br><span class="line">Data:: Dumper</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./scripts/mysql_install_db –user=mysql –datadir=/usr/<span class="built_in">local</span>/mysql/data/mysql</span></span><br><span class="line">FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:</span><br><span class="line">Data:: Dumper</span><br></pre></td></tr></table></figure>
 
 <p>解决：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install autoconf</span><br></pre></td></tr></table></figure>
 
 <p>错误2：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> ./scripts/mysql_install_db –user=mysql –datadir=/usr/local/mysql/data/mysql</span><br><span class="line">Installing MySQL system tables…./bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./scripts/mysql_install_db –user=mysql –datadir=/usr/<span class="built_in">local</span>/mysql/data/mysql</span></span><br><span class="line">Installing MySQL system tables…./bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
 
 <p>解决：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y libaio</span><br></pre></td></tr></table></figure>
 
 <p><strong>7、MySQL添加开机自启动</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 1、将服务文件拷贝到init.d下，并重命名为mysqld</span><br><span class="line">    cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line"><span class="meta">#</span> 2、赋予可执行权限</span><br><span class="line">    chmod +x /etc/init.d/mysqld</span><br><span class="line"><span class="meta">#</span> 3、添加服务</span><br><span class="line">    chkconfig --add mysqld</span><br><span class="line"><span class="meta">#</span> 4、显示服务列表</span><br><span class="line">    chkconfig --list</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1、将服务文件拷贝到init.d下，并重命名为mysqld</span></span><br><span class="line">    cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2、赋予可执行权限</span></span><br><span class="line">    chmod +x /etc/init.d/mysqld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 3、添加服务</span></span><br><span class="line">    chkconfig --add mysqld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 4、显示服务列表</span></span><br><span class="line">    chkconfig --list</span><br></pre></td></tr></table></figure>
 
 <p>如果看到mysql的服务，并且3,4,5都是on的话则成功，如果是off，则键入<br>chkconfig –level 345 mysqld on</p>
 <p><strong>8、创建用户和表并授权</strong></p>
@@ -981,14 +981,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -999,7 +1019,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

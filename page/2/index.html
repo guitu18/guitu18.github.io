@@ -409,7 +409,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">240</span>
+              <span title="本文字数">226</span>
             </span>
           
 
@@ -598,7 +598,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8.8k</span>
+              <span title="本文字数">7.3k</span>
             </span>
           
 
@@ -610,7 +610,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">8 分钟</span>
+              <span title="阅读时长">7 分钟</span>
             </span>
           
 
@@ -786,7 +786,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">9.2k</span>
+              <span title="本文字数">7.6k</span>
             </span>
           
 
@@ -798,7 +798,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">8 分钟</span>
+              <span title="阅读时长">7 分钟</span>
             </span>
           
 
@@ -1011,7 +1011,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">9.7k</span>
+              <span title="本文字数">9k</span>
             </span>
           
 
@@ -1023,7 +1023,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">9 分钟</span>
+              <span title="阅读时长">8 分钟</span>
             </span>
           
 
@@ -1237,7 +1237,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5.1k</span>
+              <span title="本文字数">4.6k</span>
             </span>
           
 
@@ -1249,7 +1249,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">5 分钟</span>
+              <span title="阅读时长">4 分钟</span>
             </span>
           
 
@@ -1451,7 +1451,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">22k</span>
+              <span title="本文字数">19k</span>
             </span>
           
 
@@ -1463,7 +1463,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">20 分钟</span>
+              <span title="阅读时长">17 分钟</span>
             </span>
           
 
@@ -1693,16 +1693,16 @@
           
             <p>关于SpringBoot使用this.class.getResource()获取文件时遇(cu)到(xin)的(da)坑(yi)，这里记录一下。</p>
 <p>在使用Springboot开发本博客系统时，在resource目录下增加了一些配置文件，代码中需要读取这些文件，故使用了<code>this.getClass().getResource()</code>获取这些文件。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String path = <span class="keyword">this</span>.class.getResource(<span class="string">"/config/xxx.properties"</span>).getPath();</span><br><span class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(path));</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String path = this.class.getResource("/config/xxx.properties").getPath();</span><br><span class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(path));</span><br></pre></td></tr></table></figure>
 
 <p>在IDE工具中开发及Debug时一切都正常，但是打成Jar包发布到线上时就会出现java.io.FileNotFoundException</p>
 <p>报错很直白的告诉我们是因为文件不存在，仔细检查了文件及代码，而且也确认在IDE工具中一切正常，而且也将打成的Jar包解压确认文件确实打包进去了。</p>
 <p>那么为什么会导致打成Jar包就会找不到文件呢？后面仔细查看具体的报错信息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.FileNotFoundException: file:\E:\repo\guitu-blog\target\guitu-blog-<span class="number">1.0</span>.0-SNAPSHOT.jar!\BOOT-INF\classes!\config\xxx.properties</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.FileNotFoundException: file:\E:\repo\guitu-blog\target\guitu-blog-<span class="number">1.0</span><span class="number">.0</span>-SNAPSHOT.jar!\BOOT-INF\classes!\config\xxx.properties</span><br></pre></td></tr></table></figure>
 
 <p>检查路径发现在磁盘确实不存在这样一条路径，因为路径从 <code>...\guitu-blog-1.0.0-SNAPSHOT.jar\...</code>开始，后面的文件路径都是打到Jar包中的，磁盘没有后面 <code>...\BOOT-INF\classes!\config\xxx\xxx.properties</code>这样的目录；</p>
 <p>在Jar包中的文件在磁盘是没有实际路径的，所以通过这时候可以通过 <code>this.getClass().getResource()</code> 无法获取文件。<br>此时可以通过 <code>this.getClass().getResourceAsStream(&quot;/config/xxx.properties&quot;)</code> 能够正常获取到文件流。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream is = ComController.class.getResourceAsStream(<span class="string">"/config/xxx.properties"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream is = ComController.class.getResourceAsStream("/config/xxx.properties");</span><br></pre></td></tr></table></figure>
 
 <p>同理 <code>this.getClass().getClassLoader().getResourceAsStream(&quot;config/xxx.properties&quot;)</code> 也能够获取到文件流。</p>
 <p>注意这两种方式获取流时传入的参数，一个以 <code>&quot;/&quot;</code> 开头，一个不是以 <code>&quot;/&quot;</code> ，具体的区别请查阅我的另一篇博客 <a href="http://www.guitu18.com/se/java/2019-02-22/29.html">关于获取资源文件，Class.getResource 和 ClassLoader.getResource 的区别</a>。</p>
@@ -1853,7 +1853,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.2k</span>
+              <span title="本文字数">3.9k</span>
             </span>
           
 
@@ -2057,7 +2057,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">1k</span>
+              <span title="本文字数">988</span>
             </span>
           
 
@@ -2248,7 +2248,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">13k</span>
+              <span title="本文字数">10k</span>
             </span>
           
 
@@ -2260,7 +2260,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">12 分钟</span>
+              <span title="阅读时长">9 分钟</span>
             </span>
           
 
@@ -2296,7 +2296,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. Proxy其实就是根据传递给它的参数Class&lt;?&gt;[] interfaces去生成代理类$Proxy0；  </span><br><span class="line"><span class="number">2</span>. 用ClassLoader loader去加载生成的这个代理类$Proxy0，然后返回$Proxy0实例的引用；</span><br></pre></td></tr></table></figure>
 
 <p>现在一步步来做，在Proxy中，我们大致可以细分为4步：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 动态生成代理类的源代码.java文件，并写入到磁盘；</span><br><span class="line"><span class="number">2</span>. 把生成的.java文件编译成.class文件；</span><br><span class="line"><span class="number">3</span>. 把编译的.class文件加载到JVM；</span><br><span class="line"><span class="number">4</span>. 返回动态生成的代理对象；</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 动态生成代理类的源代码.java文件，并写入到磁盘；</span><br><span class="line"><span class="number">2</span>. 把生成的.java文件编译成<span class="class">.<span class="keyword">class</span>文件；</span></span><br><span class="line"><span class="class">3. 把编译的.<span class="title">class</span>文件加载到<span class="title">JVM</span>；</span></span><br><span class="line"><span class="class">4. 返回动态生成的代理对象；</span></span><br></pre></td></tr></table></figure>
 
 <p>那么GuituDynamicProxy类完成后的代码如下（相当于Proxy）：</p>
           <!--noindex-->
@@ -2683,14 +2683,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -2701,7 +2721,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

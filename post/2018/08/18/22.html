@@ -420,7 +420,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5.3k</span>
+              <span title="本文字数">5k</span>
             </span>
           
 
@@ -455,7 +455,7 @@
 <p>先要说一下的是，现在很多博客文档复制粘贴的太多了，我找的好多mailx的教程都是各种不能用，后面各种折腾终于配置成功后我决定要自己写一篇博文记录一下；</p>
 <h2 id="一、安装和配置mailx"><a href="#一、安装和配置mailx" class="headerlink" title="一、安装和配置mailx"></a>一、安装和配置mailx</h2><h4 id="首先需要安装mailx，yum安装方式非常简单"><a href="#首先需要安装mailx，yum安装方式非常简单" class="headerlink" title="首先需要安装mailx，yum安装方式非常简单"></a>首先需要安装mailx，yum安装方式非常简单</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mailx -y</span><br></pre></td></tr></table></figure>
 
-<h4 id="配置：配置文件默认是-etc-mail-rc"><a href="#配置：配置文件默认是-etc-mail-rc" class="headerlink" title="配置：配置文件默认是/etc/mail.rc"></a>配置：配置文件默认是/etc/mail.rc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mail.rc</span><br><span class="line"># 直接在文件末尾添加如下内容：</span><br><span class="line"></span><br><span class="line">    set ssl-verify=ignore</span><br><span class="line">    # 这里使用的是我服务器的默认位置，此处有个坑，下面会讲</span><br><span class="line">    set nss-config-dir=/etc/pki/nssdb</span><br><span class="line">    # 发送地址</span><br><span class="line">    set from=123456@qq.com</span><br><span class="line">    # 邮件服务商smtp服务地址</span><br><span class="line">    set smtp=smtps://smtp.qq.com:465</span><br><span class="line">    # 登陆邮箱，同上发送地址相同即可</span><br><span class="line">    set smtp-auth-user=123456@qq.com</span><br><span class="line">    # 邮箱登陆授权密码，不是登陆密码，SMTP服务通常都是授权码登陆，开通SMTP服务时会提供登陆授权码</span><br><span class="line">    # 具体怎么开通SMTP服务及获取授权码请自行百度，这里不作展开</span><br><span class="line">    set smtp-auth-password=abcabc</span><br><span class="line">    set smtp-auth=login</span><br></pre></td></tr></table></figure>
+<h4 id="配置：配置文件默认是-etc-mail-rc"><a href="#配置：配置文件默认是-etc-mail-rc" class="headerlink" title="配置：配置文件默认是/etc/mail.rc"></a>配置：配置文件默认是/etc/mail.rc</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">vim</span> <span class="string">/etc/mail.rc</span></span><br><span class="line"><span class="comment"># 直接在文件末尾添加如下内容：</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">set</span> <span class="string">ssl-verify=ignore</span></span><br><span class="line"><span class="comment">    # 这里使用的是我服务器的默认位置，此处有个坑，下面会讲</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">nss-config-dir=/etc/pki/nssdb</span></span><br><span class="line"><span class="comment">    # 发送地址</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">from=123456@qq.com</span></span><br><span class="line"><span class="comment">    # 邮件服务商smtp服务地址</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp=smtps://smtp.qq.com:465</span></span><br><span class="line"><span class="comment">    # 登陆邮箱，同上发送地址相同即可</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth-user=123456@qq.com</span></span><br><span class="line"><span class="comment">    # 邮箱登陆授权密码，不是登陆密码，SMTP服务通常都是授权码登陆，开通SMTP服务时会提供登陆授权码</span></span><br><span class="line"><span class="comment">    # 具体怎么开通SMTP服务及获取授权码请自行百度，这里不作展开</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth-password=abcabc</span></span><br><span class="line">    <span class="attr">set</span> <span class="string">smtp-auth=login</span></span><br></pre></td></tr></table></figure>
 
 <p>正常来说，这么配置完成之后就可以使用mailx命令发送邮件了；</p>
 <h4 id="发送一封测试邮件："><a href="#发送一封测试邮件：" class="headerlink" title="发送一封测试邮件："></a>发送一封测试邮件：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mailx -vs "测试邮件" -a ./test.txt xianjian-mail@qq.com&lt;./test.txt</span><br><span class="line">命令参数说明：</span><br><span class="line">        -v 是显示发送过程</span><br><span class="line">        -s 是指定邮件主题</span><br><span class="line">        -a 是发送附件，后面是附件文件地址</span><br><span class="line">邮件地址后面的 &lt;./test.txt 是写入到邮件正文的文本文件地址，需要提前编辑好</span><br></pre></td></tr></table></figure>
@@ -974,14 +974,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -992,7 +1012,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

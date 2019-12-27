@@ -420,7 +420,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5k</span>
+              <span title="本文字数">4.6k</span>
             </span>
           
 
@@ -432,7 +432,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">5 分钟</span>
+              <span title="阅读时长">4 分钟</span>
             </span>
           
 
@@ -471,13 +471,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r-- 1 root root 1080 Aug  7 23:07 authz</span><br><span class="line">-rw-r--r-- 1 root root  309 Aug  7 23:07 passwd</span><br><span class="line">-rw-r--r-- 1 root root 3090 Aug  7 23:07 svnserve.conf</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>authz：用户权限的配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 这里是别名，和分组功能类似，这里就不演示</span><br><span class="line">[aliases]</span><br><span class="line"># 用户分组，比如管理员，开发者，普通员工</span><br><span class="line">[groups]</span><br><span class="line">admin = user1,user2</span><br><span class="line">developer = user3,user4</span><br><span class="line">employee = user5,user6</span><br><span class="line"></span><br><span class="line"># 目录权限，这里配置的repo根目录，目录分级设置不同的权限也是支持的，多配置几个即可</span><br><span class="line"># 格式 用户 = 权限  r:只读，rw读写； 单个用户直接使用用户名，分组在组名前面加&quot;@&quot;</span><br><span class="line">[repo:/]</span><br><span class="line">@admin = rw</span><br><span class="line">@developer = rw</span><br><span class="line">@employee = r</span><br><span class="line">user7 = rw</span><br><span class="line">user8 = r</span><br><span class="line"># 这里配置的是admin和developer分组拥有读写权限，employee分组仅拥有读权限，用户7和8同理</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里是别名，和分组功能类似，这里就不演示</span></span><br><span class="line"><span class="attr">[aliases]</span></span><br><span class="line"><span class="comment"># 用户分组，比如管理员，开发者，普通员工</span></span><br><span class="line"><span class="attr">[groups]</span></span><br><span class="line"><span class="attr">admin</span> = <span class="string">user1,user2</span></span><br><span class="line"><span class="attr">developer</span> = <span class="string">user3,user4</span></span><br><span class="line"><span class="attr">employee</span> = <span class="string">user5,user6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 目录权限，这里配置的repo根目录，目录分级设置不同的权限也是支持的，多配置几个即可</span></span><br><span class="line"><span class="comment"># 格式 用户 = 权限  r:只读，rw读写； 单个用户直接使用用户名，分组在组名前面加"@"</span></span><br><span class="line"><span class="meta">[repo</span>:<span class="string">/]</span></span><br><span class="line"><span class="meta">@admin</span> = <span class="string">rw</span></span><br><span class="line"><span class="meta">@developer</span> = <span class="string">rw</span></span><br><span class="line"><span class="meta">@employee</span> = <span class="string">r</span></span><br><span class="line"><span class="attr">user7</span> = <span class="string">rw</span></span><br><span class="line"><span class="attr">user8</span> = <span class="string">r</span></span><br><span class="line"><span class="comment"># 这里配置的是admin和developer分组拥有读写权限，employee分组仅拥有读权限，用户7和8同理</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>passwd：用户密码的配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#这个很简单，就是用户名=密码的格式，密码是明文</span><br><span class="line">[users]</span><br><span class="line">user1=user</span><br><span class="line">user2=user</span><br><span class="line">user3=user</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这个很简单，就是用户名=密码的格式，密码是明文</span></span><br><span class="line"><span class="attr">[users]</span></span><br><span class="line"><span class="attr">user1</span>=<span class="string">user</span></span><br><span class="line"><span class="attr">user2</span>=<span class="string">user</span></span><br><span class="line"><span class="attr">user3</span>=<span class="string">user</span></span><br><span class="line"><span class="attr">...</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>svnserve.conf：SVN服务进程的配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 配置文件默认全部都是注释掉的，我们把前面4个注释打开，修改第一个匿名用户权限为none</span><br><span class="line">[general]</span><br><span class="line">anon-access = none      #匿名用户无权访问</span><br><span class="line">auth-access = write     #认证用户可读写</span><br><span class="line">password-db = passwd    #指定用户认证密码文件</span><br><span class="line">authz-db = authz        #指定权限配置文件</span><br><span class="line"># realm = My First Repository</span><br><span class="line"># force-username-case = none</span><br><span class="line">[sasl]</span><br><span class="line"># use-sasl = true</span><br><span class="line"># min-encryption = 0</span><br><span class="line"># max-encryption = 256</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置文件默认全部都是注释掉的，我们把前面4个注释打开，修改第一个匿名用户权限为none</span></span><br><span class="line"><span class="attr">[general]</span></span><br><span class="line"><span class="meta">anon-access</span> = <span class="string">none      #匿名用户无权访问</span></span><br><span class="line"><span class="meta">auth-access</span> = <span class="string">write     #认证用户可读写</span></span><br><span class="line"><span class="meta">password-db</span> = <span class="string">passwd    #指定用户认证密码文件</span></span><br><span class="line"><span class="meta">authz-db</span> = <span class="string">authz        #指定权限配置文件</span></span><br><span class="line"><span class="comment"># realm = My First Repository</span></span><br><span class="line"><span class="comment"># force-username-case = none</span></span><br><span class="line"><span class="attr">[sasl]</span></span><br><span class="line"><span class="comment"># use-sasl = true</span></span><br><span class="line"><span class="comment"># min-encryption = 0</span></span><br><span class="line"><span class="comment"># max-encryption = 256</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动SVN服务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 参数说明： -d 服务后台运行 -r 指定工作目录，只需要指定到根目录，不能指定仓库名；</span></span><br><span class="line">svnserve -d -r /var/svn</span><br></pre></td></tr></table></figure>
@@ -509,7 +509,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd/conf.d/subversion.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置如下内容</span></span><br><span class="line">LoadModule dav_svn_module modules/mod_dav_svn.so</span><br><span class="line">LoadModule authz_svn_module modules/mod_authz_svn.so</span><br><span class="line"><span class="meta">#</span><span class="bash">这里的路径是访问SVN的上下文路径</span></span><br><span class="line">&lt;Location /svn&gt;</span><br><span class="line">    DAV svn</span><br><span class="line">    # SVN根目录，不带仓库名</span><br><span class="line">    SVNParentPath /var/www/svn</span><br><span class="line">    # 认证类型</span><br><span class="line">    AuthType Basic</span><br><span class="line">    # 登陆时提示内容</span><br><span class="line">    AuthName "subversion login"</span><br><span class="line">    # 用户密码配置文件</span><br><span class="line">    AuthUserFile /var/www/svn/passwd</span><br><span class="line">    # 用户权限配置文件</span><br><span class="line">    AuthzSVNAccessFile /var/www/svn/authz</span><br><span class="line">    # 认证成功的用户可以访问</span><br><span class="line">    Require valid-user</span><br><span class="line">&lt;/Location&gt;</span><br></pre></td></tr></table></figure>
 
 <p>如果服务器配置了多个虚拟主机，那么虚拟主机配置文件如下<br>默认路径 vim /etc/httpd/conf.d/subversion.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    # 虚拟主机的域名</span><br><span class="line">    ServerName ecs.guitu18.com</span><br><span class="line">    ServerAlias ecs.guitu18.com</span><br><span class="line"></span><br><span class="line">    LoadModule dav_svn_module modules/mod_dav_svn.so</span><br><span class="line">    LoadModule authz_svn_module modules/mod_authz_svn.so</span><br><span class="line">    # 这里和配置虚拟路径一样</span><br><span class="line">    &lt;Location /&gt;</span><br><span class="line">        DAV svn</span><br><span class="line">        SVNParentPath /var/www/svn</span><br><span class="line">        AuthType Basic</span><br><span class="line">        AuthName &quot;subversion login&quot;</span><br><span class="line">        AuthUserFile /var/www/svn/passwd</span><br><span class="line">        AuthzSVNAccessFile /var/www/svn/authz</span><br><span class="line">        Require valid-user</span><br><span class="line">    &lt;/Location&gt;</span><br><span class="line"></span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;VirtualHost</span> <span class="string">*:80&gt;</span></span><br><span class="line"><span class="comment">    # 虚拟主机的域名</span></span><br><span class="line">    <span class="attr">ServerName</span> <span class="string">ecs.guitu18.com</span></span><br><span class="line">    <span class="attr">ServerAlias</span> <span class="string">ecs.guitu18.com</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">LoadModule</span> <span class="string">dav_svn_module modules/mod_dav_svn.so</span></span><br><span class="line">    <span class="attr">LoadModule</span> <span class="string">authz_svn_module modules/mod_authz_svn.so</span></span><br><span class="line"><span class="comment">    # 这里和配置虚拟路径一样</span></span><br><span class="line">    <span class="meta">&lt;Location</span> <span class="string">/&gt;</span></span><br><span class="line">        <span class="attr">DAV</span> <span class="string">svn</span></span><br><span class="line">        <span class="attr">SVNParentPath</span> <span class="string">/var/www/svn</span></span><br><span class="line">        <span class="attr">AuthType</span> <span class="string">Basic</span></span><br><span class="line">        <span class="attr">AuthName</span> <span class="string">"subversion login"</span></span><br><span class="line">        <span class="attr">AuthUserFile</span> <span class="string">/var/www/svn/passwd</span></span><br><span class="line">        <span class="attr">AuthzSVNAccessFile</span> <span class="string">/var/www/svn/authz</span></span><br><span class="line">        <span class="attr">Require</span> <span class="string">valid-user</span></span><br><span class="line">    <span class="attr">&lt;/Location&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">&lt;/VirtualHost&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动服务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 对/var/www/svn授权apache完全访问</span></span><br><span class="line">chown -R apache:apache /var/www/svn/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动Apache</span></span><br><span class="line">service httpd start</span><br></pre></td></tr></table></figure>
@@ -1013,14 +1013,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -1031,7 +1051,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 

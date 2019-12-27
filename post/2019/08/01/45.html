@@ -438,7 +438,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">10k</span>
+              <span title="本文字数">9.1k</span>
             </span>
           
 
@@ -450,7 +450,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">9 分钟</span>
+              <span title="阅读时长">8 分钟</span>
             </span>
           
 
@@ -488,7 +488,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addDefaultFilters</span><span class="params">(<span class="keyword">boolean</span> init)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (DefaultFilter defaultFilter : DefaultFilter.values()) &#123;</span><br><span class="line">        addFilter(defaultFilter.name(), defaultFilter.newInstance(), init, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这里用枚举列出了所有Shiro内置过滤器的实例。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> DefaultFilter &#123;</span><br><span class="line">    anon(AnonymousFilter.class),</span><br><span class="line">    authc(FormAuthenticationFilter.class),</span><br><span class="line">    authcBasic(BasicHttpAuthenticationFilter.class),</span><br><span class="line">    logout(LogoutFilter.class),</span><br><span class="line">    noSessionCreation(NoSessionCreationFilter.class),</span><br><span class="line">    perms(PermissionsAuthorizationFilter.class),</span><br><span class="line">    port(PortFilter.class),</span><br><span class="line">    rest(HttpMethodPermissionFilter.class),</span><br><span class="line">    roles(RolesAuthorizationFilter.class),</span><br><span class="line">    ssl(SslFilter.class),</span><br><span class="line">    user(UserFilter.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> DefaultFilter &#123;</span><br><span class="line">    anon(AnonymousFilter<span class="class">.<span class="keyword">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">authc</span>(<span class="title">FormAuthenticationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">authcBasic</span>(<span class="title">BasicHttpAuthenticationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">logout</span>(<span class="title">LogoutFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">noSessionCreation</span>(<span class="title">NoSessionCreationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">perms</span>(<span class="title">PermissionsAuthorizationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">port</span>(<span class="title">PortFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">rest</span>(<span class="title">HttpMethodPermissionFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">roles</span>(<span class="title">RolesAuthorizationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">ssl</span>(<span class="title">SslFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">user</span>(<span class="title">UserFilter</span>.<span class="title">class</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以上代码有省略，上面列出的枚举类型正好对应Shiro第一篇提到的Shiro内置的一些过滤器，这些过滤器正好是在这里初始化并添加到过滤器执行链中的，每个过滤器都有不同的功能，我们常用的其实只有前面两个。</p>
 <p><img src="https://img.guitu18.com/markdown/366cb549e791ca422da6f1ebf626750b.png" alt="img"></p>
@@ -1034,14 +1034,34 @@
   <span class="author" itemprop="copyrightHolder">Guitu</span>
 
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">204k</span>
+      <span class="post-meta-divider">|</span>
+      <!-- Run Time -->
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+          var now = new Date();
+          function createTime() {
+              var grt= new Date("2018-03-05 08:58:41");
+              now.setTime(now.getTime()+250);
+              days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+              hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+              if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+              mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+              seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+              snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+              document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 ";
+              document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+          }
+          setInterval("createTime()",250);
+      </script>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-area-chart"></i>
+      </span>
+      
+        <span class="post-meta-item-text">站点总字数：</span>
+      
+      <span title="站点总字数">181k</span>
   
 
   
@@ -1052,7 +1072,7 @@
     
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     
-    <span title="站点阅读时长">3:06</span>
+    <span title="站点阅读时长">2:45</span>
   
 </div>
 
