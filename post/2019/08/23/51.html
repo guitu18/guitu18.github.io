@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,19 @@
 </script>
 
   <meta name="description" content="项目加入MongoDB支持，今天第一次用到，学新东西要做笔记。  MongoDB Version：3.4.6spring-data-mongodb Version：1.10.23.RELEASE  org.springframework.data.mongodb.core.query.Criteria    Criteria Mongodb 说明 示例    Criteria and (Strin">
-<meta name="keywords" content="数据库,MongoDB,查询">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MongoDB初体验：Spring中使用MongoTemplate查询数据">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/08/23/51.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="项目加入MongoDB支持，今天第一次用到，学新东西要做笔记。  MongoDB Version：3.4.6spring-data-mongodb Version：1.10.23.RELEASE  org.springframework.data.mongodb.core.query.Criteria    Criteria Mongodb 说明 示例    Criteria and (Strin">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-20T10:55:29.643Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-23T13:07:24.000Z">
+<meta property="article:modified_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MongoDB">
+<meta property="article:tag" content="查询">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MongoDB初体验：Spring中使用MongoTemplate查询数据">
-<meta name="twitter:description" content="项目加入MongoDB支持，今天第一次用到，学新东西要做笔记。  MongoDB Version：3.4.6spring-data-mongodb Version：1.10.23.RELEASE  org.springframework.data.mongodb.core.query.Criteria    Criteria Mongodb 说明 示例    Criteria and (Strin">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/08/23/51.html">
 
@@ -149,14 +151,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -223,13 +225,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -359,8 +361,11 @@
 <p>一些常用的查询示例，做个简单的笔记</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SQL: name not like '张%'</span></span><br><span class="line">Criteria.where(<span class="string">"name"</span>).regex(Pattern.compile(<span class="string">"^张.*$"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: interest like '%球%'</span></span><br><span class="line">Criteria.where(<span class="string">"interest"</span>).regex(Pattern.compile(<span class="string">"^.*球.*$"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: address not like '浙江%'</span></span><br><span class="line">Criteria.where(<span class="string">"address"</span>).not().regex(Pattern.compile(<span class="string">"^.*浙江.*$"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: interest not null and interest != '' and interest = '无'</span></span><br><span class="line">Criteria.where(<span class="string">"interest"</span>).is(<span class="keyword">null</span>).is(<span class="string">""</span>).is(<span class="string">"无"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: interest = '户外' or interest = '阅读' or interest = '音乐'</span></span><br><span class="line"><span class="keyword">new</span> Criteria().orOperator(</span><br><span class="line">    Criteria.where(<span class="string">"interest"</span>).is(<span class="string">"户外"</span>), </span><br><span class="line">    Criteria.where(<span class="string">"interest"</span>).is(<span class="string">"阅读"</span>), </span><br><span class="line">    Criteria.where(<span class="string">"interest"</span>).is(<span class="string">"音乐"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: (address like '%杭州%' and sex = 1) or (address like '%苏州%' and sex = 0)</span></span><br><span class="line"><span class="keyword">new</span> Criteria().orOperator(</span><br><span class="line">    Criteria.where(<span class="string">"address"</span>).regex(Pattern.compile(<span class="string">"^.*杭州.*$"</span>)).and(<span class="string">"sex"</span>).is(<span class="number">1</span>),</span><br><span class="line">    Criteria.where(<span class="string">"address"</span>).regex(Pattern.compile(<span class="string">"^.*苏州.*$"</span>)).and(<span class="string">"sex"</span>).is(<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SQL: (interest = '户外' and sex = 0) or (interest = '音乐' and sex = 1)</span></span><br><span class="line"><span class="keyword">new</span> Criteria().orOperator(</span><br><span class="line">    <span class="keyword">new</span> Criteria().andOperator(Criteria.where(<span class="string">"interest"</span>).is(<span class="string">"户外"</span>), Criteria.where(<span class="string">"sex"</span>).is(<span class="number">0</span>)),</span><br><span class="line">    <span class="keyword">new</span> Criteria().andOperator(Criteria.where(<span class="string">"interest"</span>).is(<span class="string">"音乐"</span>), Criteria.where(<span class="string">"sex"</span>).is(<span class="number">1</span>)));</span><br></pre></td></tr></table></figure>
 
+
+
 <p>org.springframework.data.mongodb.core.query.Query<br>org.springframework.data.mongodb.core.MongoTemplate</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Query query = <span class="keyword">new</span> Query();</span><br><span class="line">query.addCriteria(criteria);</span><br><span class="line">query.skip(current);</span><br><span class="line">query.limit(size);</span><br><span class="line">query.with(<span class="keyword">new</span> Sort(Sort.Direction.DESC, <span class="string">"createTime"</span>));</span><br><span class="line">List&lt;Customer&gt; list = <span class="keyword">this</span>.mongoTemplate.find(query, Customer<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"><span class="keyword">long</span> count = <span class="keyword">this</span>.mongoTemplate.count(query, Customer<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+
 
 
     </div>
@@ -391,9 +396,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/数据库/" rel="tag"># 数据库</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
               <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
-              <a href="/tags/查询/" rel="tag"># 查询</a>
+              <a href="/tags/%E6%9F%A5%E8%AF%A2/" rel="tag"># 查询</a>
           </div>
 
         
@@ -487,13 +492,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -565,14 +570,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -615,9 +620,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

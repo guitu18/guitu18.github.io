@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,20 @@
 </script>
 
   <meta name="description" content="ava中的动态代理设计模式是非常经典且非常重要的设计模式之一，在感叹设计者的天才设计至于，我们想去探究一下这个设计模式是如何来实现的； 著名的spring框架的AOP的原理就是Java的动态代理机制； 在Spring中动态代理是实现有两种：JDK动态代理和Cglib动态代理，本篇分析的是Cglib动态代理的实现； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代">
-<meta name="keywords" content="Java,源码,动态代理,Cglib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cglib动态代理浅析">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/05/27/16.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="ava中的动态代理设计模式是非常经典且非常重要的设计模式之一，在感叹设计者的天才设计至于，我们想去探究一下这个设计模式是如何来实现的； 著名的spring框架的AOP的原理就是Java的动态代理机制； 在Spring中动态代理是实现有两种：JDK动态代理和Cglib动态代理，本篇分析的是Cglib动态代理的实现； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-27T02:36:37.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-27T02:36:37.000Z">
+<meta property="article:modified_time" content="2018-05-27T02:36:37.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="源码">
+<meta property="article:tag" content="动态代理">
+<meta property="article:tag" content="Cglib">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cglib动态代理浅析">
-<meta name="twitter:description" content="ava中的动态代理设计模式是非常经典且非常重要的设计模式之一，在感叹设计者的天才设计至于，我们想去探究一下这个设计模式是如何来实现的； 著名的spring框架的AOP的原理就是Java的动态代理机制； 在Spring中动态代理是实现有两种：JDK动态代理和Cglib动态代理，本篇分析的是Cglib动态代理的实现； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/05/27/16.html">
 
@@ -149,14 +152,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +219,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -301,7 +304,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibProxyFactoryTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Programmer programmer = <span class="keyword">new</span> Programmer();</span><br><span class="line">        CglibProxyFactory cglibProxyFactory = <span class="keyword">new</span> CglibProxyFactory(programmer);</span><br><span class="line">        Programmer instance = (Programmer) cglibProxyFactory.getProxyInstance();</span><br><span class="line">        instance.work(<span class="string">"夜月归途"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>控制台输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始事务... </span><br><span class="line">夜月归途 正在工作... </span><br><span class="line">提交/回滚事务...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">开始事务... </span><br><span class="line">夜月归途 正在工作... </span><br><span class="line">提交&#x2F;回滚事务...</span><br></pre></td></tr></table></figure>
 
 <p>看到这里和JDK的动态代理是一样的，Cglib的的动态代理没有接口的限制，有接口的类和无接口的类都可以被代理，只要不是final的；</p>
 <p>在这里，同样代码可以精简一下：</p>
@@ -345,8 +348,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"># Java</a>
-              <a href="/tags/源码/" rel="tag"># 源码</a>
-              <a href="/tags/动态代理/" rel="tag"># 动态代理</a>
+              <a href="/tags/%E6%BA%90%E7%A0%81/" rel="tag"># 源码</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" rel="tag"># 动态代理</a>
               <a href="/tags/Cglib/" rel="tag"># Cglib</a>
           </div>
 
@@ -441,13 +444,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -519,14 +522,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -569,9 +572,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

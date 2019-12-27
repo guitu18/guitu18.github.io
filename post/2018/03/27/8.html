@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -46,18 +46,19 @@
   };
 </script>
 
-  <meta name="description" content="项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的pom.xml文件中引用，还有一种是将jar包放在项目中，比如WEB_INF/lib文件夹下. 在这里记录一下两种方式分别是怎么操作的 1、将jar包安装到本地仓库很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；在命">
-<meta name="keywords" content="Maven,Java">
+  <meta name="description" content="项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的pom.xml文件中引用，还有一种是将jar包放在项目中，比如WEB_INF&#x2F;lib文件夹下. 在这里记录一下两种方式分别是怎么操作的 1、将jar包安装到本地仓库很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；在命">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Maven项目中添加本地jar包">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/03/27/8.html">
 <meta property="og:site_name" content="夜月归途">
-<meta property="og:description" content="项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的pom.xml文件中引用，还有一种是将jar包放在项目中，比如WEB_INF/lib文件夹下. 在这里记录一下两种方式分别是怎么操作的 1、将jar包安装到本地仓库很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；在命">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-27T02:27:52.000Z">
+<meta property="og:description" content="项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的pom.xml文件中引用，还有一种是将jar包放在项目中，比如WEB_INF&#x2F;lib文件夹下. 在这里记录一下两种方式分别是怎么操作的 1、将jar包安装到本地仓库很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；在命">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-27T02:27:52.000Z">
+<meta property="article:modified_time" content="2018-03-27T02:27:52.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Maven项目中添加本地jar包">
-<meta name="twitter:description" content="项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的pom.xml文件中引用，还有一种是将jar包放在项目中，比如WEB_INF/lib文件夹下. 在这里记录一下两种方式分别是怎么操作的 1、将jar包安装到本地仓库很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；在命">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/03/27/8.html">
 
@@ -149,14 +150,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +217,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -241,7 +242,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -263,14 +264,14 @@
         <p>项目中经常需要用到自己的jar包或者是中心库没有的jar包；常用的方法一种是将jar包安装到本地仓库，然后在项目的<code>pom.xml</code>文件中引用，还有一种是将jar包放在项目中，比如<code>WEB_INF/lib</code>文件夹下.</p>
 <p>在这里记录一下两种方式分别是怎么操作的</p>
 <p><strong>1、将jar包安装到本地仓库</strong><br>很多开发工具都集成有将jar包安装到本地仓库的功能，比如eclipse，这里说下使用Maven命令安装jar包的方式；<br>在命令行使用命令：<code>mvn install</code>，注意命令不能换行，中间参数用空格分隔，格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file</span><br><span class="line">-DgroupId=&lt;groupId&gt;       : 设置项目代码的包名(比如org.apache)</span><br><span class="line">-DartifactId=&lt;artifactId&gt; : 设置项目名或模块名(比如shiro-core)</span><br><span class="line">-Dversion=1.0.0           : 版本号(比如1.2.2)</span><br><span class="line">-Dpackaging=jar           : 文件类型(jar包)</span><br><span class="line">-Dfile=&lt;myfile.jar&gt;       : 需要安装的文件路径(比如/root/shiro-core-1.2.2.jar)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file</span><br><span class="line">-DgroupId&#x3D;&lt;groupId&gt;       : 设置项目代码的包名(比如org.apache)</span><br><span class="line">-DartifactId&#x3D;&lt;artifactId&gt; : 设置项目名或模块名(比如shiro-core)</span><br><span class="line">-Dversion&#x3D;1.0.0           : 版本号(比如1.2.2)</span><br><span class="line">-Dpackaging&#x3D;jar           : 文件类型(jar包)</span><br><span class="line">-Dfile&#x3D;&lt;myfile.jar&gt;       : 需要安装的文件路径(比如&#x2F;root&#x2F;shiro-core-1.2.2.jar)</span><br></pre></td></tr></table></figure>
 
 <p># 安装示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -DgroupId=org.apache -DartifactId=shiro-core -Dversion=1.2.2 -Dpackaging=jar -Dfile=/root/shiro-core-1.2.2.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -DgroupId&#x3D;org.apache -DartifactId&#x3D;shiro-core -Dversion&#x3D;1.2.2 -Dpackaging&#x3D;jar -Dfile&#x3D;&#x2F;root&#x2F;shiro-core-1.2.2.jar</span><br></pre></td></tr></table></figure>
 
 <p># 这样执行安装完成之后，在Maven本地仓库的对应路径中就有了相应的jar包，可以在本地项目中直接引用了<br># 比如以上命令执行后的安装位置就是：<br><code>repository/org/apache/shiro/shiro-core/1.2.2/shiro-core-1.2.2.jar</code></p>
 <p><strong>2、引用放在项目中的jar包</strong><br>通常本地jar包在项目中的位置是：<code>src/main/webapp/WEB-INF/lib</code>，这里就以这个做示例<br>比如这里有一个jar文件：<code>src/main/webapp/WEB-INF/lib/fastdfs_client_v1.20.jar</code><br>我们需要在项目的<code>pom.xml</code>文件中使用<code>&lt;dependency&gt;</code>标签来引入jar包<br># 这里的 <code>&lt;groupId&gt;</code>、<code>&lt;artifactId&gt;</code>和<code>&lt;version&gt;</code>都是可以随便写的，但是不能没有，比如引用上面地址的jar包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;common&lt;/groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;fastdfs_client&lt;/artifactId&gt;  </span><br><span class="line">    &lt;version&gt;1.20&lt;/version&gt;  </span><br><span class="line">    &lt;scope&gt;system&lt;/scope&gt;  </span><br><span class="line">    &lt;systemPath&gt;$&#123;project.basedir&#125;/src/main/webapp/WEB-INF/lib/fastdfs_client_v1.20.jar&lt;/systemPath&gt;  </span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;common&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;fastdfs_client&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;1.20&lt;&#x2F;version&gt;  </span><br><span class="line">    &lt;scope&gt;system&lt;&#x2F;scope&gt;  </span><br><span class="line">    &lt;systemPath&gt;$&#123;project.basedir&#125;&#x2F;src&#x2F;main&#x2F;webapp&#x2F;WEB-INF&#x2F;lib&#x2F;fastdfs_client_v1.20.jar&lt;&#x2F;systemPath&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 
 <p># <code>&lt;scope&gt;</code>必须填写<code>system</code>，<code>&lt;systemPath&gt;</code>写上jar包相对于项目的地址就行了；</p>
 
@@ -397,13 +398,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -475,14 +476,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -525,9 +526,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

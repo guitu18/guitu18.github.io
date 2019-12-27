@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,17 @@
 </script>
 
   <meta name="description" content="博客搬迁，2019-7-20 打卡记录一下。这已经是第二次搬家了，每一次搬家都是一番折腾，费不少劲，不过每一次折腾都会学到一些新的东西，还是蛮开心的经历。第一次是从帝国CMS搬至自建的Java博客系统，这次再次搬迁至Hexo静态博客系统。 这次从计划到迁移完成，断断续续也持续了好多天。从原来的动态系统换为静态页面，不少东西必须重新规划。因为所有页面都变成静态的，所以那些动态数据采集和展示就必须依赖">
-<meta name="keywords" content="博客">
 <meta property="og:type" content="article">
 <meta property="og:title" content="博客从SpringBoot搬迁至Hexo">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/07/20/42.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="博客搬迁，2019-7-20 打卡记录一下。这已经是第二次搬家了，每一次搬家都是一番折腾，费不少劲，不过每一次折腾都会学到一些新的东西，还是蛮开心的经历。第一次是从帝国CMS搬至自建的Java博客系统，这次再次搬迁至Hexo静态博客系统。 这次从计划到迁移完成，断断续续也持续了好多天。从原来的动态系统换为静态页面，不少东西必须重新规划。因为所有页面都变成静态的，所以那些动态数据采集和展示就必须依赖">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-20T10:55:29.643Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-20T07:51:30.000Z">
+<meta property="article:modified_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客从SpringBoot搬迁至Hexo">
-<meta name="twitter:description" content="博客搬迁，2019-7-20 打卡记录一下。这已经是第二次搬家了，每一次搬家都是一番折腾，费不少劲，不过每一次折腾都会学到一些新的东西，还是蛮开心的经历。第一次是从帝国CMS搬至自建的Java博客系统，这次再次搬迁至Hexo静态博客系统。 这次从计划到迁移完成，断断续续也持续了好多天。从原来的动态系统换为静态页面，不少东西必须重新规划。因为所有页面都变成静态的，所以那些动态数据采集和展示就必须依赖">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/07/20/42.html">
 
@@ -149,14 +149,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -223,13 +223,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/博客/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index">
                     <span itemprop="name">博客</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/博客/日志/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2/%E6%97%A5%E5%BF%97/" itemprop="url" rel="index">
                     <span itemprop="name">日志</span>
                   </a>
                 </span>
@@ -315,7 +315,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/博客/" rel="tag"># 博客</a>
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
           </div>
 
         
@@ -409,13 +409,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -487,14 +487,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -537,9 +537,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

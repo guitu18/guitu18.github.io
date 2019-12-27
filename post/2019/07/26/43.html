@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,18 +47,20 @@
 </script>
 
   <meta name="description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 先给自己定个博客计划吧，不然很可能又要难产了。本次预计的篇幅量在三篇，第一篇先记录一下Shiro的基本使用，第二篇写一下基于Shiro实现">
-<meta name="keywords" content="Shiro,权限控制,框架">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shiro权限管理框架（一）：Shiro的基本使用">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/07/26/43.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 先给自己定个博客计划吧，不然很可能又要难产了。本次预计的篇幅量在三篇，第一篇先记录一下Shiro的基本使用，第二篇写一下基于Shiro实现">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.guitu18.com/markdown/366cb549e791ca422da6f1ebf626750b.png">
-<meta property="og:updated_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:published_time" content="2019-07-26T07:40:38.000Z">
+<meta property="article:modified_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Shiro">
+<meta property="article:tag" content="权限控制">
+<meta property="article:tag" content="框架">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shiro权限管理框架（一）：Shiro的基本使用">
-<meta name="twitter:description" content="其实关于Shiro的一些学习笔记很早就该写了，因为懒癌和拖延症晚期一直没有落实，直到今天公司的一个项目碰到了在集群环境的单点登录频繁掉线的问题，为了解决这个问题，Shiro相关的文档和教程没少翻。最后问题解决了，但我觉得我也是时候来做一波Shiro学习笔记了。 先给自己定个博客计划吧，不然很可能又要难产了。本次预计的篇幅量在三篇，第一篇先记录一下Shiro的基本使用，第二篇写一下基于Shiro实现">
 <meta name="twitter:image" content="https://img.guitu18.com/markdown/366cb549e791ca422da6f1ebf626750b.png">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/07/26/43.html">
@@ -151,14 +153,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -225,13 +227,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -288,6 +290,8 @@
 <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><h2 id="引入一个依赖"><a href="#引入一个依赖" class="headerlink" title="引入一个依赖"></a>引入一个依赖</h2><p>新建一个基于Springboot的Web项目，引入Shiro依赖。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-web --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+
+
 <h2 id="配置两个Bean"><a href="#配置两个Bean" class="headerlink" title="配置两个Bean"></a>配置两个Bean</h2><p>新建一个Shiro配置类，配置Shiro最为核心的安全管理器SecurityManager。这里准确来说配置了三个Bean，形参中的UserAuthorizingRealm是通过@Component扫描进去的，不添加这个注解直接配置在ShiroConfig中也行。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SecurityManager <span class="title">securityManager</span><span class="params">(UserAuthorizingRealm userRealm)</span> </span>&#123;</span><br><span class="line">    DefaultWebSecurityManager securityManager = <span class="keyword">new</span> DefaultWebSecurityManager();</span><br><span class="line">    securityManager.setRealm(userRealm);</span><br><span class="line">    securityManager.setRememberMeManager(<span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">return</span> securityManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -296,6 +300,8 @@
 
 <p>上面使用LinkedHashMap是为了保持顺序，Filter的配置顺序不能随便打乱，过滤器是按照我们配置的顺序来匹配的。范围大的过滤器要放在后面，<code>/**</code>这条如果放在前面，那么一来就匹配上了，就不会继续再往后走了。这里的对上面用到的两个过滤器做一下简单说明，篇幅控制其他过滤器请参阅相关文档：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* authc：配置的url都必须认证通过才可以访问，它是Shiro内置的一个过滤器</span><br><span class="line">* 对应的实现类 <span class="meta">@see</span> org.apache.shiro.web.filter.authc.FormAuthenticationFilter</span><br><span class="line"></span><br><span class="line">* anon：也是Shiro内置的，它对应的过滤器里面是空的，什么都没做，可以理解为不拦截</span><br><span class="line">* 对应的实现类 <span class="meta">@see</span> org.apache.shiro.web.filter.authc.AnonymousFilter</span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="实现两个方法"><a href="#实现两个方法" class="headerlink" title="实现两个方法"></a>实现两个方法</h2><p>在上一步的安全管理器配置中，我们通过形参注入了一个UserAuthorizingRealm对象，这个就是认证和授权相关的流程，需要我们自己实现。继承AuthorizingRealm之后，我们需要实现两个抽象方法，一个是认证，一个是授权，这两个方法长得很像，别弄混淆了。</p>
 <p>doGetAuthenticationInfo()：认证。相当于登录，只有通过登录了，才能进行后面授权的操作。一些只需要登录权限的操作，在登录成功后就可以访问了，比如上一步中配置的<code>authc</code>过滤器就是只需要登录权限的。</p>
@@ -309,7 +315,6 @@
 <h1 id="细粒度权限控制"><a href="#细粒度权限控制" class="headerlink" title="细粒度权限控制"></a>细粒度权限控制</h1><p>如果需要更细致的权限控制，请继续往下添加配置，可以做到方法级别的权限控制。其实在SpringMVC中URL也能做到方法级别控制，但是使用URL来控制方法级别的权限配置起来简直反人类，通常URL权限控制通常都是泛解析，做通用的权限配置，比如后台管理的<code>/admin/**</code>这种需要登录权限的。在实际开发中注解式的权限控制用的最多。</p>
 <h2 id="AdvisorAutoProxyCreator"><a href="#AdvisorAutoProxyCreator" class="headerlink" title="AdvisorAutoProxyCreator"></a>AdvisorAutoProxyCreator</h2><p>注解式的权限控制需要配置两个Bean，第一个是AdvisorAutoProxyCreator，代理生成器，需要借助SpringAOP来扫描@RequiresRoles和@RequiresPermissions等注解，生成代理类实现功能增强，从而实现权限控制。需要配合AuthorizationAttributeSourceAdvisor一起使用，否则权限注解无效。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DefaultAdvisorAutoProxyCreator <span class="title">defaultAdvisorAutoProxyCreator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    DefaultAdvisorAutoProxyCreator autoProxyCreator = <span class="keyword">new</span> DefaultAdvisorAutoProxyCreator();</span><br><span class="line">    autoProxyCreator.setProxyTargetClass(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">return</span> autoProxyCreator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="AuthorizationAttributeSourceAdvisor"><a href="#AuthorizationAttributeSourceAdvisor" class="headerlink" title="AuthorizationAttributeSourceAdvisor"></a>AuthorizationAttributeSourceAdvisor</h2><p>上面配置的DefaultAdvisorAutoProxyCreator相当于一个切面，下面这个类就相当于切点了，两个一起才能实现注解权限控制。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> AuthorizationAttributeSourceAdvisor <span class="title">authorizationAttributeSourceAdvisor</span><span class="params">(SecurityManager securityManager)</span> </span>&#123;</span><br><span class="line">    AuthorizationAttributeSourceAdvisor advisor = <span class="keyword">new</span> AuthorizationAttributeSourceAdvisor();</span><br><span class="line">    advisor.setSecurityManager(securityManager);</span><br><span class="line">    <span class="keyword">return</span> advisor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -353,8 +358,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Shiro/" rel="tag"># Shiro</a>
-              <a href="/tags/权限控制/" rel="tag"># 权限控制</a>
-              <a href="/tags/框架/" rel="tag"># 框架</a>
+              <a href="/tags/%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" rel="tag"># 权限控制</a>
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"># 框架</a>
           </div>
 
         
@@ -449,13 +454,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -527,14 +532,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -577,9 +582,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

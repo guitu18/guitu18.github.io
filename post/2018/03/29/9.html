@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -46,14 +46,13 @@
   };
 </script>
 
-  <meta name="description" content="开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，pom.xml中添加如下内容即可 12345&amp;lt;dependency&amp;gt;        &amp;lt;groupId&amp;gt;net.sourceforge.jexcelapi&amp;lt;/gr">
-<meta name="keywords" content="Java,Excel">
+  <meta name="description" content="开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，pom.xml中添加如下内容即可 12345&lt;dependency&gt;        &lt;groupId&gt;net.sourceforge.jexcelapi&lt;&amp;#x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 使用 Jxl 实现 Excel 导入导出">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/03/29/9.html">
 <meta property="og:site_name" content="夜月归途">
-<meta property="og:description" content="开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，pom.xml中添加如下内容即可 12345&amp;lt;dependency&amp;gt;        &amp;lt;groupId&amp;gt;net.sourceforge.jexcelapi&amp;lt;/gr">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:description" content="开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，pom.xml中添加如下内容即可 12345&lt;dependency&gt;        &lt;groupId&gt;net.sourceforge.jexcelapi&lt;&amp;#x">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.guitu18.com/markdown/fdbe241ac5ec3a2c84fcedb43ae75be1.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/f09b9d53729767d7d2f0cd40e329e19b.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/4a9830c07237e18fba2e961452860166.png">
@@ -61,10 +60,12 @@
 <meta property="og:image" content="https://img.guitu18.com/markdown/787181d5f7d9d801fc3582f2a268c560.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/94c55f3dc072258a121b9f52b8108449.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/c76f1184afa306153da49b5906c92d7a.png">
-<meta property="og:updated_time" content="2018-03-28T23:45:29.000Z">
+<meta property="article:published_time" content="2018-03-28T23:45:29.000Z">
+<meta property="article:modified_time" content="2018-03-28T23:45:29.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Excel">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java 使用 Jxl 实现 Excel 导入导出">
-<meta name="twitter:description" content="开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，pom.xml中添加如下内容即可 12345&amp;lt;dependency&amp;gt;        &amp;lt;groupId&amp;gt;net.sourceforge.jexcelapi&amp;lt;/gr">
 <meta name="twitter:image" content="https://img.guitu18.com/markdown/fdbe241ac5ec3a2c84fcedb43ae75be1.png">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/03/29/9.html">
@@ -157,14 +158,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -224,13 +225,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -249,14 +250,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -269,7 +270,7 @@
 
       
         <p>开发过程中经常需要用到数据的导入导出功能，之前用的是POI，这次使用JXL，JXL相对于POI来说要轻量简洁许多，在数据量不大的情况下还是非常实用的。这里做一下使用JXL的学习记录。首先需要导入相应的jar包，<code>pom.xml</code>中添加如下内容即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;net.sourceforge.jexcelapi&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;jxl&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;2.6.12&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;net.sourceforge.jexcelapi&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;jxl&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;2.6.12&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 
 <p>看图说话：</p>
 <p><strong>0、数据实体类：</strong><br><img src="https://img.guitu18.com/markdown/fdbe241ac5ec3a2c84fcedb43ae75be1.png" alt="img"> </p>
@@ -284,19 +285,19 @@
 <p>以上就是Java实现Excel 导入导出的全部代码了</p>
 <p><strong>下面附上代码</strong></p>
 <p><strong>数据实体类：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class Customer &#123;</span><br><span class="line">        private String name;</span><br><span class="line">        private Integer age;</span><br><span class="line">        private String telephone;</span><br><span class="line">        private String address;</span><br><span class="line">        //这里get/set方法省略不贴</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class Customer &#123;</span><br><span class="line">        private String name;</span><br><span class="line">        private Integer age;</span><br><span class="line">        private String telephone;</span><br><span class="line">        private String address;</span><br><span class="line">        &#x2F;&#x2F;这里get&#x2F;set方法省略不贴</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>1、导出代码：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public static void excelExport(List&lt;Customer&gt; list, String path) &#123;</span><br><span class="line">        WritableWorkbook book = null;</span><br><span class="line">        try &#123;</span><br><span class="line">                // 创建一个Excel文件对象</span><br><span class="line">                book = Workbook.createWorkbook(new File(path));</span><br><span class="line">                // 创建Excel第一个选项卡对象</span><br><span class="line">                WritableSheet sheet = book.createSheet(&quot;第一页&quot;, 0);</span><br><span class="line">                // 设置表头，第一行内容</span><br><span class="line">                // Label参数说明：第一个是列，第二个是行，第三个是要写入的数据值，索引值都是从0开始</span><br><span class="line">                Label label1 = new Label(0, 0, &quot;姓名&quot;);// 对应为第1列第1行的数据</span><br><span class="line">                Label label2 = new Label(1, 0, &quot;年龄&quot;);// 对应为第2列第1行的数据</span><br><span class="line">                Label label3 = new Label(2, 0, &quot;手机号码&quot;);// 对应为第3列第1行的数据</span><br><span class="line">                Label label4 = new Label(3, 0, &quot;住址&quot;);// 对应为第4列第1行的数据</span><br><span class="line">                // 添加单元格到选项卡中</span><br><span class="line">                sheet.addCell(label1);</span><br><span class="line">                sheet.addCell(label2);</span><br><span class="line">                sheet.addCell(label3);</span><br><span class="line">                sheet.addCell(label4);</span><br><span class="line">                // 遍历集合并添加数据到行，每行对应一个对象</span><br><span class="line">                for (int i = 0; i &lt; list.size(); i++) &#123;</span><br><span class="line">                        Customer customer = list.get(i);</span><br><span class="line">                        // 表头占据第一行，所以下面行数是索引值+1</span><br><span class="line">                        // 跟上面添加表头一样添加单元格数据，这里为了方便直接使用链式编程</span><br><span class="line">                        sheet.addCell(new Label(0, i + 1, customer.getName()));</span><br><span class="line">                        sheet.addCell(new Label(1, i + 1, customer.getAge().toString()));</span><br><span class="line">                        sheet.addCell(new Label(2, i + 1, customer.getTelephone()));</span><br><span class="line">                        sheet.addCell(new Label(3, i + 1, customer.getAddress()));</span><br><span class="line">                &#125;</span><br><span class="line">                // 写入数据到目标文件</span><br><span class="line">                book.write();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                        // 关闭</span><br><span class="line">                        book.close();</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public static void excelExport(List&lt;Customer&gt; list, String path) &#123;</span><br><span class="line">        WritableWorkbook book &#x3D; null;</span><br><span class="line">        try &#123;</span><br><span class="line">                &#x2F;&#x2F; 创建一个Excel文件对象</span><br><span class="line">                book &#x3D; Workbook.createWorkbook(new File(path));</span><br><span class="line">                &#x2F;&#x2F; 创建Excel第一个选项卡对象</span><br><span class="line">                WritableSheet sheet &#x3D; book.createSheet(&quot;第一页&quot;, 0);</span><br><span class="line">                &#x2F;&#x2F; 设置表头，第一行内容</span><br><span class="line">                &#x2F;&#x2F; Label参数说明：第一个是列，第二个是行，第三个是要写入的数据值，索引值都是从0开始</span><br><span class="line">                Label label1 &#x3D; new Label(0, 0, &quot;姓名&quot;);&#x2F;&#x2F; 对应为第1列第1行的数据</span><br><span class="line">                Label label2 &#x3D; new Label(1, 0, &quot;年龄&quot;);&#x2F;&#x2F; 对应为第2列第1行的数据</span><br><span class="line">                Label label3 &#x3D; new Label(2, 0, &quot;手机号码&quot;);&#x2F;&#x2F; 对应为第3列第1行的数据</span><br><span class="line">                Label label4 &#x3D; new Label(3, 0, &quot;住址&quot;);&#x2F;&#x2F; 对应为第4列第1行的数据</span><br><span class="line">                &#x2F;&#x2F; 添加单元格到选项卡中</span><br><span class="line">                sheet.addCell(label1);</span><br><span class="line">                sheet.addCell(label2);</span><br><span class="line">                sheet.addCell(label3);</span><br><span class="line">                sheet.addCell(label4);</span><br><span class="line">                &#x2F;&#x2F; 遍历集合并添加数据到行，每行对应一个对象</span><br><span class="line">                for (int i &#x3D; 0; i &lt; list.size(); i++) &#123;</span><br><span class="line">                        Customer customer &#x3D; list.get(i);</span><br><span class="line">                        &#x2F;&#x2F; 表头占据第一行，所以下面行数是索引值+1</span><br><span class="line">                        &#x2F;&#x2F; 跟上面添加表头一样添加单元格数据，这里为了方便直接使用链式编程</span><br><span class="line">                        sheet.addCell(new Label(0, i + 1, customer.getName()));</span><br><span class="line">                        sheet.addCell(new Label(1, i + 1, customer.getAge().toString()));</span><br><span class="line">                        sheet.addCell(new Label(2, i + 1, customer.getTelephone()));</span><br><span class="line">                        sheet.addCell(new Label(3, i + 1, customer.getAddress()));</span><br><span class="line">                &#125;</span><br><span class="line">                &#x2F;&#x2F; 写入数据到目标文件</span><br><span class="line">                book.write();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                        &#x2F;&#x2F; 关闭</span><br><span class="line">                        book.close();</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>2、导入代码：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public static List&lt;Customer&gt; excelImport(String path) &#123;</span><br><span class="line">        List&lt;Customer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        Workbook book = null;</span><br><span class="line">        try &#123;</span><br><span class="line">                // 获取Excel对象</span><br><span class="line">                book = book.getWorkbook(new File(path));</span><br><span class="line">                // 获取Excel第一个选项卡对象</span><br><span class="line">                Sheet sheet = book.getSheet(0);</span><br><span class="line">                // 遍历选项卡，第一行是表头，所以索引数-1</span><br><span class="line">                for (int i = 0; i &lt; sheet.getRows() - 1; i++) &#123;</span><br><span class="line">                        Customer customer = new Customer();</span><br><span class="line">                        // 获取第一列第二行单元格对象</span><br><span class="line">                        Cell cell = sheet.getCell(0, i + 1);</span><br><span class="line">                        customer.setName(cell.getContents());</span><br><span class="line">                        // 获取第二行其他数据</span><br><span class="line">                        customer.setAge(Integer.parseInt(sheet.getCell(1, i + 1).getContents()));</span><br><span class="line">                        customer.setTelephone(sheet.getCell(2, i + 1).getContents());</span><br><span class="line">                        customer.setAddress(sheet.getCell(3, i + 1).getContents());</span><br><span class="line">                        list.add(customer);</span><br><span class="line">                &#125;</span><br><span class="line">                // 返回导入的数据集合</span><br><span class="line">                return list;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                        // 关闭</span><br><span class="line">                        book.close();</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public static List&lt;Customer&gt; excelImport(String path) &#123;</span><br><span class="line">        List&lt;Customer&gt; list &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">        Workbook book &#x3D; null;</span><br><span class="line">        try &#123;</span><br><span class="line">                &#x2F;&#x2F; 获取Excel对象</span><br><span class="line">                book &#x3D; book.getWorkbook(new File(path));</span><br><span class="line">                &#x2F;&#x2F; 获取Excel第一个选项卡对象</span><br><span class="line">                Sheet sheet &#x3D; book.getSheet(0);</span><br><span class="line">                &#x2F;&#x2F; 遍历选项卡，第一行是表头，所以索引数-1</span><br><span class="line">                for (int i &#x3D; 0; i &lt; sheet.getRows() - 1; i++) &#123;</span><br><span class="line">                        Customer customer &#x3D; new Customer();</span><br><span class="line">                        &#x2F;&#x2F; 获取第一列第二行单元格对象</span><br><span class="line">                        Cell cell &#x3D; sheet.getCell(0, i + 1);</span><br><span class="line">                        customer.setName(cell.getContents());</span><br><span class="line">                        &#x2F;&#x2F; 获取第二行其他数据</span><br><span class="line">                        customer.setAge(Integer.parseInt(sheet.getCell(1, i + 1).getContents()));</span><br><span class="line">                        customer.setTelephone(sheet.getCell(2, i + 1).getContents());</span><br><span class="line">                        customer.setAddress(sheet.getCell(3, i + 1).getContents());</span><br><span class="line">                        list.add(customer);</span><br><span class="line">                &#125;</span><br><span class="line">                &#x2F;&#x2F; 返回导入的数据集合</span><br><span class="line">                return list;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                        &#x2F;&#x2F; 关闭</span><br><span class="line">                        book.close();</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>3、导出测试代码：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        List&lt;Customer&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        // 创建数据</span><br><span class="line">        for (int i = 0; i &lt; 65535; i++) &#123;</span><br><span class="line">                Customer customer = new Customer();</span><br><span class="line">                customer.setName(&quot;隔壁老王_&quot; + i);</span><br><span class="line">                customer.setAge(i);</span><br><span class="line">                customer.setTelephone(&quot;1301234&quot; + i);</span><br><span class="line">                customer.setAddress(&quot;浙江杭州西湖&quot;);</span><br><span class="line">                list.add(customer);</span><br><span class="line">        &#125;</span><br><span class="line">        String path = &quot;D:\\eclelTest\\xs.xls&quot;;</span><br><span class="line">        System.out.println(&quot;开始导出...&quot;);</span><br><span class="line">        long s1 = new Date().getTime();</span><br><span class="line">        // 开始导出</span><br><span class="line">        excelExport(list, path);</span><br><span class="line">        long s2 = new Date().getTime();</span><br><span class="line">        long time = s2 - s1;</span><br><span class="line">        System.out.println(&quot;导出完成！消耗时间：&quot; + time + &quot;毫秒&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        List&lt;Customer&gt; list &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">        &#x2F;&#x2F; 创建数据</span><br><span class="line">        for (int i &#x3D; 0; i &lt; 65535; i++) &#123;</span><br><span class="line">                Customer customer &#x3D; new Customer();</span><br><span class="line">                customer.setName(&quot;隔壁老王_&quot; + i);</span><br><span class="line">                customer.setAge(i);</span><br><span class="line">                customer.setTelephone(&quot;1301234&quot; + i);</span><br><span class="line">                customer.setAddress(&quot;浙江杭州西湖&quot;);</span><br><span class="line">                list.add(customer);</span><br><span class="line">        &#125;</span><br><span class="line">        String path &#x3D; &quot;D:\\eclelTest\\xs.xls&quot;;</span><br><span class="line">        System.out.println(&quot;开始导出...&quot;);</span><br><span class="line">        long s1 &#x3D; new Date().getTime();</span><br><span class="line">        &#x2F;&#x2F; 开始导出</span><br><span class="line">        excelExport(list, path);</span><br><span class="line">        long s2 &#x3D; new Date().getTime();</span><br><span class="line">        long time &#x3D; s2 - s1;</span><br><span class="line">        System.out.println(&quot;导出完成！消耗时间：&quot; + time + &quot;毫秒&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>4、导入测试代码：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        String path = &quot;D:\\eclelTest\\xs.xls&quot;;</span><br><span class="line">        List&lt;Customer&gt; list = excelImport(path);</span><br><span class="line">        for (Customer customer : list) &#123;</span><br><span class="line">                System.out.println(customer);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        String path &#x3D; &quot;D:\\eclelTest\\xs.xls&quot;;</span><br><span class="line">        List&lt;Customer&gt; list &#x3D; excelImport(path);</span><br><span class="line">        for (Customer customer : list) &#123;</span><br><span class="line">                System.out.println(customer);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -420,13 +421,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -498,14 +499,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -548,9 +549,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

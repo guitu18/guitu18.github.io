@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,17 @@
 </script>
 
   <meta name="description" content="消息队列作为高并发系统的核心组件之一，能够帮助业务系统解构提升开发效率和系统稳定性。最近公司的项目也是用上了RocketMQ，所以这里记录一下RocketMQ环境安装部署过程。 环境准备我们假设你已经设置好如下环境，没有的先自行安装环境，这里不做展开  Centos7：我这里用的是阿里云服务器，Centos7，内核：3.10.0-693.2.2.el7.x86_64 JDK1.8：JDK版本：JD">
-<meta name="keywords" content="RocketMQ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RocketMQ分布式消息中间件-Centos7安装运行">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/04/18/31.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="消息队列作为高并发系统的核心组件之一，能够帮助业务系统解构提升开发效率和系统稳定性。最近公司的项目也是用上了RocketMQ，所以这里记录一下RocketMQ环境安装部署过程。 环境准备我们假设你已经设置好如下环境，没有的先自行安装环境，这里不做展开  Centos7：我这里用的是阿里云服务器，Centos7，内核：3.10.0-693.2.2.el7.x86_64 JDK1.8：JDK版本：JD">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-18T14:32:50.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-18T14:32:50.000Z">
+<meta property="article:modified_time" content="2019-04-18T14:32:50.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="RocketMQ">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RocketMQ分布式消息中间件-Centos7安装运行">
-<meta name="twitter:description" content="消息队列作为高并发系统的核心组件之一，能够帮助业务系统解构提升开发效率和系统稳定性。最近公司的项目也是用上了RocketMQ，所以这里记录一下RocketMQ环境安装部署过程。 环境准备我们假设你已经设置好如下环境，没有的先自行安装环境，这里不做展开  Centos7：我这里用的是阿里云服务器，Centos7，内核：3.10.0-693.2.2.el7.x86_64 JDK1.8：JDK版本：JD">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/04/18/31.html">
 
@@ -149,14 +149,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +216,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -268,7 +268,7 @@
 <li>Maven：Apache Maven 3.6.0</li>
 <li>unzip：解压工具，用来解压安装包，没有该工具可直接使用 <code>yum install unzip -y</code> 安装</li>
 </ul>
-<hr>
+<hr/>
 # 文档及代码
 
 <ul>
@@ -279,7 +279,7 @@
 <li><strong>RocketMQ的运行方式非常简单，这里简单记录一下步骤，最主要的还是记录安装运行过程中踩过的坑</strong></li>
 <li><strong>该篇介绍两种运行方式，均参照官方文档操作，以当前最新4.5.0版本为例，所有操作均在 <code>/root</code> 目录进行</strong></li>
 </ul>
-<hr>
+<hr/>
 # 安装方式一：二进制直接运行
 
 <ul>
@@ -293,12 +293,11 @@
 </li>
 <li><p>看到以下目录结构：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x <span class="number">2</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> benchmark</span><br><span class="line">drwxr-xr-x <span class="number">3</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> bin</span><br><span class="line">drwxr-xr-x <span class="number">6</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> conf</span><br><span class="line">drwxr-xr-x <span class="number">2</span> root root  <span class="number">4096</span> Mar <span class="number">29</span> <span class="number">17</span>:<span class="number">37</span> lib</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root <span class="number">17336</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">52</span> LICENSE</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">1337</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">53</span> NOTICE</span><br><span class="line">-rw-r--r-- <span class="number">1</span> root root  <span class="number">2521</span> Mar <span class="number">28</span> <span class="number">19</span>:<span class="number">53</span> README.md</span><br></pre></td></tr></table></figure>
-
+<h2 id="启动NameServer服务"><a href="#启动NameServer服务" class="headerlink" title="启动NameServer服务"></a>启动NameServer服务</h2></li>
+<li><p>后台启动Name Server服务：<code>nohup sh bin/mqnamesrv &amp;</code></p>
 </li>
-</ul>
-<h2 id="启动NameServer服务"><a href="#启动NameServer服务" class="headerlink" title="启动NameServer服务"></a>启动NameServer服务</h2><ul>
-<li>后台启动Name Server服务：<code>nohup sh bin/mqnamesrv &amp;</code></li>
-<li>查看启动日志：<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code></li>
+<li><p>查看启动日志：<code>tail -f ~/logs/rocketmqlogs/namesrv.log</code></p>
+</li>
 </ul>
 <a id="more"></a>
 
@@ -321,7 +320,7 @@
 <p>两项测试如果均运行成功那么RocketMQ服务安装没什么问题了</p>
 <h2 id="关闭服务"><a href="#关闭服务" class="headerlink" title="关闭服务"></a>关闭服务</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; sh bin/mqshutdown broker</span><br><span class="line"><span class="function">The <span class="title">mqbroker</span><span class="params">(<span class="number">36695</span>)</span> is running...</span></span><br><span class="line"><span class="function">Send shutdown request to <span class="title">mqbroker</span><span class="params">(<span class="number">36695</span>)</span> OK</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&gt; sh bin/mqshutdown namesrv</span></span><br><span class="line"><span class="function">The <span class="title">mqnamesrv</span><span class="params">(<span class="number">36664</span>)</span> is running...</span></span><br><span class="line"><span class="function">Send shutdown request to <span class="title">mqnamesrv</span><span class="params">(<span class="number">36664</span>)</span> OK</span></span><br></pre></td></tr></table></figure>
 
-<hr>
+<hr/>
 # 安装方式二：源码编译运行
 
 <h2 id="下载及编译"><a href="#下载及编译" class="headerlink" title="下载及编译"></a>下载及编译</h2><ul>
@@ -349,7 +348,7 @@
 <li><p>到这里源码编译完成，下面的步骤跟二进制运行方式一样，请查看二进制运行方式</p>
 </li>
 </ul>
-<hr>
+<hr/>
 # 采坑记录
 
 <h2 id="内存分配失败"><a href="#内存分配失败" class="headerlink" title="内存分配失败"></a>内存分配失败</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Java <span class="title">HotSpot</span><span class="params">(TM)</span> 64-Bit Server VM warning: INFO: os::<span class="title">commit_memory</span><span class="params">(<span class="number">0x00000005c0000000</span>, <span class="number">8589934592</span>, <span class="number">0</span>)</span> failed</span>; error=<span class="string">'Cannot allocate memory'</span> (errno=<span class="number">12</span>)</span><br><span class="line">#</span><br><span class="line"># There is insufficient memory for the Java Runtime Environment to continue.</span><br><span class="line"># Native memory allocation (mmap) failed to map 8589934592 bytes for committing reserved memory.</span><br><span class="line"># An error report file with more information is saved as:</span><br><span class="line"># /root/rocketmq-all-4.5.0-bin-release/hs_err_pid17515.log</span><br></pre></td></tr></table></figure>
@@ -489,13 +488,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -567,14 +566,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -617,9 +616,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

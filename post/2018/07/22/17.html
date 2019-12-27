@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,19 @@
 </script>
 
   <meta name="description" content="Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，主要功能在于交互式地浏览和修改数据，生成动态Web内容。 Servlet生命周期和加载机制最近打算翻看学习一下Spring源码，先从JavaWeb过起；查看Servlet3.1源码，其接口定义如下： 12345678910package javax.servlet">
-<meta name="keywords" content="Java,Servlet,JavaWeb">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JaveWeb学习之Servlet（一）：Servlet生命周期和加载机制">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/07/22/17.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，主要功能在于交互式地浏览和修改数据，生成动态Web内容。 Servlet生命周期和加载机制最近打算翻看学习一下Spring源码，先从JavaWeb过起；查看Servlet3.1源码，其接口定义如下： 12345678910package javax.servlet">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-21T18:07:01.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-21T18:07:01.000Z">
+<meta property="article:modified_time" content="2018-07-21T18:07:01.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Servlet">
+<meta property="article:tag" content="JavaWeb">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JaveWeb学习之Servlet（一）：Servlet生命周期和加载机制">
-<meta name="twitter:description" content="Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，主要功能在于交互式地浏览和修改数据，生成动态Web内容。 Servlet生命周期和加载机制最近打算翻看学习一下Spring源码，先从JavaWeb过起；查看Servlet3.1源码，其接口定义如下： 12345678910package javax.servlet">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/07/22/17.html">
 
@@ -149,14 +151,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +218,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -295,7 +297,7 @@
 <li><p>web.xml配置如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.guitu18.servlet.Servlet_1<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet_1<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_2<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.guitu18.servlet.Servlet_2<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>2<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_2<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.guitu18<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_3<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.guitu18.servlet.Servlet_3<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_3<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/abc/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet_2<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet_4<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>我在xml中分别配置了这三个Servlet，配置了4个servlet-mapping，其中’/servlet_2.guitu’和’/servlet_4’都是指向servle_2的；<br>这里就涉及到Servlet中<url-pattern>的配置方式了，一共有3种：</url-pattern></p>
+<p>我在xml中分别配置了这三个Servlet，配置了4个servlet-mapping，其中’/servlet_2.guitu’和’/servlet_4’都是指向servle_2的；<br>这里就涉及到Servlet中<url-pattern>的配置方式了，一共有3种：</p>
 <ol>
 <li>完全路径匹配<br>以’/‘开始；比如：/servlet_1</li>
 <li>目录匹配<br>以’/‘开始，以’/<em>‘结束；比如：/abc/\</em></li>
@@ -303,10 +305,10 @@
 </ol>
 <p>为了是匹配时不产歧义，这三种匹配方式是有优先级的：<br>完全路径匹配 &gt; 目录匹配 &gt; 扩展名匹配</p>
 </li>
-<li><p>启动项目：<br>因为Servlet<em>2和Servlet</em>3都配置了<load-on-startup>项，且配置的值不小于0，所以在项目启动时，Servlet<em>2和Servlet</em>3就会被初始化，控制台输出：</load-on-startup></p>
+<li><p>启动项目：<br>因为Servlet<em>2和Servlet</em>3都配置了<load-on-startup>项，且配置的值不小于0，所以在项目启动时，Servlet<em>2和Servlet</em>3就会被初始化，控制台输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Servlet_3：init()执行初始化...  </span><br><span class="line">Servlet_2：init()执行初始化...</span><br></pre></td></tr></table></figure>
 
-<p>这里看出，Servlet_3比Servlet_2有限初始化，因为Servlet_3配置的<load-on-startup>的值比Servlet_2小，所以优先被加载；Servlet_1因为没有配置<load-on-startup>所以只有其第一次被访问时才会被加载初始化；</load-on-startup></load-on-startup></p>
+<p>这里看出，Servlet_3比Servlet_2有限初始化，因为Servlet_3配置的<load-on-startup>的值比Servlet_2小，所以优先被加载；Servlet_1因为没有配置<load-on-startup>所以只有其第一次被访问时才会被加载初始化；</p>
 <p>访问Servlet_1的地址：<a href="http://localhost:8080/servletdemo/servlet_1" target="_blank" rel="noopener">http://localhost:8080/servletdemo/servlet_1</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Servlet_1：init()执行初始化...</span><br><span class="line">Servlet_1：service()执行中...</span><br></pre></td></tr></table></figure>
 
@@ -444,13 +446,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -522,14 +524,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -572,9 +574,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

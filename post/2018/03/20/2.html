@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,20 +47,20 @@
 </script>
 
   <meta name="description" content="最近在捣鼓服务器，准备做弄个论坛玩玩，之前域名在备案，所以一切都是用IP发布和访问的。今天域名备案审核通过了，然后就把域名解析分发到论坛上。 解决了前置的各种修改IP为域名的问题后，发现论坛首页和后台都能正常访问，但是首页的版块，还有帖子链接都打不开了。查找原因发现是所有的链接都自动带上端口号了，如下图（我80端口Nginx使用，Apache用的是9999端口）  之后就百度找原因呗，一搜发现还是">
-<meta name="keywords" content="Discuz">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Discuz论坛版块和帖子都打不开，原因是链接带了端口号了">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/03/20/2.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="最近在捣鼓服务器，准备做弄个论坛玩玩，之前域名在备案，所以一切都是用IP发布和访问的。今天域名备案审核通过了，然后就把域名解析分发到论坛上。 解决了前置的各种修改IP为域名的问题后，发现论坛首页和后台都能正常访问，但是首页的版块，还有帖子链接都打不开了。查找原因发现是所有的链接都自动带上端口号了，如下图（我80端口Nginx使用，Apache用的是9999端口）  之后就百度找原因呗，一搜发现还是">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.guitu18.com/markdown/74253dd65a8408fe6a0f0d2ab6a5183e.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/f3f640b36e117f66260faf56b1ab0f2b.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/6c42cb3550a99af32fc8edbeab62ee50.png">
-<meta property="og:updated_time" content="2018-03-20T01:10:10.000Z">
+<meta property="article:published_time" content="2018-03-20T01:10:10.000Z">
+<meta property="article:modified_time" content="2018-03-20T01:10:10.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Discuz">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Discuz论坛版块和帖子都打不开，原因是链接带了端口号了">
-<meta name="twitter:description" content="最近在捣鼓服务器，准备做弄个论坛玩玩，之前域名在备案，所以一切都是用IP发布和访问的。今天域名备案审核通过了，然后就把域名解析分发到论坛上。 解决了前置的各种修改IP为域名的问题后，发现论坛首页和后台都能正常访问，但是首页的版块，还有帖子链接都打不开了。查找原因发现是所有的链接都自动带上端口号了，如下图（我80端口Nginx使用，Apache用的是9999端口）  之后就百度找原因呗，一搜发现还是">
 <meta name="twitter:image" content="https://img.guitu18.com/markdown/74253dd65a8408fe6a0f0d2ab6a5183e.png">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/03/20/2.html">
@@ -153,14 +153,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -220,13 +220,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Linux/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Linux/" itemprop="url" rel="index">
                     <span itemprop="name">Linux</span>
                   </a>
                 </span>
@@ -245,7 +245,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>985</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
 <a id="more"></a>
 
 <p>解决方法：<br>在 <code>source/function/function_core.php</code> 文件中添加一行内容 <code>$_SERVER[‘SERVER_PORT’]=80;</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@zhangkuan function]# pwd</span><br><span class="line">/usr/local/httpd/htdocs/source/function</span><br><span class="line">[root@zhangkuan function]# vim /usr/local/httpd/htdocs/source/function/function_core.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@zhangkuan function]# pwd</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;httpd&#x2F;htdocs&#x2F;source&#x2F;function</span><br><span class="line">[root@zhangkuan function]# vim &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;htdocs&#x2F;source&#x2F;function&#x2F;function_core.php</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://img.guitu18.com/markdown/f3f640b36e117f66260faf56b1ab0f2b.png" alt="img"></p>
 <p>之后进后台清理下缓存，再次访问就OK了。<br>在这里记录一下更换域名之后需要做的几处修改：</p>
@@ -287,8 +287,7 @@
 <li><p>发布路径下 <code>config/config_ucenter.php</code> 文件中 <code>define(‘UC_API’, ‘http://www.abc.com/uc_server’);</code> 需要做对应修改，否则后台UCenter打不开；</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@zhangkuan config]# pwd</span><br><span class="line">/usr/local/httpd/htdocs/config</span><br><span class="line">[root@zhangkuan config]# vim /usr/local/httpd/htdocs/config/config_ucenter.php</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@zhangkuan config]# pwd</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;httpd&#x2F;htdocs&#x2F;config</span><br><span class="line">[root@zhangkuan config]# vim &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;htdocs&#x2F;config&#x2F;config_ucenter.php</span><br></pre></td></tr></table></figure>
 <p><img src="https://img.guitu18.com/markdown/6c42cb3550a99af32fc8edbeab62ee50.png" alt="img"></p>
 <p>新人上手，做个学习记录，如有不足欢迎指出，后续如果发现还有什么问题会继续跟进补充。</p>
 
@@ -414,13 +413,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -492,14 +491,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -542,9 +541,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

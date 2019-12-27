@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,20 +47,21 @@
 </script>
 
   <meta name="description" content="今天在公司数据库创建一个新数据库和用户，在对用户授权是出现 Access denied for user ‘root’@’localhost’ to database ‘xxxxx’ 错误  这个提示其实就是权限不足，使用grant命令需要有对应的权限，默认root用户是有这个权限的，检查发现我们公司数据库root用户居然没有这个权限；在这里把对用的权限打开一下即可；在可视化工具直接修改保存，或者">
-<meta name="keywords" content="MySQL,数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL 授权时提示 Access denied for user ‘root’@’localhost’ to database …">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/04/08/10.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="今天在公司数据库创建一个新数据库和用户，在对用户授权是出现 Access denied for user ‘root’@’localhost’ to database ‘xxxxx’ 错误  这个提示其实就是权限不足，使用grant命令需要有对应的权限，默认root用户是有这个权限的，检查发现我们公司数据库root用户居然没有这个权限；在这里把对用的权限打开一下即可；在可视化工具直接修改保存，或者">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.guitu18.com/markdown/675d67bde3d3083ef368c7fbf26ce39e.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/6f587defd5cc5ac83652db6ca5b01c87.png">
 <meta property="og:image" content="https://img.guitu18.com/markdown/f95067fe41f34991e3a3df40abcb5bf8.png">
-<meta property="og:updated_time" content="2018-04-07T17:29:14.000Z">
+<meta property="article:published_time" content="2018-04-07T17:29:14.000Z">
+<meta property="article:modified_time" content="2018-04-07T17:29:14.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL 授权时提示 Access denied for user ‘root’@’localhost’ to database …">
-<meta name="twitter:description" content="今天在公司数据库创建一个新数据库和用户，在对用户授权是出现 Access denied for user ‘root’@’localhost’ to database ‘xxxxx’ 错误  这个提示其实就是权限不足，使用grant命令需要有对应的权限，默认root用户是有这个权限的，检查发现我们公司数据库root用户居然没有这个权限；在这里把对用的权限打开一下即可；在可视化工具直接修改保存，或者">
 <meta name="twitter:image" content="https://img.guitu18.com/markdown/675d67bde3d3083ef368c7fbf26ce39e.png">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/04/08/10.html">
@@ -153,14 +154,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -220,13 +221,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/数据库/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index">
                     <span itemprop="name">数据库</span>
                   </a>
                 </span>
@@ -297,7 +298,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-              <a href="/tags/数据库/" rel="tag"># 数据库</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
           </div>
 
         
@@ -391,13 +392,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -469,14 +470,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -519,9 +520,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

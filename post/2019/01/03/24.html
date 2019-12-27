@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,19 @@
 </script>
 
   <meta name="description" content="博客真的是好几个月没更了，2019新年第一篇，继续深入动态代理，前两篇简单分析了动态代理的实现原理之后，这次继续深入了解具体的实现方式，并手写一套简易的动态代理已加强理解； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代理浅析 JDK动态代理深入理解分析并手写简易JDK动态代理（上） JDK动态代理深入理解分析并手写简易JDK动态代理（下）  博客真的是好几个">
-<meta name="keywords" content="Java,JDK,动态代理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK动态代理深入理解分析并手写简易JDK动态代理（上）">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/01/03/24.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="博客真的是好几个月没更了，2019新年第一篇，继续深入动态代理，前两篇简单分析了动态代理的实现原理之后，这次继续深入了解具体的实现方式，并手写一套简易的动态代理已加强理解； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代理浅析 JDK动态代理深入理解分析并手写简易JDK动态代理（上） JDK动态代理深入理解分析并手写简易JDK动态代理（下）  博客真的是好几个">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-03T02:10:29.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-03T02:10:29.000Z">
+<meta property="article:modified_time" content="2019-01-03T02:10:29.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JDK">
+<meta property="article:tag" content="动态代理">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JDK动态代理深入理解分析并手写简易JDK动态代理（上）">
-<meta name="twitter:description" content="博客真的是好几个月没更了，2019新年第一篇，继续深入动态代理，前两篇简单分析了动态代理的实现原理之后，这次继续深入了解具体的实现方式，并手写一套简易的动态代理已加强理解； 本博客关于Java动态代理相关内容直达链接：  JDK动态代理浅析 Cglib动态代理浅析 JDK动态代理深入理解分析并手写简易JDK动态代理（上） JDK动态代理深入理解分析并手写简易JDK动态代理（下）  博客真的是好几个">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/01/03/24.html">
 
@@ -149,14 +151,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +218,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -323,7 +325,7 @@
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"># Java</a>
               <a href="/tags/JDK/" rel="tag"># JDK</a>
-              <a href="/tags/动态代理/" rel="tag"># 动态代理</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" rel="tag"># 动态代理</a>
           </div>
 
         
@@ -417,13 +419,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -495,14 +497,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -545,9 +547,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

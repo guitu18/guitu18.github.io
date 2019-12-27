@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,17 @@
 </script>
 
   <meta name="description" content="前段时间不是出了腾讯云服务器丢失导致一家创业公司几乎被摧毁的事件嘛，云服务终归不是百分之百可靠，虽然我还是比较相信阿里，但是有备无患不是吗；服务器上的数据库我是有每天做定时备份的，但都是备份到服务器本地，现在我想的是，能不能把备份的文件文件定时发送到我自己的邮箱，多做一份远程备份；这里就用到了mailx发送邮件的功能了； 先要说一下的是，现在很多博客文档复制粘贴的太多了，我找的好多mailx的教程">
-<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux定时任务+Mailx实现数据库自动备份并发送备份文件到指定邮箱">
 <meta property="og:url" content="https://www.guitu18.com/post/2018/08/18/22.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="前段时间不是出了腾讯云服务器丢失导致一家创业公司几乎被摧毁的事件嘛，云服务终归不是百分之百可靠，虽然我还是比较相信阿里，但是有备无患不是吗；服务器上的数据库我是有每天做定时备份的，但都是备份到服务器本地，现在我想的是，能不能把备份的文件文件定时发送到我自己的邮箱，多做一份远程备份；这里就用到了mailx发送邮件的功能了； 先要说一下的是，现在很多博客文档复制粘贴的太多了，我找的好多mailx的教程">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-17T17:45:35.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-17T17:45:35.000Z">
+<meta property="article:modified_time" content="2018-08-17T17:45:35.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux定时任务+Mailx实现数据库自动备份并发送备份文件到指定邮箱">
-<meta name="twitter:description" content="前段时间不是出了腾讯云服务器丢失导致一家创业公司几乎被摧毁的事件嘛，云服务终归不是百分之百可靠，虽然我还是比较相信阿里，但是有备无患不是吗；服务器上的数据库我是有每天做定时备份的，但都是备份到服务器本地，现在我想的是，能不能把备份的文件文件定时发送到我自己的邮箱，多做一份远程备份；这里就用到了mailx发送邮件的功能了； 先要说一下的是，现在很多博客文档复制粘贴的太多了，我找的好多mailx的教程">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2018/08/18/22.html">
 
@@ -149,14 +149,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +216,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Linux/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Linux/" itemprop="url" rel="index">
                     <span itemprop="name">Linux</span>
                   </a>
                 </span>
@@ -275,7 +275,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Resolving host smtp.qq.com . . . done.</span><br><span class="line">Connecting to 14.17.57.241:465 . . . connected.</span><br><span class="line">Error in certificate: Peer's certificate issuer is not recognized.</span><br><span class="line">Comparing DNS name: "pop.qq.com"</span><br><span class="line">Comparing DNS name: "ex.qq.com"</span><br><span class="line">Comparing DNS name: "imap.exmail.qq.com"</span><br><span class="line">Comparing DNS name: "rtx.exmail.qq.com"</span><br><span class="line">Comparing DNS name: "smtp.exmail.qq.com"</span><br><span class="line">Comparing DNS name: "mxbiz1.qq.com"</span><br><span class="line">Comparing DNS name: "mx1.qq.com"</span><br><span class="line">Comparing DNS name: "cloudmx.qq.com"</span><br><span class="line">Comparing DNS name: "mx2.qq.com"</span><br><span class="line">Comparing DNS name: "dav.qq.com"</span><br><span class="line">Comparing DNS name: "mxbiz2.qq.com"</span><br><span class="line">Comparing DNS name: "smtp.qq.com"</span><br><span class="line">SSL parameters: cipher=AES-128, keysize=128, secretkeysize=128,</span><br><span class="line">issuer=CN=GeoTrust RSA CA 2018,OU=www.digicert.com,O=DigiCert Inc,C=US</span><br><span class="line">subject=CN=pop.qq.com,OU=R&amp;D,O=Shenzhen Tencent Computer Systems Company Limited,L=Shenzhen,ST=Guangdong,C=CN</span><br><span class="line">220 smtp.qq.com Esmtp QQ Mail Server</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; EHLO qingbaobao</span></span><br><span class="line">250-smtp.qq.com</span><br><span class="line">250-PIPELINING</span><br><span class="line">250-SIZE 73400320</span><br><span class="line">250-AUTH LOGIN PLAIN</span><br><span class="line">250-AUTH=LOGIN</span><br><span class="line">250-MAILCOMPRESS</span><br><span class="line">250 8BITMIME</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; AUTH LOGIN</span></span><br><span class="line">334 VXNlcm5hbWU6</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; MjQzODE4MTczQHFxLmNvbQ==</span></span><br><span class="line">334 UGFzc3dvcmQ6</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; andsemJycmR0aWlqY2FnZA==</span></span><br><span class="line">235 Authentication successful</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; MAIL FROM:&lt;243818173@qq.com&gt;</span></span><br><span class="line">250 Ok</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; RCPT TO:&lt;xianjian-mail@qq.com&gt;</span></span><br><span class="line">250 Ok</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; DATA</span></span><br><span class="line">354 End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; .</span></span><br><span class="line">250 Ok: queued as </span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; QUIT</span></span><br><span class="line">221 Bye</span><br></pre></td></tr></table></figure>
 
 <h3 id="如果有问题请看下面："><a href="#如果有问题请看下面：" class="headerlink" title="如果有问题请看下面："></a>如果有问题请看下面：</h3><ol>
-<li><h4 id="以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；"><a href="#以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；" class="headerlink" title="以上第二行配置：set nss-config-dir=/etc/pki/nssdb；我的服务器是Centos7 默认的文件位置是：/etc/pki/nssdb，如果不确定使用find命令搜索一下；"></a>以上第二行配置：set nss-config-dir=/etc/pki/nssdb；我的服务器是Centos7 默认的文件位置是：/etc/pki/nssdb，如果不确定使用find命令搜索一下；</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &quot;cert*.db&quot;</span><br></pre></td></tr></table></figure>
+<li><h4 id="以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；"><a href="#以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；" class="headerlink" title="以上第二行配置：set nss-config-dir=/etc/pki/nssdb；我的服务器是Centos7 默认的文件位置是：/etc/pki/nssdb，如果不确定使用find命令搜索一下；"></a>以上第二行配置：set nss-config-dir=/etc/pki/nssdb；我的服务器是Centos7 默认的文件位置是：/etc/pki/nssdb，如果不确定使用find命令搜索一下；</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F; -name &quot;cert*.db&quot;</span><br></pre></td></tr></table></figure>
 
 <h4 id="如果nss-config-dir配置错误会有如下提示："><a href="#如果nss-config-dir配置错误会有如下提示：" class="headerlink" title="如果nss-config-dir配置错误会有如下提示："></a>如果nss-config-dir配置错误会有如下提示：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Resolving host smtp.qq.com . . . done.</span><br><span class="line">Connecting to 14.17.57.241:465 . . . connected.</span><br><span class="line">Error initializing NSS: Unknown error -8015.</span><br><span class="line">"/root/dead.letter" 29/821</span><br><span class="line">. . . message not sent.</span><br></pre></td></tr></table></figure>
 </li>
@@ -397,7 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装和配置mailx"><span class="nav-number">1.</span> <span class="nav-text">一、安装和配置mailx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#首先需要安装mailx，yum安装方式非常简单"><span class="nav-number">1.0.1.</span> <span class="nav-text">首先需要安装mailx，yum安装方式非常简单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置：配置文件默认是-etc-mail-rc"><span class="nav-number">1.0.2.</span> <span class="nav-text">配置：配置文件默认是/etc/mail.rc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送一封测试邮件："><span class="nav-number">1.0.3.</span> <span class="nav-text">发送一封测试邮件：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果有问题请看下面："><span class="nav-number">1.1.</span> <span class="nav-text">如果有问题请看下面：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；"><span class="nav-number">1.1.1.</span> <span class="nav-text">以上第二行配置：set nss-config-dir=/etc/pki/nssdb；我的服务器是Centos7 默认的文件位置是：/etc/pki/nssdb，如果不确定使用find命令搜索一下；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果nss-config-dir配置错误会有如下提示："><span class="nav-number">1.1.2.</span> <span class="nav-text">如果nss-config-dir配置错误会有如下提示：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正常来说，使用smtp-smtp-qq-com服务器就能发送邮件了，但我这里配置的是smtps-smtp-qq-com-465，这里是因为阿里云出于安全考虑，默认封禁TCP-25端口出方向的访问流量，所以这里改用465端口；"><span class="nav-number">1.1.3.</span> <span class="nav-text">正常来说，使用smtp://smtp.qq.com服务器就能发送邮件了，但我这里配置的是smtps://smtp.qq.com:465，这里是因为阿里云出于安全考虑，默认封禁TCP 25端口出方向的访问流量，所以这里改用465端口；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#详情看这里：https-help-aliyun-com-knowledge-detail-56130-html，确实需要使用25端口可以按照步骤提交解封；"><span class="nav-number">1.1.4.</span> <span class="nav-text">详情看这里：https://help.aliyun.com/knowledge_detail/56130.html，确实需要使用25端口可以按照步骤提交解封；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果直接使用25端口发送会有下面的提示，并且一直无响应直到超时："><span class="nav-number">1.1.5.</span> <span class="nav-text">如果直接使用25端口发送会有下面的提示，并且一直无响应直到超时：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、配置备份脚本"><span class="nav-number">2.</span> <span class="nav-text">二、配置备份脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先贴上我自己写的备份脚本，非常简单，没什么技术含量："><span class="nav-number">2.0.1.</span> <span class="nav-text">先贴上我自己写的备份脚本，非常简单，没什么技术含量：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以上脚本修改一下前面的三项为自己的配置之后应该就可以用了，脚本里面的命令也是linux里面比较基础的命令了，这里只展开记录一下MySQL的备份和还原命令以及文件查找命令；"><span class="nav-number">2.0.2.</span> <span class="nav-text">以上脚本修改一下前面的三项为自己的配置之后应该就可以用了，脚本里面的命令也是linux里面比较基础的命令了，这里只展开记录一下MySQL的备份和还原命令以及文件查找命令；</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、配置定时任务"><span class="nav-number">3.</span> <span class="nav-text">三、配置定时任务</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装和配置mailx"><span class="nav-number">1.</span> <span class="nav-text">一、安装和配置mailx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#首先需要安装mailx，yum安装方式非常简单"><span class="nav-number">1.0.1.</span> <span class="nav-text">首先需要安装mailx，yum安装方式非常简单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置：配置文件默认是-etc-mail-rc"><span class="nav-number">1.0.2.</span> <span class="nav-text">配置：配置文件默认是&#x2F;etc&#x2F;mail.rc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送一封测试邮件："><span class="nav-number">1.0.3.</span> <span class="nav-text">发送一封测试邮件：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果有问题请看下面："><span class="nav-number">1.1.</span> <span class="nav-text">如果有问题请看下面：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以上第二行配置：set-nss-config-dir-etc-pki-nssdb；我的服务器是Centos7-默认的文件位置是：-etc-pki-nssdb，如果不确定使用find命令搜索一下；"><span class="nav-number">1.1.1.</span> <span class="nav-text">以上第二行配置：set nss-config-dir&#x3D;&#x2F;etc&#x2F;pki&#x2F;nssdb；我的服务器是Centos7 默认的文件位置是：&#x2F;etc&#x2F;pki&#x2F;nssdb，如果不确定使用find命令搜索一下；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果nss-config-dir配置错误会有如下提示："><span class="nav-number">1.1.2.</span> <span class="nav-text">如果nss-config-dir配置错误会有如下提示：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正常来说，使用smtp-smtp-qq-com服务器就能发送邮件了，但我这里配置的是smtps-smtp-qq-com-465，这里是因为阿里云出于安全考虑，默认封禁TCP-25端口出方向的访问流量，所以这里改用465端口；"><span class="nav-number">1.1.3.</span> <span class="nav-text">正常来说，使用smtp:&#x2F;&#x2F;smtp.qq.com服务器就能发送邮件了，但我这里配置的是smtps:&#x2F;&#x2F;smtp.qq.com:465，这里是因为阿里云出于安全考虑，默认封禁TCP 25端口出方向的访问流量，所以这里改用465端口；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#详情看这里：https-help-aliyun-com-knowledge-detail-56130-html，确实需要使用25端口可以按照步骤提交解封；"><span class="nav-number">1.1.4.</span> <span class="nav-text">详情看这里：https:&#x2F;&#x2F;help.aliyun.com&#x2F;knowledge_detail&#x2F;56130.html，确实需要使用25端口可以按照步骤提交解封；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果直接使用25端口发送会有下面的提示，并且一直无响应直到超时："><span class="nav-number">1.1.5.</span> <span class="nav-text">如果直接使用25端口发送会有下面的提示，并且一直无响应直到超时：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、配置备份脚本"><span class="nav-number">2.</span> <span class="nav-text">二、配置备份脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先贴上我自己写的备份脚本，非常简单，没什么技术含量："><span class="nav-number">2.0.1.</span> <span class="nav-text">先贴上我自己写的备份脚本，非常简单，没什么技术含量：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以上脚本修改一下前面的三项为自己的配置之后应该就可以用了，脚本里面的命令也是linux里面比较基础的命令了，这里只展开记录一下MySQL的备份和还原命令以及文件查找命令；"><span class="nav-number">2.0.2.</span> <span class="nav-text">以上脚本修改一下前面的三项为自己的配置之后应该就可以用了，脚本里面的命令也是linux里面比较基础的命令了，这里只展开记录一下MySQL的备份和还原命令以及文件查找命令；</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、配置定时任务"><span class="nav-number">3.</span> <span class="nav-text">三、配置定时任务</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -417,13 +417,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -495,14 +495,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -545,9 +545,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

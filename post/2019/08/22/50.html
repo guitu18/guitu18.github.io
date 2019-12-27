@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,20 +47,21 @@
 </script>
 
   <meta name="description" content="最近在写一个项目时需要通过反射获取方法的参数名，在method.getParameters()拿到的是一些arg0 arg1 arg2 …之类的无意义参数。  查原因发现是在Java8之前，代码编译为class文件后，方法参数的类型是固定的，但参数名称却丢失了，这和动态语言严重依赖参数名称形成了鲜明对比。（java是静态语言，所以入参名称叫什么其实无所谓的）。">
-<meta name="keywords" content="反射,参数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过反射获取方法参数名时遇到的小坑">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/08/22/50.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="最近在写一个项目时需要通过反射获取方法的参数名，在method.getParameters()拿到的是一些arg0 arg1 arg2 …之类的无意义参数。  查原因发现是在Java8之前，代码编译为class文件后，方法参数的类型是固定的，但参数名称却丢失了，这和动态语言严重依赖参数名称形成了鲜明对比。（java是静态语言，所以入参名称叫什么其实无所谓的）。">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.guitu18.com/markdown/16374f0f2d6141575f3b47da1d4d6632jpg">
 <meta property="og:image" content="https://img.guitu18.com/markdown/d81dc9dfbbcc1ccebd5e738761839ac5jpg">
 <meta property="og:image" content="https://img.guitu18.com/markdown/c46fd9df40d0741d0849f89c5b0b012ajpg">
-<meta property="og:updated_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:published_time" content="2019-08-22T03:41:40.000Z">
+<meta property="article:modified_time" content="2019-12-20T10:55:29.643Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="反射">
+<meta property="article:tag" content="参数">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="通过反射获取方法参数名时遇到的小坑">
-<meta name="twitter:description" content="最近在写一个项目时需要通过反射获取方法的参数名，在method.getParameters()拿到的是一些arg0 arg1 arg2 …之类的无意义参数。  查原因发现是在Java8之前，代码编译为class文件后，方法参数的类型是固定的，但参数名称却丢失了，这和动态语言严重依赖参数名称形成了鲜明对比。（java是静态语言，所以入参名称叫什么其实无所谓的）。">
 <meta name="twitter:image" content="https://img.guitu18.com/markdown/16374f0f2d6141575f3b47da1d4d6632jpg">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/08/22/50.html">
@@ -153,14 +154,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -227,13 +228,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -284,7 +285,7 @@
 <p>Setting &gt; Build, Excution, Deployment &gt; Compiler &gt; Java Compiler &gt; Additional command line parameters:</p>
 <p>在里面输入： -parameters 就可以了。</p>
 <p><img src="https://img.guitu18.com/markdown/d81dc9dfbbcc1ccebd5e738761839ac5jpg" alt="img"></p>
-<p>这种方式毕竟只是临时解决，其他人拿到你的代码如果没有设置这个还是会出现拿不到参数名的情况。还有一种解决方式，在pom文件中添加编译参数：<compilerargument>-parameters</compilerargument></p>
+<p>这种方式毕竟只是临时解决，其他人拿到你的代码如果没有设置这个还是会出现拿不到参数名的情况。还有一种解决方式，在pom文件中添加编译参数：<compilerArgument>-parameters</compilerArgument></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">compilerArgument</span>&gt;</span>-parameters<span class="tag">&lt;/<span class="name">compilerArgument</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>再次通过method.getParameters()获取参数：</p>
@@ -319,8 +320,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/反射/" rel="tag"># 反射</a>
-              <a href="/tags/参数/" rel="tag"># 参数</a>
+              <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+              <a href="/tags/%E5%8F%82%E6%95%B0/" rel="tag"># 参数</a>
           </div>
 
         
@@ -414,13 +415,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -492,14 +493,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -542,9 +543,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

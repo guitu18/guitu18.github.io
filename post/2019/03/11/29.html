@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,17 +47,19 @@
 </script>
 
   <meta name="description" content="今天发生了一件非常突然的事情，突然得我措手不及没有做好任何心理准备。事起肯定有因，也怪我自己的粗心大意造成了今天的后果，所以今天也算是给了我一个非常深刻的教训吧。以上只是我个人发的几句牢骚，跟本文无关。本篇博客是周末两天就准备好了的，整理了下趁今天贴出来，后面我要调整调整，博客更新可能会停滞一段时间。吃一堑长一智，愿自己变得越来越好。2019年3月11日19:25:51 设计模式之单例模式单例模式">
-<meta name="keywords" content="源码,设计模式,单例模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="源码学习系列：设计模式之单例模式">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/03/11/29.html">
 <meta property="og:site_name" content="夜月归途">
 <meta property="og:description" content="今天发生了一件非常突然的事情，突然得我措手不及没有做好任何心理准备。事起肯定有因，也怪我自己的粗心大意造成了今天的后果，所以今天也算是给了我一个非常深刻的教训吧。以上只是我个人发的几句牢骚，跟本文无关。本篇博客是周末两天就准备好了的，整理了下趁今天贴出来，后面我要调整调整，博客更新可能会停滞一段时间。吃一堑长一智，愿自己变得越来越好。2019年3月11日19:25:51 设计模式之单例模式单例模式">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-10T23:30:11.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-10T23:30:11.000Z">
+<meta property="article:modified_time" content="2019-03-10T23:30:11.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="源码">
+<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="单例模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="源码学习系列：设计模式之单例模式">
-<meta name="twitter:description" content="今天发生了一件非常突然的事情，突然得我措手不及没有做好任何心理准备。事起肯定有因，也怪我自己的粗心大意造成了今天的后果，所以今天也算是给了我一个非常深刻的教训吧。以上只是我个人发的几句牢骚，跟本文无关。本篇博客是周末两天就准备好了的，整理了下趁今天贴出来，后面我要调整调整，博客更新可能会停滞一段时间。吃一堑长一智，愿自己变得越来越好。2019年3月11日19:25:51 设计模式之单例模式单例模式">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/03/11/29.html">
 
@@ -149,14 +151,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +218,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -271,7 +273,7 @@
 <li>注册式单例之枚举单例</li>
 <li>ThreadLocal 线程单例</li>
 </ol>
-<hr>
+<hr/>
 # 饿汉式单例
 
 <p>先看代码：</p>
@@ -283,7 +285,7 @@
 <p>这种方式简单有效，没有任何形式的锁，所以不存在效率问题。但缺点是不管类有没有被使用，只要被加载就回初始化，会造成资源浪费，当这样的单例非常多的是时候，是需要占用很大的内存空间的。</p>
 <a id="more"></a>
 
-<hr>
+<hr/>
 # 懒汉式单例
 
 <p>为了解决上面的的问题，懒汉式单例应时而生：</p>
@@ -300,7 +302,7 @@
 
 <p>顾名思义，这段代码使用了内部类的形式，利用了内部类一定要在调用前初始化的特点，且这个特性是JVM提供并保证的，我们不需要为其加任何锁，同时也避免了线程安全带的问题，这种方式避免了饿汉式的资源浪费，也兼顾了 <code>synchronized</code> 的性能问题，算是比较完美的解决方案。</p>
 <p>但是，为什么要来但是呢，因为总有一些不走寻常路的程序员，比如我，喜欢来一些野路子，会破坏上面的代码的单例性质，接着看。</p>
-<hr>
+<hr/>
 # 反射破坏单例
 
 <p>就一上面最后一步的代码来说，正常调用时没有任何问题的。但是如果我偏不走 <code>getInstance()</code> 方法，我用反射调用呢？</p>
@@ -311,7 +313,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">LazyInnerClassSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (LazyHolder.LAZY != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"不允许创建多个实例"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>但这时又回到最开始的线程安全问题上了，多线程反射调用时，你要保证构造方法的线程安全，又要加锁，又要处理。等于又回到第一步第二部中的循环中去了。</p>
-<hr>
+<hr/>
 # 序列化破坏单例
 
 <p>再看另一种情况，序列化。当我们将一个对象创建好后，有时候需要将对象写入磁盘或者通过网络流传输，需要先序列化，下次使用时，进行反序列化。但是反序列化之后的对象会重新分配内存，相当于重新创建。这种情况下也会破坏单例。以第一步饿汉式单例为例，看下面的代码：</p>
@@ -350,7 +352,7 @@
 <p>再回到前面的 <code>if</code> 判断，如果该方法不为空，则调用该方法，并将返回值赋值给 <code>obj</code> 作为反序列化结果返回。</p>
 <p>到这里谜团就揭开了，为什么添加了 <code>readResolve</code> 就能保证序列化不会破坏单例了，因为反序列化后拿到的就是我们添加的 <code>readResolve</code> 方法的返回值。</p>
 <p>其实 <code>JVM</code> 在设计之初就考虑到了序列化会造成各种特殊情况，并对其做了一系列特殊处理。这里在反序列化时，虽然还是会 <code>new</code> 出来一个新的对象，但是在检查了 <code>readResolve</code> 方法后，会将该方法调用后的结果返回，之前 <code>new</code> 出来的对象会被垃圾回收器回收，这一切都是在 <code>JVM</code> 的保障下完成的。</p>
-<hr>
+<hr/>
 # 注册式单例之容器缓存
 
 <p>注册式单例，也叫登记式单例。其实质就是维护一个 <code>Map</code> 来实现的，通过 <code>key</code> 来获取存放在 <code>Map</code> 中的实例。</p>
@@ -358,12 +360,11 @@
 <p>下面是一个 <code>IOC</code> 容器的简化版实现，代码比较简单，就不做说明和测试了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerSingleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; ioc = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Object&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ContainerSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getInstance</span><span class="params">(String className)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (ioc) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ioc.containsKey(className)) &#123;</span><br><span class="line">                Object obj = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    obj = Class.forName(className).newInstance();</span><br><span class="line">                    ioc.put(className, obj);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> obj;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> ioc.get(className);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<hr>
+<hr/>
 # 注册式单例之枚举单例
 
 <p>再来看枚举式单例，枚举单例使用起来非常简单，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EnumSingleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="keyword">private</span> Object data;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(Object data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>直接上测试代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    EnumSingleton instance1 = EnumSingleton.getInstance();</span><br><span class="line">    instance1.setData(<span class="keyword">new</span> Object());</span><br><span class="line">    EnumSingleton instance2 = EnumSingleton.getInstance();</span><br><span class="line">    System.out.println(instance1 == instance2); <span class="comment">// true</span></span><br><span class="line">    System.out.println(instance1.getData()); <span class="comment">// java.lang.Object@234bef66</span></span><br><span class="line">    System.out.println(instance2.getData()); <span class="comment">// java.lang.Object@234bef66</span></span><br><span class="line">    System.out.println(instance1.getData() == instance1.getData()); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"EnumSingleton.obj"</span>);</span><br><span class="line">    ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos);</span><br><span class="line">    oos.writeObject(instance2);</span><br><span class="line">    oos.flush();</span><br><span class="line">    oos.close();</span><br><span class="line"></span><br><span class="line">    FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"EnumSingleton.obj"</span>);</span><br><span class="line">    ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);</span><br><span class="line">    EnumSingleton instance3 = (EnumSingleton) ois.readObject();</span><br><span class="line">    ois.close();</span><br><span class="line"></span><br><span class="line">    System.out.println(instance1.getData()); <span class="comment">// java.lang.Object@234bef66</span></span><br><span class="line">    System.out.println(instance3.getData()); <span class="comment">// java.lang.Object@234bef66</span></span><br><span class="line">    System.out.println(instance1.getData() == instance3.getData()); <span class="comment">// true</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -377,7 +378,9 @@
 <p>这里根据类型判断，进了 <code>readEnum()</code> 方法，继续点进去：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Enum&lt;?&gt; readEnum(<span class="keyword">boolean</span> unshared) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    ...</span><br><span class="line">    String name = readString(<span class="keyword">false</span>);</span><br><span class="line">    Enum&lt;?&gt; result = <span class="keyword">null</span>;</span><br><span class="line">    Class&lt;?&gt; cl = desc.forClass();</span><br><span class="line">    <span class="keyword">if</span> (cl != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            Enum&lt;?&gt; en = Enum.valueOf((Class)cl, name);</span><br><span class="line">            result = en;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalArgumentException ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> (IOException) <span class="keyword">new</span> InvalidObjectException(</span><br><span class="line">                <span class="string">"enum constant "</span> + name + <span class="string">" does not exist in "</span> +</span><br><span class="line">                cl).initCause(ex);</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>关键的一行代码：<code>Enum&lt;?&gt; en = Enum.valueOf((Class)cl, name);</code>点进去就到了 <figure class="highlight plain"><figcaption><span>这里：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```java</span><br><span class="line">public static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(Class&lt;T&gt; enumType, String name) &#123;</span><br><span class="line">    T result = enumType.enumConstantDirectory().get(name);</span><br><span class="line">    if (result != null)</span><br><span class="line">        return result;</span><br><span class="line">    if (name == null)</span><br><span class="line">        throw new NullPointerException(&quot;Name is null&quot;);</span><br><span class="line">    throw new IllegalArgumentException(</span><br><span class="line">        &quot;No enum constant &quot; + enumType.getCanonicalName() + &quot;.&quot; + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关键的一行代码：<code>Enum&lt;?&gt; en = Enum.valueOf((Class)cl, name);</code>点进去就到了 <code>Enum</code> 这里：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; <span class="function">T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; enumType, String name)</span> </span>&#123;</span><br><span class="line">    T result = enumType.enumConstantDirectory().get(name);</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    <span class="keyword">if</span> (name == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"Name is null"</span>);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</span><br><span class="line">        <span class="string">"No enum constant "</span> + enumType.getCanonicalName() + <span class="string">"."</span> + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>看这一句 <code>enumType.enumConstantDirectory().get(name)</code> 猜测 <code>enumConstantDirectory()</code>返回的应该是一个 <code>Map</code> 类的东西，点进去看验证了猜想是对的，这里到达了 <code>Class</code> 类了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Map&lt;String, T&gt; <span class="title">enumConstantDirectory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (enumConstantDirectory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        T[] universe = getEnumConstantsShared();</span><br><span class="line">        <span class="keyword">if</span> (universe == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</span><br><span class="line">                getName() + <span class="string">" is not an enum type"</span>);</span><br><span class="line">        Map&lt;String, T&gt; m = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">2</span> * universe.length);</span><br><span class="line">        <span class="keyword">for</span> (T constant : universe)</span><br><span class="line">            m.put(((Enum&lt;?&gt;)constant).name(), constant);</span><br><span class="line">        enumConstantDirectory = m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> enumConstantDirectory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -413,7 +416,7 @@
 <p>真相见分晓，<code>newInstance</code> 执行时会检查类型，如果是枚举类型，在实例化时直接抛出异常。</p>
 <p>至此，也证实了“<strong>枚举现如今已成为实现Singleton的最佳方法</strong>”这句话，在《Effective<br>Java》一书中也推荐使用枚举实现单例。</p>
 <p>这一切的一切都是源于 <code>JDK</code> 枚举的语法特殊性，还有那个在 <code>Java</code> 中<strong>无所不能的反射也在为枚举保驾护航</strong>，使得<strong>枚举式单例成为单例模式的一种最优雅的实现</strong>。</p>
-<hr>
+<hr/>
 # ThreadLocal 线程单例
 
 <p><code>ThreadLocal</code> 线程单例其实应该也算是注册式单例的一种，它是利用 <code>ThreadLocal</code> 的特点，保证在同一个线程内一个对象是单例的。</p>
@@ -458,9 +461,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/源码/" rel="tag"># 源码</a>
-              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
-              <a href="/tags/单例模式/" rel="tag"># 单例模式</a>
+              <a href="/tags/%E6%BA%90%E7%A0%81/" rel="tag"># 源码</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+              <a href="/tags/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="tag"># 单例模式</a>
           </div>
 
         
@@ -555,13 +558,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -633,14 +636,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -683,9 +686,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 

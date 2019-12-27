@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -46,18 +46,18 @@
   };
 </script>
 
-  <meta name="description" content="开发准备依赖新建Maven工程，引入依赖  Maven地址：https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client 请根据安装的版本引入对应的依赖  我这里安装的是当前最新版4.5.0，所以我对应的依赖是：   123456&amp;lt;!-- https://mvnrepository.com/artifact/or">
-<meta name="keywords" content="RocketMQ">
+  <meta name="description" content="开发准备依赖新建Maven工程，引入依赖  Maven地址：https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.apache.rocketmq&#x2F;rocketmq-client 请根据安装的版本引入对应的依赖  我这里安装的是当前最新版4.5.0，所以我对应的依赖是：   123456&lt;!-- https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;or">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RocketMQ 分布式消息中间件-Java端入门代码示例">
 <meta property="og:url" content="https://www.guitu18.com/post/2019/04/20/32.html">
 <meta property="og:site_name" content="夜月归途">
-<meta property="og:description" content="开发准备依赖新建Maven工程，引入依赖  Maven地址：https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client 请根据安装的版本引入对应的依赖  我这里安装的是当前最新版4.5.0，所以我对应的依赖是：   123456&amp;lt;!-- https://mvnrepository.com/artifact/or">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-20T12:32:15.000Z">
+<meta property="og:description" content="开发准备依赖新建Maven工程，引入依赖  Maven地址：https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.apache.rocketmq&#x2F;rocketmq-client 请根据安装的版本引入对应的依赖  我这里安装的是当前最新版4.5.0，所以我对应的依赖是：   123456&lt;!-- https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;or">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-20T12:32:15.000Z">
+<meta property="article:modified_time" content="2019-04-20T12:32:15.000Z">
+<meta property="article:author" content="Guitu">
+<meta property="article:tag" content="RocketMQ">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RocketMQ 分布式消息中间件-Java端入门代码示例">
-<meta name="twitter:description" content="开发准备依赖新建Maven工程，引入依赖  Maven地址：https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client 请根据安装的版本引入对应的依赖  我这里安装的是当前最新版4.5.0，所以我对应的依赖是：   123456&amp;lt;!-- https://mvnrepository.com/artifact/or">
 
 <link rel="canonical" href="https://www.guitu18.com/post/2019/04/20/32.html">
 
@@ -149,14 +149,14 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
   </ul>
@@ -216,13 +216,13 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
                     <span itemprop="name">学习</span>
                   </a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/Java/" itemprop="url" rel="index">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -298,7 +298,7 @@
 <li>Producer示例代码路径：<code>org.apache.rocketmq.example.quickstart.Producer</code> (需导入 <code>rocketmq-example</code> 依赖)</li>
 <li>Customer示例代码路径：<code>org.apache.rocketmq.example.quickstart.Customer</code> (需导入 <code>rocketmq-example</code> 依赖)</li>
 </ul>
-<hr>
+<hr/>
 <a id="more"></a>
 
 <h1 id="编码运行"><a href="#编码运行" class="headerlink" title="编码运行"></a>编码运行</h1><h2 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h2><ul>
@@ -311,7 +311,7 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rocketmq.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.client.exception.MQClientException;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.common.consumer.ConsumeFromWhere;</span><br><span class="line"><span class="keyword">import</span> org.apache.rocketmq.common.message.MessageExt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消费者测试</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhangkuan</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/4/8</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当前例子是 PushConsumer 用法，给用户感觉是消息从 RocketMQ 服务器推到了应用客户端。</span></span><br><span class="line"><span class="comment">     * 而实际 PushConsumer 内部是使用长轮询 Pull(拉取) 方式从 MetaQ 服务器拉消息，然后再回调用户 Listener方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InterruptedException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> MQClientException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MQClientException </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 声明并初始化 一个 consumer</span></span><br><span class="line"><span class="comment">         * Consumer Group 组名，多个 Consumer 如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应该将它们归为同一组</span></span><br><span class="line"><span class="comment">         * 一个应用创建一个 Consumer，由应用来维护此对象，可以设置为全局对象或者单例</span></span><br><span class="line"><span class="comment">         * ConsumerGroupName 需要由应用来保证唯一</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"myCustomerGroupName_1"</span>);</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 指定 NameServer 的地址 与端口</span></span><br><span class="line"><span class="comment">         * 指定自己在 Consumer Group 组中的名称</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        consumer.setNamesrvAddr(<span class="string">"47.75.222.71:9876"</span>);</span><br><span class="line">        consumer.setInstanceName(<span class="string">"myConsumer_1"</span>);</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 设置 consumer 的消费策略</span></span><br><span class="line"><span class="comment">         * CONSUME_FROM_LAST_OFFSET 默认策略，从该队列最尾开始消费，即跳过历史消息</span></span><br><span class="line"><span class="comment">         * CONSUME_FROM_FIRST_OFFSET 从队列最开始开始消费，即历史消息（还储存在broker的）全部消费一遍</span></span><br><span class="line"><span class="comment">         * CONSUME_FROM_TIMESTAMP 从某个时间点开始消费，和 setConsumeTimestamp() 配合使用，默认是半个小时以前</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 消费者订阅消息，如下所示订阅 topic 为 myTopicTest_1 下tag为 TagA 类型的消息</span></span><br><span class="line"><span class="comment">         * 订阅指定 topic 下 tags 分别等于TagC或TagD，则为：&lt;code&gt;consumer.subscribe("myTopicTest_2", "TagC||TagD");&lt;/code&gt;</span></span><br><span class="line"><span class="comment">         * 一个 consumer 对象可以订阅多个 topic，如下</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        consumer.subscribe(<span class="string">"myTopicTest_1"</span>, <span class="string">"TagA"</span>);</span><br><span class="line">        consumer.subscribe(<span class="string">"myTopicTest_2"</span>, <span class="string">"TagC||TagD"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 注册消息监听器，如果有订阅的消息就会响应</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * 默认 msgs 里只有一条消息，可以通过设置 consumeMessageBatchMaxSize 参数来批量接收消息</span></span><br><span class="line"><span class="comment">             * consumeThreadMin:消费线程池数量 默认最小值10</span></span><br><span class="line"><span class="comment">             * consumeThreadMax:消费线程池数量 默认最大值20</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" Receive New Messages: "</span> + msgs.size());</span><br><span class="line">                MessageExt msg = msgs.get(<span class="number">0</span>);</span><br><span class="line">                System.out.printf(<span class="string">"%s Receive New Messages: %s %n"</span>, <span class="keyword">new</span> Object[]&#123;Thread.currentThread().getName(), msgs&#125;);</span><br><span class="line">                System.out.println(<span class="string">"----topic: "</span> + msg.getTopic() + <span class="string">", tag: "</span> + msg.getTags() + <span class="string">", body: "</span> + <span class="keyword">new</span> String(msg.getBody()));</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * 返回消费状态</span></span><br><span class="line"><span class="comment">                 * CONSUME_SUCCESS 消费成功</span></span><br><span class="line"><span class="comment">                 * RECONSUME_LATER 消费失败，需要稍后重新消费</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="comment">//return ConsumeConcurrentlyStatus.RECONSUME_LATER;</span></span><br><span class="line">                <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Consumer对象在使用之前必须要调用start初始化，初始化一次即可</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        consumer.start();</span><br><span class="line">        System.out.printf(<span class="string">"Consumer Started.%n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<hr>
+<hr/>
 # 采坑记录
 
 <h2 id="RocketMQ服务外网不能访问"><a href="#RocketMQ服务外网不能访问" class="headerlink" title="RocketMQ服务外网不能访问"></a>RocketMQ服务外网不能访问</h2><ul>
@@ -455,13 +455,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -533,14 +533,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
@@ -583,9 +583,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
