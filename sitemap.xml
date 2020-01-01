@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.guitu18.com/post/2019/08/22/50.html</loc>
+    <loc>https://www.guitu18.com/about/index.html</loc>
     
-    <lastmod>2020-01-01T12:03:15.400Z</lastmod>
+    <lastmod>2020-01-01T16:44:38.048Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.guitu18.com/about/index.html</loc>
+    <loc>https://www.guitu18.com/post/2020/01/01/63.html</loc>
     
-    <lastmod>2019-12-30T16:03:21.850Z</lastmod>
+    <lastmod>2020-01-01T16:44:38.044Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.guitu18.com/video/index.html</loc>
+    
+    <lastmod>2020-01-01T16:44:38.042Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.guitu18.com/post/2019/08/22/50.html</loc>
+    
+    <lastmod>2020-01-01T12:03:15.400Z</lastmod>
     
   </url>
   
@@ -51,13 +65,6 @@
   </url>
   
   <url>
-    <loc>https://www.guitu18.com/post/2019/07/18/41.html</loc>
-    
-    <lastmod>2019-12-30T06:52:11.221Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.guitu18.com/post/2019/07/26/43.html</loc>
     
     <lastmod>2019-12-30T06:52:11.221Z</lastmod>
@@ -65,14 +72,21 @@
   </url>
   
   <url>
-    <loc>https://www.guitu18.com/post/2019/10/30/56.html</loc>
+    <loc>https://www.guitu18.com/post/2019/07/18/41.html</loc>
+    
+    <lastmod>2019-12-30T06:52:11.221Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.guitu18.com/post/2019/08/01/45.html</loc>
     
     <lastmod>2019-12-30T06:52:11.220Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.guitu18.com/post/2019/08/01/45.html</loc>
+    <loc>https://www.guitu18.com/post/2019/10/30/56.html</loc>
     
     <lastmod>2019-12-30T06:52:11.220Z</lastmod>
     
@@ -107,6 +121,13 @@
   </url>
   
   <url>
+    <loc>https://www.guitu18.com/categories/index.html</loc>
+    
+    <lastmod>2019-12-20T10:55:29.642Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.guitu18.com/post/2019/09/16/60.html</loc>
     
     <lastmod>2019-12-20T10:55:29.642Z</lastmod>
@@ -115,13 +136,6 @@
   
   <url>
     <loc>https://www.guitu18.com/404.html</loc>
-    
-    <lastmod>2019-12-20T10:55:29.642Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.guitu18.com/categories/index.html</loc>
     
     <lastmod>2019-12-20T10:55:29.642Z</lastmod>
     
