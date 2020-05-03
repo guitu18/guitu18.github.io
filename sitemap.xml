@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.guitu18.com/about/index.html</loc>
+    
+    <lastmod>2020-05-03T13:06:44.394Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.guitu18.com/post/2020/05/01/71.html</loc>
+    
+    <lastmod>2020-05-03T13:06:44.389Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.guitu18.com/post/2020/01/20/66.html</loc>
     
     <lastmod>2020-05-02T05:17:22.902Z</lastmod>
@@ -19,20 +33,6 @@
     <loc>https://www.guitu18.com/post/2020/02/04/67.html</loc>
     
     <lastmod>2020-05-01T14:34:08.391Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.guitu18.com/post/2020/05/01/71.html</loc>
-    
-    <lastmod>2020-05-01T14:22:46.721Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.guitu18.com/about/index.html</loc>
-    
-    <lastmod>2020-04-30T16:24:04.287Z</lastmod>
     
   </url>
   
@@ -65,13 +65,6 @@
   </url>
   
   <url>
-    <loc>https://www.guitu18.com/post/2019/07/26/43.html</loc>
-    
-    <lastmod>2020-01-08T01:16:43.010Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.guitu18.com/post/2019/07/28/44.html</loc>
     
     <lastmod>2020-01-08T01:16:43.010Z</lastmod>
@@ -80,6 +73,13 @@
   
   <url>
     <loc>https://www.guitu18.com/post/2019/08/01/45.html</loc>
+    
+    <lastmod>2020-01-08T01:16:43.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.guitu18.com/post/2019/07/26/43.html</loc>
     
     <lastmod>2020-01-08T01:16:43.010Z</lastmod>
     
